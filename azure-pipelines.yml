@@ -1,0 +1,9 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: ls -a
+  displayName: ls -a
