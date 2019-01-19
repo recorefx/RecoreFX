@@ -1,3 +1,5 @@
-.vs
+.DS_STORE
+
+.vs/
 bin/
 obj/
