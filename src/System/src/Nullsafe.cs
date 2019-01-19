@@ -4,7 +4,7 @@ namespace System
     {
         public Nullsafe(T value) => Value = value;
 
-        public static implicit operator Nullsafe(T value) => new Nullsafe(value);
+        public static implicit operator Nullsafe<T>(T value) => new Nullsafe<T>(value);
 
         public T Value { get; }
 

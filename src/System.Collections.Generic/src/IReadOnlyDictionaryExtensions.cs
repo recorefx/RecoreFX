@@ -1,8 +1,8 @@
 namespace System.Collections.Generic
 {
-    public static class IReadOnlyDictionaryExtensions<TKey, TValue>
+    public static class IReadOnlyDictionaryExtensions
     {
-        public static TValue ValueOrDefault(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        public static TValue ValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
             {
