@@ -2,17 +2,9 @@ namespace System
 {
     public struct Required<T> where T : class
     {
-        public Required(T value)
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value), value);
-            }
+        public Required(T value) => Value = value ?? throw new ArgumentNullException(nameof(value));
 
-            Value = value;
-        }
-
-        public static implicit operator Required(T value) => new Required(value);
+        public static implicit operator Required<T>(T value) => new Required<T>(value);
 
         public T Value { get; }
     }

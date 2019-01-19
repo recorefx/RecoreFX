@@ -1,4 +1,3 @@
-using System; // reference RecoreFX System.dll
 using System.Collections.Generic;
 
 namespace System.Net.Http
