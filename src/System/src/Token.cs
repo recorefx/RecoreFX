@@ -9,16 +9,14 @@ namespace System
         {
             if (value == string.Empty)
             {
-                // TODO 21 Resources
-                throw new ArgumentException("A Token value must not be empty.");
+                throw new ArgumentException(Strings.TokenEmpty);
             }
 
             foreach (char c in value.Value)
             {
                 if (char.IsWhiteSpace(c))
                 {
-                    // TODO 21 Resources
-                    throw new ArgumentException($"A Token value must not contain whitespace. Token value: {value.Value}");
+                    throw new ArgumentException(string.Format(Strings.TokenWhitespace, value.Value));
                 }
             }
 
