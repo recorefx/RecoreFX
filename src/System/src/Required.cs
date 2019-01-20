@@ -4,7 +4,7 @@ namespace System
     {
         public Required(T value) => Value = value ?? throw new ArgumentNullException(nameof(value));
 
-        public static implicit operator Required<T>(T value) => new Required<T>(value);
+        public static implicit operator T(Required<T> required) => required.Value;
 
         public T Value { get; }
     }

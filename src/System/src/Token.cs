@@ -3,26 +3,28 @@ namespace System
     // A non-null, non-empty string value where whitespace is not allowed.
     public sealed class Token
     {
-        public string Value { get; }
+        public Required<string> Value { get; }
 
         public Token(Required<string> value)
         {
-            if (value.Value == string.Empty)
+            if (value == string.Empty)
             {
-                // TODO Resources
+                // TODO 21 Resources
                 throw new ArgumentException("A Token value must not be empty.");
             }
 
             foreach (char c in value.Value)
             {
-                if (Char.IsWhiteSpace(c))
+                if (char.IsWhiteSpace(c))
                 {
-                    // TODO Resources
+                    // TODO 21 Resources
                     throw new ArgumentException($"A Token value must not contain whitespace. Token value: {value.Value}");
                 }
             }
 
-            Value = value.Value;
+            Value = value;
         }
+
+        public static implicit operator string(Token t) => t.Value;
     }
 }
