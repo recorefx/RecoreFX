@@ -1,7 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Wildcard;
-
 namespace Wildcard.UnitTest
 {
     [TestClass]

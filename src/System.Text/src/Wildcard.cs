@@ -5,7 +5,7 @@ namespace Wildcard
 {
     public class Wildcard
     {
-        private string pattern;
+        private readonly string pattern;
 
         public Wildcard(string pattern)
         {
@@ -18,19 +18,19 @@ namespace Wildcard
 
             int i = 0;
             int j = 0;
-            while (i < this.pattern.Length)
+            while (i < pattern.Length)
             {
                 if (expandingStar)
                 {
                     // Skip ahead to all possible positions and start matching again
-                    var subpattern = new Wildcard(this.pattern.Substring(i));
+                    var subpattern = new Wildcard(pattern.Substring(i));
                     return Enumerable.Range(j, text.Length - 1)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
                 }
                 else
                 {
-                    char patternChar = this.pattern[i];
+                    char patternChar = pattern[i];
 
                     if (patternChar == '*')
                     {
