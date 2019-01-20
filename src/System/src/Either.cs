@@ -20,6 +20,16 @@ namespace System
             left = false;
         }
 
-        public T Match<T>(Func<A, T> ifA, Func<B, T> ifB) => left ? ifA(a) : ifB(b);
+        public T Match<T>(Func<A, T> ifA, Func<B, T> ifB)
+        {
+            if (left)
+            {
+                return ifA(a);
+            }
+            else
+            {
+                return ifB(b);
+            }
+        }
     }
 }

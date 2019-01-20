@@ -8,7 +8,16 @@ namespace System
 
         public T Value { get; }
 
-        public Nullsafe<U> Try<U>(Func<T, U> f) where U : class =>
-            Value == null ? new Nullsafe<U>(null) : f(Value);
+        public Nullsafe<U> Try<U>(Func<T, U> f) where U : class
+        {
+            if (Value == null)
+            {
+                return new Nullsafe<U>(null);
+            }
+            else
+            {
+                return f(Value);
+            }
+        }
     }
 }
