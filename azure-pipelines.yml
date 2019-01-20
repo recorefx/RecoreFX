@@ -9,25 +9,22 @@ trigger:
 pool:
   vmImage: 'VS2017-Win2016'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
 steps:
-- task: NuGetToolInstaller@0
-
-- task: NuGetCommand@2
+# You can't `dotnet test` on a solution file correctly before 2.1.5
+- task: DotNetCoreInstaller@0
   inputs:
-    restoreSolution: '$(solution)'
+    version: '2.1.503'
+  displayName: Install .NET Core SDK 2.1.503
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: cd src && dotnet build --configuration Release
+  displayName: dotnet build
 
-- task: VSTest@2
+- script: cd src && dotnet test --configuration Release --logger trx
+  displayName: dotnet test
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+  displayName: Publish test results
