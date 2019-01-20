@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Wildcard.UnitTest
+namespace System.Text.UnitTest
 {
     [TestClass]
     public class WildcardTests

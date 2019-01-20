@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Wildcard
+namespace System.Text
 {
     public class Wildcard
     {
