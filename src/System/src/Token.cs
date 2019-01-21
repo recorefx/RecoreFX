@@ -1,5 +1,3 @@
-using Recore;
-
 namespace System
 {
     // A non-null, non-empty string value where whitespace is not allowed.

@@ -1,6 +1,7 @@
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System.Text.UnitTest
+namespace Recore.Text.Tests
 {
     [TestClass]
     public class WildcardTests
