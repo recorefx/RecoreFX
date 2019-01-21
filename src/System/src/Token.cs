@@ -1,3 +1,5 @@
+using Recore;
+
 namespace System
 {
     // A non-null, non-empty string value where whitespace is not allowed.
@@ -9,6 +11,11 @@ namespace System
 
         public Token(string value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             if (value == string.Empty)
             {
                 throw new ArgumentException(Strings.TokenEmpty);
