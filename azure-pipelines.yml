@@ -6,25 +6,15 @@ trigger:
     exclude:
     - docs/*
 
-pool:
-  vmImage: 'VS2017-Win2016'
+jobs:
+- template: azure-pipelines/hosted-job.yml
+  parameters:
+    vmImage: vs2017-win2016
 
-steps:
-# You can't `dotnet test` on a solution file correctly before 2.1.5
-- task: DotNetCoreInstaller@0
-  inputs:
-    version: '2.1.503'
-  displayName: Install .NET Core SDK 2.1.503
+- template: azure-pipelines/hosted-job.yml
+  parameters:
+    vmImage: ubuntu-16.04
 
-- script: cd src && dotnet build --configuration Release
-  displayName: dotnet build
-
-- script: cd src && dotnet test --configuration Release --logger trx
-  displayName: dotnet test
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
-  displayName: Publish test results
+- template: azure-pipelines/hosted-job.yml
+  parameters:
+    vmImage: macOS-10.13

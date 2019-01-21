@@ -1,0 +1,32 @@
+# This is the build job we want to run
+# Because it takes a `vmImage` parameter, this template
+# is meant to define a job for the hosted pool
+
+parameters:
+  vmImage: ''
+
+jobs:
+- job:
+  displayName: ${{ parameters.vmImage }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+
+  steps:
+  # You can't `dotnet test` on a solution file correctly before 2.1.5
+  - task: DotNetCoreInstaller@0
+    inputs:
+      version: '2.1.503'
+    displayName: Install .NET Core SDK 2.1.503
+
+  - script: cd src && dotnet build --configuration Release
+    displayName: dotnet build
+
+  - script: cd src && dotnet test --configuration Release --logger trx
+    displayName: dotnet test
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: VSTest
+      testResultsFiles: '**/*.trx'
+    displayName: Publish test results
