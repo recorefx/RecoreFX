@@ -1,4 +1,4 @@
-namespace System.Security
+namespace Recore.Security
 {
     public static class SecureCompare
     {

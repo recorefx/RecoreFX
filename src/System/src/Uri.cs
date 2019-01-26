@@ -1,4 +1,6 @@
-namespace System
+using System;
+
+namespace Recore
 {
     public class AbsoluteUri : Uri
     {

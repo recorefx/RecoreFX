@@ -1,4 +1,6 @@
-namespace System.Functional
+using System;
+
+namespace Recore.Functional
 {
     public static class Combinator
     {

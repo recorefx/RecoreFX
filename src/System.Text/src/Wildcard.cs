@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace System.Text
+namespace Recore.Text
 {
     public class Wildcard
     {

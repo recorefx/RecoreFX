@@ -1,4 +1,6 @@
-namespace System.Threading.Tasks
+using System.Threading.Tasks;
+
+namespace Recore.Threading.Tasks
 {
     public static class TaskExtensions
     {

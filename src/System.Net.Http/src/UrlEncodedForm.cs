@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Net.Http;
 
-namespace System.Net.Http
+namespace Recore.Net.Http
 {
     public class UrlEncodedForm
     {

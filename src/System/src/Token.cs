@@ -1,4 +1,6 @@
-namespace System
+using System;
+
+namespace Recore
 {
     // A non-null, non-empty string value where whitespace is not allowed.
     public sealed class Token

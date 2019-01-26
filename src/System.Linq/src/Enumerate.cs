@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace System.Linq
+namespace Recore.Linq
 {
     public static partial class Enumerable
     {

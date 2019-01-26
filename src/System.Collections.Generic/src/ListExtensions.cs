@@ -1,4 +1,6 @@
-namespace System.Collections.Generic
+using System.Collections.Generic;
+
+namespace Recore.Collections.Generic
 {
     public static class ListExtensions
     {

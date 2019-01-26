@@ -1,4 +1,4 @@
-namespace System.Functional
+namespace Recore.Functional
 {
     public static class Operator
     {

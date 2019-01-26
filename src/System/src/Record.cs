@@ -1,4 +1,4 @@
-namespace System
+namespace Recore
 {
     public abstract class Record
     {
