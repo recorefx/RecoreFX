@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Collections.Generic", "System.Collections.Generic\src\Recore.Collections.Generic.csproj", "{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Collections.Generic", "Recore.Collections.Generic\src\Recore.Collections.Generic.csproj", "{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Functional", "System.Functional\src\Recore.Functional.csproj", "{E07C84FA-D24F-4D7D-BC80-822057D490EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Functional", "Recore.Functional\src\Recore.Functional.csproj", "{E07C84FA-D24F-4D7D-BC80-822057D490EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq", "System.Linq\src\Recore.Linq.csproj", "{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq", "Recore.Linq\src\Recore.Linq.csproj", "{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Net.Http", "System.Net.Http\src\Recore.Net.Http.csproj", "{84E53BCD-821C-431A-A647-8540EBC71C9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Net.Http", "Recore.Net.Http\src\Recore.Net.Http.csproj", "{84E53BCD-821C-431A-A647-8540EBC71C9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security", "System.Security\src\Recore.Security.csproj", "{CBC9FA7A-7A34-4F10-AFCD-8E3D6D48770D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security", "Recore.Security\src\Recore.Security.csproj", "{CBC9FA7A-7A34-4F10-AFCD-8E3D6D48770D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Threading.Tasks", "System.Threading.Tasks\src\Recore.Threading.Tasks.csproj", "{0C593AAA-FBB7-4D21-ADA2-CCE5A2FF11F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Threading.Tasks", "Recore.Threading.Tasks\src\Recore.Threading.Tasks.csproj", "{0C593AAA-FBB7-4D21-ADA2-CCE5A2FF11F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Text", "System.Text\src\Recore.Text.csproj", "{780F98D1-BF9D-4D19-BFEE-88318C5C8375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Text", "Recore.Text\src\Recore.Text.csproj", "{780F98D1-BF9D-4D19-BFEE-88318C5C8375}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Text.Tests", "System.Text\test\Recore.Text.Tests.csproj", "{121EF333-B767-4360-B40D-FD664171AA81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Text.Tests", "Recore.Text\test\Recore.Text.Tests.csproj", "{121EF333-B767-4360-B40D-FD664171AA81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore", "System\src\Recore.csproj", "{4346B3CC-DC12-4FBB-AC42-AE735403E4EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore", "Recore\src\Recore.csproj", "{4346B3CC-DC12-4FBB-AC42-AE735403E4EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Tests", "System\test\Recore.Tests.csproj", "{52CA3CAC-E294-4D93-8D30-C6005ACAA040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Tests", "Recore\test\Recore.Tests.csproj", "{52CA3CAC-E294-4D93-8D30-C6005ACAA040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
