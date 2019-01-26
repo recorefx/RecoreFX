@@ -6,8 +6,4 @@
     <RootNamespace>Recore.Linq</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\System\src\Recore.csproj" />
-  </ItemGroup>
-
 </Project>
