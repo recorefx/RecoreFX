@@ -5,8 +5,7 @@ namespace Recore
     // A non-null, non-empty string value where whitespace is not allowed.
     public sealed class Token
     {
-        // This could be Required, but Token already makes that guarantee,
-        // along with it being nonzero length and no whitespace.
+        // Guaranteed to be non-null, nonzero length, and no whitespace
         public string Value { get; }
 
         public Token(string value)

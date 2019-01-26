@@ -5,10 +5,9 @@ namespace Recore.Linq
 {
     public static partial class Enumerable
     {
-        public static IEnumerable<Required<TSource>> NonNull<TSource>(this IEnumerable<TSource> source) where TSource : class =>
+        public static IEnumerable<TSource> NonNull<TSource>(this IEnumerable<TSource> source) where TSource : class =>
             source
-            .Where(x => x != null)
-            .Select(x => new Required<TSource>(x));
+            .Where(x => x != null);
 
         public static IEnumerable<TSource> NonNull<TSource>(this IEnumerable<TSource?> source) where TSource : struct =>
             source
