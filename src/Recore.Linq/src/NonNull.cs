@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Recore.Linq
 {
-    public static partial class Enumerable
+    public static partial class RecoreEnumerable
     {
         public static IEnumerable<TSource> NonNull<TSource>(this IEnumerable<TSource> source) where TSource : class =>
             source

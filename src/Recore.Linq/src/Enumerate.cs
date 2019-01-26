@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Recore.Linq
 {
-    public static partial class Enumerable
+    public static partial class RecoreEnumerable
     {
         public static IEnumerable<(TSource item, int index)> Enumerate<TSource>(this IEnumerable<TSource> source)
         {

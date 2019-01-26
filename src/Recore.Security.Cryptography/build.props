@@ -1,0 +1,7 @@
+<Project>
+
+  <PropertyGroup>
+    <Namespace>Recore.Security.Cryptography</Namespace>
+  </PropertyGroup>
+
+</Project>

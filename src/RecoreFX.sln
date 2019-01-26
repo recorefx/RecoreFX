@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq", "Recore.Linq\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Net.Http", "Recore.Net.Http\src\Recore.Net.Http.csproj", "{84E53BCD-821C-431A-A647-8540EBC71C9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security", "Recore.Security\src\Recore.Security.csproj", "{CBC9FA7A-7A34-4F10-AFCD-8E3D6D48770D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security.Cryptography", "Recore.Security.Cryptography\src\Recore.Security.Cryptography.csproj", "{CBC9FA7A-7A34-4F10-AFCD-8E3D6D48770D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Threading.Tasks", "Recore.Threading.Tasks\src\Recore.Threading.Tasks.csproj", "{0C593AAA-FBB7-4D21-ADA2-CCE5A2FF11F8}"
 EndProject
@@ -22,6 +22,20 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore", "Recore\src\Recore.csproj", "{4346B3CC-DC12-4FBB-AC42-AE735403E4EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Tests", "Recore\test\Recore.Tests.csproj", "{52CA3CAC-E294-4D93-8D30-C6005ACAA040}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Collections.Generic.Tests", "Recore.Collections.Generic\test\Recore.Collections.Generic.Tests.csproj", "{08371D46-C615-4515-83B1-BBA9455778EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq.Tests", "Recore.Linq\test\Recore.Linq.Tests.csproj", "{2A27B43E-E4D2-43FC-B405-F775E3ED227A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Functional.Tests", "Recore.Functional\test\Recore.Functional.Tests.csproj", "{EF3DB5FF-5568-403A-BFEB-162E218B44A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Net.Http.Tests", "Recore.Net.Http\test\Recore.Net.Http.Tests.csproj", "{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security.Cryptography.Tests", "Recore.Security.Cryptography\test\Recore.Security.Cryptography.Tests.csproj", "{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Threading.Tasks.Tests", "Recore.Threading.Tasks\test\Recore.Threading.Tasks.Tests.csproj", "{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,9 +83,43 @@ Global
 		{52CA3CAC-E294-4D93-8D30-C6005ACAA040}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52CA3CAC-E294-4D93-8D30-C6005ACAA040}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52CA3CAC-E294-4D93-8D30-C6005ACAA040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08371D46-C615-4515-83B1-BBA9455778EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08371D46-C615-4515-83B1-BBA9455778EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08371D46-C615-4515-83B1-BBA9455778EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08371D46-C615-4515-83B1-BBA9455778EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{121EF333-B767-4360-B40D-FD664171AA81} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{52CA3CAC-E294-4D93-8D30-C6005ACAA040} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{08371D46-C615-4515-83B1-BBA9455778EE} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{2A27B43E-E4D2-43FC-B405-F775E3ED227A} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{EF3DB5FF-5568-403A-BFEB-162E218B44A8} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{9EEC50F4-9136-4FCD-A21E-73C3EF4F35CA} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
+		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A2E9204D-BAAE-465C-9314-F7CCD28F36F4}
