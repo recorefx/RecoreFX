@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <RootNamespace>Recore.Linq</RootNamespace>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
 </Project>
