@@ -4,6 +4,12 @@ namespace Recore
 {
     public struct Required<T> where T : class
     {
+        private readonly T value;
+        public T Value
+        {
+            get => value ?? throw new UninitializedStructException<Required<T>>();
+        }
+
         public Required(T value)
         {
             if (value == null)
@@ -11,11 +17,9 @@ namespace Recore
                 throw new ArgumentNullException(nameof(value));
             }
 
-            Value = value;
+            this.value = value;
         }
 
         public static implicit operator T(Required<T> required) => required.Value;
-
-        public T Value { get; }
     }
 }
