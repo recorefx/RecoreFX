@@ -72,4 +72,25 @@ namespace Recore
         // Implicit conversion to string gives us the string == and != operators for free
         // For some reason, String implements IComparable but does not have comparison operators
     }
+
+    public static class StringExtensions
+    {
+        //! Split a `string` into a sequence of tokens on its whitespace characters.
+        //! While a particular string may consist of tokens delimited by some other character or string,
+        //! this method does not provide an option for this by design.
+        //! This is consistent with the `Token` type itself, which does not check for any characters
+        //! besides whitespace.
+        public static Token[] Tokenize(this string str)
+        {
+            var parts = str.Split(separator: (char[])null, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = new Token[parts.Length];
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                tokens[i] = new Token(parts[i]);
+            }
+
+            return tokens;
+        }
+    }
 }

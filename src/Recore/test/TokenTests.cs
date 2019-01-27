@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -137,6 +138,27 @@ namespace Recore.Tests
             Assert.AreEqual(-1, "abc".CompareTo(new Token("def")));
             Assert.AreEqual(0, "abc".CompareTo(new Token("abc")));
             Assert.AreEqual(1, "def".CompareTo(new Token("abc")));
+        }
+
+        [TestMethod]
+        public void Tokenize()
+        {
+            var gettysburg = @"Four score and seven years ago,
+            our fathers brought forth on this continent a new nation";
+
+            var tokens = new[]
+            {
+                "Four", "score", "and", "seven", "years", "ago,",
+                "our", "fathers", "brought", "forth", "on", "this", "continent", "a", "new", "nation"
+            }.Select(x => new Token(x));
+
+            Assert.IsTrue(tokens.SequenceEqual(gettysburg.Tokenize()));
+
+            Assert.AreEqual(0, string.Empty.Tokenize().Length);
+
+            var doubleSpace = "    hello  world    ";
+            tokens = new[] { new Token("hello"), new Token("world") };
+            Assert.IsTrue(tokens.SequenceEqual(doubleSpace.Tokenize()));
         }
     }
 }
