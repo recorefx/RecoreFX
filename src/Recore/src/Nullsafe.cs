@@ -2,23 +2,17 @@ using System;
 
 namespace Recore
 {
-    public struct Nullsafe<T> where T : class
+    public static class NullsafeExtensions
     {
-        public Nullsafe(T value) => Value = value;
-
-        public static implicit operator Nullsafe<T>(T value) => new Nullsafe<T>(value);
-
-        public T Value { get; }
-
-        public Nullsafe<U> Try<U>(Func<T, U> f) where U : class
+        public static U Nullsafe<T, U>(this T t, Func<T, U> f, U safe = default) where T : class
         {
-            if (Value == null)
+            if (t == null)
             {
-                return new Nullsafe<U>(null);
+                return safe;
             }
             else
             {
-                return f(Value);
+                return f(t);
             }
         }
     }
