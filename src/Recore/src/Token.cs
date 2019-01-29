@@ -4,7 +4,7 @@ namespace Recore
 {
     // A non-null, non-empty string value where whitespace is not allowed.
     // Meant to feel like a subclass of String, which is sealed.
-    public struct Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
+    public readonly struct Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
     {
         private readonly string value;
 

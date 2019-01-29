@@ -2,7 +2,7 @@ using System;
 
 namespace Recore
 {
-    public struct Required<T> where T : class
+    public readonly struct Required<T> where T : class
     {
         private readonly T value;
         public T Value
@@ -20,6 +20,6 @@ namespace Recore
             this.value = value;
         }
 
-        public static implicit operator T(Required<T> required) => required.Value;
+        public static implicit operator T(in Required<T> required) => required.Value;
     }
 }

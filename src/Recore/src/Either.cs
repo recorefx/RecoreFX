@@ -2,7 +2,7 @@ using System;
 
 namespace Recore
 {
-    public struct Either<A, B>
+    public readonly struct Either<A, B>
     {
         private readonly A a;
         private readonly B b;
