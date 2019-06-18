@@ -10,13 +10,10 @@ namespace Recore.Linq.Tests
     public class NonNullTests
     {
         [TestMethod]
-        public void NullSource()
+        public void ThrowsOnNull()
         {
-            Assert.ThrowsException<ArgumentNullException>(() =>
-            {
-                IEnumerable<string> source = null;
-                return source.NonNull();
-            });
+            IEnumerable<object> nullEnumerable = null;
+            Assert.ThrowsException<ArgumentNullException>(nullEnumerable.NonNull);
         }
 
         [TestMethod]
