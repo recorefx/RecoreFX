@@ -11,7 +11,7 @@ namespace Recore.Tests
     public class RequiredTests
     {
         [TestMethod]
-        public void Unitialized()
+        public void Uninitialized()
         {
             Assert.ThrowsException<UninitializedStructException<Required<string>>>(() =>
             new Foo().name.Value);
