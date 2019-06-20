@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Recore.Tests
@@ -151,32 +152,116 @@ namespace Recore.Tests
 
             Assert.AreEqual("hello world", referenceOption.Try(Id));
             Assert.AreEqual(123, valueOption.Try(Id));
+            Assert.AreEqual(Option<object>.None, Option<object>.None.Try(Id));
 
             // Composition
             int Square(int n) => n * n;
             int PlusTwo(int n) => n + 2;
+
             Assert.AreEqual(
                 new Option<int>(10).Try(Square).Try(PlusTwo),
                 new Option<int>(10).Try(x => PlusTwo(Square(x))));
+
+            Assert.AreEqual(
+                Option<int>.None.Try(Square).Try(PlusTwo),
+                Option<int>.None.Try(x => PlusTwo(Square(x))));
         }
 
-        // TODO
-        //[TestMethod]
-        //public void Then()
-        //{
-        //    Assert.Fail();
-        //}
+        [TestMethod]
+        public void Then()
+        {
+            Option<int> FindFirstSpace(string str)
+            {
+                var result = str.IndexOf(' ');
+                if (result == -1)
+                {
+                    return Option<int>.None;
+                }
+                else
+                {
+                    return result;
+                }
+            }
 
-        //[TestMethod]
-        //public void MonadLaws()
-        //{
-        //    Assert.Fail();
-        //}
+            Option<string> maybeStr;
+            Option<int> actual;
 
-        //[TestMethod]
-        //public void Join()
-        //{
-        //    Assert.Fail();
-        //}
+            maybeStr = "hello world";
+            actual = maybeStr.Then(FindFirstSpace);
+            Assert.AreEqual(5, actual);
+
+            maybeStr = "hello";
+            actual = maybeStr.Then(FindFirstSpace);
+            Assert.IsFalse(actual.HasValue);
+
+            maybeStr = Option<string>.None;
+            actual = maybeStr.Then(FindFirstSpace);
+            Assert.IsFalse(actual.HasValue);
+        }
+
+        [TestMethod]
+        public void MonadLaws()
+        {
+            Option<string> StringToOption(string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    return Option<string>.None;
+                }
+                else
+                {
+                    return str;
+                }
+            }
+
+            // Left identity
+            foreach (var value in new[] { "hello", string.Empty, null })
+            {
+                Assert.AreEqual(
+                    StringToOption(value),
+                    new Option<string>(value).Then(StringToOption));
+            }
+
+            // Right identity
+            foreach (var option in new[] { "hello", null, Option<string>.None })
+            {
+                Assert.AreEqual(
+                    option,
+                    option.Then(x => new Option<string>(x)));
+            }
+
+            // Associativity
+            Option<int> NullsafeLength(string str)
+            {
+                if (str == null)
+                {
+                    return Option<int>.None;
+                }
+                else
+                {
+                    return str.Length;
+                }
+            }
+
+            foreach (var option in new[] { "hello", null, Option<string>.None })
+            {
+                Assert.AreEqual(
+                    option.Then(StringToOption).Then(NullsafeLength),
+                    option.Then(x => StringToOption(x).Then(NullsafeLength)));
+            }
+        }
+
+        [TestMethod]
+        public void Flatten()
+        {
+            var doubleValue = new Option<Option<string>>("hello");
+            Assert.AreEqual("hello", doubleValue.Flatten());
+
+            var doubleNone = Option<Option<string>>.None;
+            Assert.IsFalse(doubleNone.Flatten().HasValue);
+
+            var valueNone = new Option<Option<string>>(Option<string>.None);
+            Assert.IsFalse(valueNone.Flatten().HasValue);
+        }
     }
 }

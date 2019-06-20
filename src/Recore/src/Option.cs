@@ -121,7 +121,11 @@ namespace Recore
 
     public static class Option
     {
-        public static Option<T> Join<T>(Option<Option<T>> doubleOption)
+        /// <summary>
+        /// Convert an <c cref="Option{Option{T}}">Option&lt;Option&lt;T&gt;&gt;</c>
+        /// to an <c cref="Option{T}">Option&lt;T&gt;</c>.
+        /// </summary>
+        public static Option<T> Flatten<T>(this Option<Option<T>> doubleOption)
             => doubleOption.ValueOr(Option<T>.None);
     }
 }
