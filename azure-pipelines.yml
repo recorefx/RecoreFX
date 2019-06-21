@@ -28,7 +28,7 @@ steps:
 - script: cd src && dotnet build --configuration Release
   displayName: dotnet build
 
-- script: cd src && dotnet test --configuration Release --logger trx
+- script: cd src && dotnet test --configuration Release --logger trx --collect "Code coverage"
   displayName: dotnet test
 
 - task: PublishTestResults@2
