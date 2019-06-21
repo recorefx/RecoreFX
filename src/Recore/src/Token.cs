@@ -4,17 +4,10 @@ namespace Recore
 {
     // A non-null, non-empty string value where whitespace is not allowed.
     // Meant to feel like a subclass of String, which is sealed.
-    public readonly struct Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
+    public sealed class Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
     {
-        private readonly string value;
-
         // Guaranteed to be non-null, nonzero length, and no whitespace
-        private string Value
-        {
-            // `value` can be null if the struct is uninitialized
-            // This is the same code as `Required<string>`, but inlined to keep the struct size down
-            get => value ?? throw new UninitializedStructException<Token>();
-        }
+        private readonly string value;
 
         public Token(string value)
         {
@@ -39,11 +32,11 @@ namespace Recore
             this.value = value;
         }
 
-        public override string ToString() => Value;
+        public override string ToString() => value;
 
-        public bool Equals(Token other) => Value == other.Value;
+        public bool Equals(Token other) => value == other.value;
 
-        public bool Equals(string other) => Value.Equals(other);
+        public bool Equals(string other) => value.Equals(other);
 
         public override bool Equals(object obj)
         {
@@ -61,11 +54,15 @@ namespace Recore
             }
         }
 
-        public override int GetHashCode() => Value.GetHashCode();
+        public static bool operator ==(Token lhs, Token rhs) => Equals(lhs, rhs);
 
-        public int CompareTo(Token other) => Value.CompareTo(other.Value);
+        public static bool operator !=(Token lhs, Token rhs) => !Equals(lhs, rhs);
 
-        public int CompareTo(string other) => Value.CompareTo(other);
+        public override int GetHashCode() => value.GetHashCode();
+
+        public int CompareTo(Token other) => value.CompareTo(other.value);
+
+        public int CompareTo(string other) => value.CompareTo(other);
 
         public static implicit operator string(Token t) => t.ToString();
 

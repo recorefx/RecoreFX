@@ -77,14 +77,5 @@ namespace Recore {
                 return ResourceManager.GetString("TokenWhitespace", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Struct {0} was used without being initialized..
-        /// </summary>
-        internal static string UninitializedStruct {
-            get {
-                return ResourceManager.GetString("UnitializedStruct", resourceCulture);
-            }
-        }
     }
 }

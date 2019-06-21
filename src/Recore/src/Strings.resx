@@ -123,7 +123,4 @@
   <data name="TokenWhitespace" xml:space="preserve">
     <value>A Token value must not contain whitespace. Value: {0}</value>
   </data>
-  <data name="UnitializedStruct" xml:space="preserve">
-    <value>Struct {0} was used without being initialized.</value>
-  </data>
 </root>

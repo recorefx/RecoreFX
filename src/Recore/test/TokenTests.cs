@@ -39,13 +39,6 @@ namespace Recore.Tests
         }
 
         [TestMethod]
-        public void Uninitialized()
-        {
-            Token token;
-            Assert.ThrowsException<UninitializedStructException<Token>>(token.ToString);
-        }
-
-        [TestMethod]
         public void IEquatableEquals()
         {
             // reflexive
