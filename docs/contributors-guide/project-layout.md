@@ -1,4 +1,4 @@
-# Build configuration
+# Project layout
 
 The `msbuild/` directory at the repository root contains common configuration for source and test projects.
 
@@ -9,8 +9,10 @@ The `src/` directory of the repository is laid out according to the components t
   - Namespace
     - src
       - Namespace.csproj
+      - File.cs
     - test
       - Namespace.Tests.csproj
+      - FileTests.cs
     - build.props
 ```
 
