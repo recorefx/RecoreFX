@@ -18,14 +18,6 @@ namespace Recore
         public bool HasValue { get; }
 
         /// <summary>
-        /// An <c cref="Optional{T}">Optional</c> without a value.
-        /// </summary>
-        /// <remarks>
-        /// This generic alias is sometimes needed to help C#'s type inference.
-        /// </remarks>
-        public static Optional<T> Empty => Optional.Empty;
-
-        /// <summary>
         /// Choose a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         /// <param name="onValue">Called when the <c cref="Optional{T}">Optional</c> has a value.</param>
@@ -113,11 +105,16 @@ namespace Recore
 
         // TODO HashCode
 
-        public static implicit operator Optional<T>(T value) => new Optional<T>(value);
+        /// <summary>
+        /// An <c cref="Optional{T}">Optional</c> without a value.
+        /// </summary>
+        /// <remarks>
+        /// This generic alias is sometimes needed to help C#'s type inference.
+        /// </remarks>
+        public static Optional<T> Empty { get; } = new Optional<T>();
 
-        // Only need one empty option
-        private static readonly Optional<T> empty = new Optional<T>();
-        public static implicit operator Optional<T>(Optional.EmptyType empty) => Optional<T>.empty;
+        public static implicit operator Optional<T>(T value) => new Optional<T>(value);
+        public static implicit operator Optional<T>(Optional.EmptyType empty) => Empty;
     }
 
     public static class Optional

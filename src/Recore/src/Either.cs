@@ -2,36 +2,82 @@ using System;
 
 namespace Recore
 {
-    public readonly struct Either<A, B>
+    public sealed class Either<TLeft, TRight>
     {
-        private readonly A a;
-        private readonly B b;
-        private readonly bool left;
+        private readonly TLeft left;
+        private readonly TRight right;
 
-        public Either(A a)
+        public bool IsLeft { get; }
+
+        public bool IsRight => !IsLeft;
+
+        public Either(TLeft left)
         {
-            this.a = a;
-            b = default;
-            left = true;
+            this.left = left;
+            right = default;
+            IsLeft = true;
         }
 
-        public Either(B b)
+        public Either(TRight right)
         {
-            a = default;
-            this.b = default;
-            left = false;
+            left = default;
+            this.right = right;
+            IsLeft = false;
         }
 
-        public T Match<T>(Func<A, T> ifA, Func<B, T> ifB)
+        public T Switch<T>(Func<TLeft, T> onLeft, Func<TRight, T> onRight)
         {
-            if (left)
+            if (IsLeft)
             {
-                return ifA(a);
+                return onLeft(left);
             }
             else
             {
-                return ifB(b);
+                return onRight(right);
             }
         }
+
+        public void Switch(Action<TLeft> onLeft, Action<TRight> onRight)
+        {
+            if (IsLeft)
+            {
+                onLeft(left);
+            }
+            else
+            {
+                onRight(right);
+            }
+        }
+
+        public Optional<TLeft> GetLeft()
+            => Switch(
+                left => new Optional<TLeft>(left),
+                right => Optional.Empty);
+
+        public Optional<TRight> GetRight()
+            => Switch(
+                left => Optional.Empty,
+                right => new Optional<TRight>(right));
+
+        /// <summary>
+        /// Take an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TLeft</c>.
+        /// </summary>
+        public void IfLeft(Action<TLeft> onLeft)
+            => Switch(
+                onLeft,
+                left => { });
+
+        /// <summary>
+        /// Take an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TRight</c>.
+        /// </summary>
+        public void IfRight(Action<TRight> onRight)
+            => Switch(
+                right => { },
+                onRight);
+
+        public static implicit operator Either<TLeft, TRight>(TLeft left) => new Either<TLeft, TRight>(left);
+        public static implicit operator Either<TLeft, TRight>(TRight right) => new Either<TLeft, TRight>(right);
+
+        // TODO Equals, ToString()
     }
 }

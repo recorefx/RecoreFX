@@ -8,7 +8,7 @@ namespace Recore.Tests
     public class OptionalTests
     {
         [TestMethod]
-        public void CreateOptionalWithValue()
+        public void Constructor()
         {
             var referenceOptional = new Optional<string>("Hello world");
             Assert.IsTrue(referenceOptional.HasValue);
@@ -63,21 +63,21 @@ namespace Recore.Tests
         public void SwitchAction()
         {
             Optional<int> optional;
-            int result;
+            bool called;
 
             optional = 123;
-            result = -1;
+            called = false;
             optional.Switch(
-                x => { result = 10; },
+                x => { called = true; },
                 () => throw new Exception("Should not be called"));
-            Assert.AreEqual(10, result);
+            Assert.IsTrue(called);
 
             optional = Optional.Empty;
-            result = -1;
+            called = false;
             optional.Switch(
                 x => throw new Exception("Should not be called"),
-                () => { result = 20; });
-            Assert.AreEqual(20, result);
+                () => { called = true; });
+            Assert.IsTrue(called);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace Recore.Tests
         }
 
         [TestMethod]
-        public void IfValue()
+        public void IfValueIfEmpty()
         {
             Optional<int> optional;
             bool called;
@@ -119,24 +119,15 @@ namespace Recore.Tests
             optional.IfValue(x => { called = true; });
             Assert.IsTrue(called);
 
-            optional = Optional.Empty;
-            called = false;
-            optional.IfValue(x => { called = true; });
-            Assert.IsFalse(called);
-        }
-
-        [TestMethod]
-        public void IfEmpty()
-        {
-            Optional<int> optional;
-            bool called;
-
-            optional = 123;
             called = false;
             optional.IfEmpty(() => { called = true; });
             Assert.IsFalse(called);
 
             optional = Optional.Empty;
+            called = false;
+            optional.IfValue(x => { called = true; });
+            Assert.IsFalse(called);
+
             called = false;
             optional.IfEmpty(() => { called = true; });
             Assert.IsTrue(called);
