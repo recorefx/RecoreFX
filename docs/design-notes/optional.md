@@ -23,6 +23,11 @@ Without this constraint, you have to maintain additional state to know whether t
     - `Empty` matches Java's `optional`
     - `Empty` matches `string.Empty` and `Enumerable.Empty<T>()` (which has to be a method because it's an extension)
     - `Empty` consolidates concepts.  When talking about optionals in prose, it's more natual to say "empty optional" than "none optional."
+    - I considered having an `EmptyType` with a single instance that was implicitly convertible to `Optional<T>` for any `T`. This would function like `null` for `Optional` and follows `nullopt` / `nullopt_t` from C++.  However, I'm leaving it out for the following reasons:
+        - Adds complexity to the interface for little benefit
+        - Incurs compile time and run time cost to convert
+        - Takes special handling for equality to work in all cases
+        - It would not be a breaking change to add it in the future
 - `Switch`: also considered `Match`, `Choose`, `Pick`, `Select`
     - `Match` was what I originally called this since the method is doing what pattern matching does in other languages.  However, pattern matching is a language feature, not an `Optional` feature.
     - The name of the method has to describe the two usually anonymous functions that follow. `Switch` accomplishes this by evoking the `switch` statement in the language.
