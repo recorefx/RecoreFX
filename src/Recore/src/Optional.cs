@@ -5,7 +5,7 @@ namespace Recore
     /// <summary>
     /// A type-safe wrapper for a nullable value.
     /// </summary>
-    public readonly struct Optional<T>
+    public readonly struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T value;
 
@@ -75,7 +75,7 @@ namespace Recore
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
-                x => new Optional<U>(f(x)),
+                x => Optional.Of(f(x)),
                 Optional.Empty<U>);
 
         /// <summary>
@@ -117,9 +117,30 @@ namespace Recore
                 x => x.ToString(),
                 () => Strings.OptionalEmptyToString);
 
-        public static bool operator==(Optional<T> lhs, Optional<T> rhs) => Equals(lhs, rhs);
+        public override bool Equals(object other)
+            => other is Optional<T>
+            && this.Equals((Optional<T>)other);
 
-        public static bool operator !=(Optional<T> lhs, Optional<T> rhs) => !Equals(lhs, rhs);
+        public bool Equals(Optional<T> other)
+        {
+            if (!this.HasValue || !other.HasValue)
+            {
+                return !this.HasValue && !other.HasValue;
+            }
+            else
+            {
+                return Equals(this.value, other.value);
+            }
+        }
+
+        public override int GetHashCode()
+            => Switch(
+                x => x.GetHashCode(),
+                () => 0);
+
+        public static bool operator==(Optional<T> lhs, Optional<T> rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Optional<T> lhs, Optional<T> rhs) => !lhs.Equals(rhs);
 
         public static implicit operator Optional<T>(T value) => new Optional<T>(value);
 
