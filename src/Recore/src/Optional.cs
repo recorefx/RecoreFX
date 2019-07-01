@@ -9,12 +9,22 @@ namespace Recore
     {
         private readonly T value;
 
+        /// <summary>
+        /// Create an <c cref="Optional{T}">Optional</c> with a value.
+        /// </summary>
+        /// <remarks>
+        /// If <c>null</c> is passed for <paramref name="value"/>, then the <c cref="Optional{T}">Optional</c>
+        /// is considered empty.
+        /// </remarks>
         public Optional(T value)
         {
             this.value = value;
             this.HasValue = value != null;
         }
 
+        /// <summary>
+        /// Whether the <c cref="Optional{T}">Optional</c> was created with a value.
+        /// </summary>
         public bool HasValue { get; }
 
         /// <summary>
@@ -119,6 +129,9 @@ namespace Recore
                 () => throw new InvalidCastException(string.Format(Strings.OptionalEmptyInvalidCast, typeof(T))));
     }
 
+    /// <summary>
+    /// Additional methods for <c cref="Optional{T}">Optional&lt;T&gt;</c>.
+    /// </summary>
     public static class Optional
     {
         /// <summary>
@@ -148,6 +161,6 @@ namespace Recore
         /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)
-            => doubleOption.ValueOr(Optional.Empty<T>());
+            => doubleOption.Then(x => x);
     }
 }
