@@ -52,11 +52,11 @@ namespace Recore
         public Optional<TLeft> GetLeft()
             => Switch(
                 left => new Optional<TLeft>(left),
-                right => Optional<TLeft>.Empty);
+                right => Optional.Empty<TLeft>());
 
         public Optional<TRight> GetRight()
             => Switch(
-                left => Optional<TRight>.Empty,
+                left => Optional.Empty<TRight>(),
                 right => new Optional<TRight>(right));
 
         /// <summary>

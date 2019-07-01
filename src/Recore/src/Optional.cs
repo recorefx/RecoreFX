@@ -18,17 +18,6 @@ namespace Recore
         public bool HasValue { get; }
 
         /// <summary>
-        /// An <c cref="Optional{T}">Optional</c> without a value.
-        /// </summary>
-        /// <remarks>
-        /// While an empty <c cref="Optional{T}">Optional</c> can also be created by calling the default constructor
-        /// or passing <c>null</c> to the constructor,
-        /// <c cref="Empty">Empty</c>, prevents unnecessary allocations with a single, statically-allocated object.
-        /// It is also more expressive, making the absence of a value more obvious.
-        /// </remarks>
-        public static Optional<T> Empty { get; } = new Optional<T>();
-
-        /// <summary>
         /// Choose a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         /// <param name="onValue">Called when the <c cref="Optional{T}">Optional</c> has a value.</param>
@@ -77,7 +66,7 @@ namespace Recore
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
                 x => new Optional<U>(f(x)),
-                () => Optional<U>.Empty);
+                Optional.Empty<U>);
 
         /// <summary>
         /// Take an action only if the <c cref="Optional{T}">Optional</c> has a value.
@@ -108,7 +97,7 @@ namespace Recore
         public Optional<U> Then<U>(Func<T, Optional<U>> f)
             => Switch(
                 f,
-                () => Optional<U>.Empty);
+                Optional.Empty<U>);
 
         /// <summary>
         /// Return the value's string representation, or a localized "none" message.
@@ -144,10 +133,21 @@ namespace Recore
         public static Optional<T> Of<T>(T value) => new Optional<T>(value);
 
         /// <summary>
+        /// An <c cref="Optional{T}">Optional</c> without a value.
+        /// </summary>
+        /// <remarks>
+        /// While an empty <c cref="Optional{T}">Optional</c> can also be created by calling the default constructor
+        /// or passing <c>null</c> to the constructor,
+        /// <c cref="Empty">Empty</c> is more expressive, making the absence of a value more obvious.
+        /// It can also be passed as a delegate whereas the constructor can't be.
+        /// </remarks>
+        public static Optional<T> Empty<T>() => new Optional<T>();
+
+        /// <summary>
         /// Convert an <c cref="Optional{Optional{T}}">Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)
-            => doubleOption.ValueOr(Optional<T>.Empty);
+            => doubleOption.ValueOr(Optional.Empty<T>());
     }
 }
