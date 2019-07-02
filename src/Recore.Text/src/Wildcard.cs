@@ -3,7 +3,7 @@
 namespace Recore.Text
 {
     /// <summary>
-    /// Represents a text pattern with <c>*</c> and <c>?<c> wildcard characters.
+    /// Represents a text pattern with <c>*</c> and <c>?</c> wildcard characters.
     /// </summary>
     /// <remarks>
     /// In evaluating matches for the pattern, <c>*</c> will match zero or more characters
