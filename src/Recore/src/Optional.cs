@@ -3,14 +3,14 @@
 namespace Recore
 {
     /// <summary>
-    /// A type-safe wrapper for a nullable value.
+    /// Provides type-safe access to a nullable value.
     /// </summary>
     public readonly struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T value;
 
         /// <summary>
-        /// Create an <c cref="Optional{T}">Optional</c> with a value.
+        /// Creates an <c cref="Optional{T}">Optional</c> with a value.
         /// </summary>
         /// <remarks>
         /// If <c>null</c> is passed for <paramref name="value"/>, then the <c cref="Optional{T}">Optional</c>
@@ -23,12 +23,12 @@ namespace Recore
         }
 
         /// <summary>
-        /// Whether the <c cref="Optional{T}">Optional</c> was created with a value.
+        /// Indicates whether the <c cref="Optional{T}">Optional</c> was created with a value.
         /// </summary>
         public bool HasValue { get; }
 
         /// <summary>
-        /// Choose a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
+        /// Chooses a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         /// <param name="onValue">Called when the <c cref="Optional{T}">Optional</c> has a value.</param>
         /// <param name="onEmpty">Called when the <c cref="Optional{T}">Optional</c> does not have a value.</param>
@@ -46,7 +46,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Choose an action to take depending on whether the <c cref="Optional{T}">Optional</c> has a value.
+        /// Chooses an action to take depending on whether the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         /// <param name="onValue">Called when the <c cref="Optional{T}">Optional</c> has a value.</param>
         /// <param name="onEmpty">Called when the <c cref="Optional{T}">Optional</c> does not have a value.</param>
@@ -63,7 +63,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Extract the value with a fallback if the <c cref="Optional{T}">Optional</c> is empty.
+        /// Extracts the value with a fallback if the <c cref="Optional{T}">Optional</c> is empty.
         /// </summary>
         public T ValueOr(T fallback)
             => Switch(
@@ -71,7 +71,7 @@ namespace Recore
                 () => fallback);
 
         /// <summary>
-        /// Map a function over the <c cref="Optional{T}">Optional</c>'s value, or propagate <c cref="Empty">Empty</c>.
+        /// Maps a function over the <c cref="Optional{T}">Optional</c>'s value, or propagates <c cref="Empty">Empty</c>.
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
@@ -79,7 +79,7 @@ namespace Recore
                 Optional.Empty<U>);
 
         /// <summary>
-        /// Take an action only if the <c cref="Optional{T}">Optional</c> has a value.
+        /// Takes an action only if the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         public void IfValue(Action<T> onValue)
             => Switch(
@@ -87,7 +87,7 @@ namespace Recore
                 () => { });
 
         /// <summary>
-        /// Take an action only if the <c cref="Optional{T}">Optional</c> is empty.
+        /// Takes an action only if the <c cref="Optional{T}">Optional</c> is empty.
         /// </summary>
         public void IfEmpty(Action onEmpty)
             => Switch(
@@ -95,7 +95,7 @@ namespace Recore
                 onEmpty);
 
         /// <summary>
-        /// Chain another <c cref="Optional{T}">Optional</c>-producing operation onto the result of another.
+        /// Chains another <c cref="Optional{T}">Optional</c>-producing operation onto the result of another.
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
@@ -110,7 +110,7 @@ namespace Recore
                 Optional.Empty<U>);
 
         /// <summary>
-        /// Return the value's string representation, or a localized "none" message.
+        /// Returns the value's string representation, or a localized "none" message.
         /// </summary>
         public override string ToString()
             => Switch(
@@ -151,12 +151,12 @@ namespace Recore
     }
 
     /// <summary>
-    /// Additional methods for <c cref="Optional{T}">Optional&lt;T&gt;</c>.
+    /// Provides additional methods for <c cref="Optional{T}">Optional&lt;T&gt;</c>.
     /// </summary>
     public static class Optional
     {
         /// <summary>
-        /// Make a value optional.
+        /// Makes a value optional.
         /// </summary>
         /// <remarks>
         /// This is useful for type inference in some cases where the implicit conversion
@@ -167,7 +167,7 @@ namespace Recore
         public static Optional<T> Of<T>(T value) => new Optional<T>(value);
 
         /// <summary>
-        /// An <c cref="Optional{T}">Optional</c> without a value.
+        /// Creates an <c cref="Optional{T}">Optional</c> without a value.
         /// </summary>
         /// <remarks>
         /// While an empty <c cref="Optional{T}">Optional</c> can also be created by calling the default constructor
@@ -178,7 +178,7 @@ namespace Recore
         public static Optional<T> Empty<T>() => new Optional<T>();
 
         /// <summary>
-        /// Convert an <c cref="Optional{Optional{T}}">Optional&lt;Optional&lt;T&gt;&gt;</c>
+        /// Converts an <c cref="Optional{Optional{T}}">Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)

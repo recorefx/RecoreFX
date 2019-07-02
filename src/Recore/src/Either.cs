@@ -60,7 +60,7 @@ namespace Recore
                 right => new Optional<TRight>(right));
 
         /// <summary>
-        /// Take an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TLeft</c>.
+        /// Takes an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TLeft</c>.
         /// </summary>
         public void IfLeft(Action<TLeft> onLeft)
             => Switch(
@@ -68,7 +68,7 @@ namespace Recore
                 left => { });
 
         /// <summary>
-        /// Take an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TRight</c>.
+        /// Takes an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TRight</c>.
         /// </summary>
         public void IfRight(Action<TRight> onRight)
             => Switch(

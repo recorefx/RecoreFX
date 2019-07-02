@@ -26,6 +26,7 @@ Many of them agree with the above styles, but some are different.
   * Comments must be in clear, correct, idiomatic English.
   * All public classes must have a doc comment with at least a one-line summary.
   * All public methods must have a doc comment with at least a one-line summary.
+  * Doc comments must describe their subject (type, method, property, etc.) in the third-person singular. The doc comment should begin with a verb: for example, "Converts an integer to a string." This follows the documentation for the .NET standard library.
   * Prefer multiple single-line comments (`//`) over block comments (`/* */`).
   * Single-line comments must have a single space after the `//`.
   * Please comment frequently. The best comments explain *why* something is done the way it is.

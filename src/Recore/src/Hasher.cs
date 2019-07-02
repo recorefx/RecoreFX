@@ -1,7 +1,7 @@
 namespace Recore
 {
     /// <summary>
-    /// Compute hash codes for types.
+    /// Computes hash codes for types.
     /// </summary>
     public static class Hasher
     {
