@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -94,6 +95,172 @@ namespace Recore.Tests
             called = false;
             either.IfRight(x => { called = true; });
             Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        [DataRow(0, "")]
+        [DataRow(1, "abc")]
+        public void Equals(int left, string right)
+        {
+            // object.Equals
+            Assert.IsTrue(
+                Equals(new Either<int, string>(left), new Either<int, string>(left)));
+
+            Assert.IsTrue(
+                Equals(new Either<int, string>(right), new Either<int, string>(right)));
+
+            Assert.IsFalse(
+                Equals(new Either<int, string>(left), Optional.Empty<string>()));
+
+            // Either.Equals
+            Assert.IsTrue(
+                new Either<int, string>(left).Equals(new Either<int, string>(left)));
+
+            Assert.IsTrue(
+                new Either<int, string>(right).Equals(new Either<int, string>(right)));
+
+            Assert.IsFalse(
+                new Either<int, string>(right).Equals(new Either<int, string>(left)));
+        }
+
+        [TestMethod]
+        public void EqualsWithNull()
+        {
+            Assert.IsFalse(
+                new Either<int, string>("abc").Equals((Either<int, string>)null));
+
+            Assert.IsFalse(
+                new Either<int, string>("abc").Equals(new Either<int, string>(null)));
+
+            Assert.IsTrue(
+                new Either<int, string>(null).Equals(new Either<int, string>(null)));
+        }
+
+        [TestMethod]
+        [DataRow(0, "")]
+        [DataRow(1, "abc")]
+        public void SwapEquals(int left, string right)
+        {
+            Assert.IsTrue(
+                Equals(new Either<int, string>(left), new Either<string, int>(left).Swap()));
+
+            Assert.IsTrue(
+                new Either<int, string>(left).Equals(new Either<string, int>(left).Swap()));
+
+            Assert.IsTrue(
+                new Either<string, int>(left).Equals(new Either<int, string>(left).Swap()));
+        }
+
+        [TestMethod]
+        [DataRow(0, "")]
+        [DataRow(1, "abc")]
+        public void EqualityOperators(int left, string right)
+        {
+            // operator==
+            Assert.IsTrue(
+                new Either<int, string>(left) == new Either<int, string>(left));
+
+            Assert.IsTrue(
+                new Either<int, string>(right) == new Either<int, string>(right));
+
+            Assert.IsFalse(
+                new Either<int, string>(left) == new Either<int, string>(right));
+
+            // operator!=
+            Assert.IsFalse(
+                new Either<int, string>(left) != new Either<int, string>(left));
+
+            Assert.IsFalse(
+                new Either<int, string>(right) != new Either<int, string>(right));
+
+            Assert.IsTrue(
+                new Either<int, string>(left) != new Either<int, string>(right));
+        }
+
+        [TestMethod]
+        public void EqualsEquivalenceRelation()
+        {
+            // Reflexive
+            var a = new Either<int, int>(left: 1);
+            Assert.AreEqual(a, a);
+
+            // Symmetric
+            var b = new Either<string, int>(1).OnLeft(x => x.Length);
+            Assert.AreNotEqual(a, b); // a is left and b is right
+
+            b = b.Swap();
+            Assert.AreEqual(a, b);
+            Assert.AreEqual(b, a);
+
+            // Transitive
+            var c = new Either<int, Uri>(1).OnRight(x => x.Port);
+            Assert.AreEqual(b, c);
+            Assert.AreEqual(a, c);
+        }
+
+        [TestMethod]
+        public new void GetHashCode()
+        {
+            Either<string, double> either = "hello";
+
+            Assert.AreEqual(either.GetHashCode(), either.GetHashCode());
+            Assert.AreEqual(either.GetHashCode(), new Either<string, Uri>("he" + "llo").GetHashCode());
+        }
+
+        [TestMethod]
+        public new void ToString()
+        {
+            var left = new Either<int, string>(-5);
+            Assert.AreEqual("-5", left.ToString());
+
+            var right = new Either<int, string>("hello");
+            Assert.AreEqual("hello", right.ToString());
+        }
+
+        [TestMethod]
+        public void Lefts()
+        {
+            var collection = new Either<string, int>[]
+            {
+                string.Empty,
+                "abc",
+                1,
+                "5",
+                23,
+                "hello world"
+            };
+
+            var lefts = new[]
+            {
+                string.Empty,
+                "abc",
+                "5",
+                "hello world"
+            };
+
+            CollectionAssert.AreEqual(lefts, collection.Lefts().ToArray());
+        }
+
+    [   TestMethod]
+        public void Rights()
+        {
+            var collection = new Either<string, int>[]
+            {
+                string.Empty,
+                "abc",
+                1,
+                "5",
+                23,
+                "hello world"
+            };
+
+            var rights = new[]
+            {
+                1,
+                23
+            };
+
+            CollectionAssert.AreEqual(rights, collection.Rights().ToArray());
         }
     }
 }

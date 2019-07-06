@@ -120,9 +120,9 @@ namespace Recore
                 x => x.ToString(),
                 () => Strings.OptionalEmptyToString);
 
-        public override bool Equals(object other)
-            => other is Optional<T>
-            && this.Equals((Optional<T>)other);
+        public override bool Equals(object obj)
+            => obj is Optional<T>
+            && this.Equals((Optional<T>)obj);
 
         public bool Equals(Optional<T> other)
         {
