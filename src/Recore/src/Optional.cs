@@ -226,20 +226,6 @@ namespace Recore
             => doubleOption.Then(x => x);
 
         /// <summary>
-        /// Converts a unary function to work with <c cref="Optional{T}">Optional</c>.
-        /// </summary>
-        public static Func<Optional<T>, Optional<TResult>> Lift<T, TResult>(Func<T, TResult> func)
-            => optional
-            => optional.OnValue(func);
-
-        /// <summary>
-        /// Converts a unary action to work with <c cref="Optional{T}">Optional</c>.
-        /// </summary>
-        public static Action<Optional<T>> Lift<T>(Action<T> action)
-            => optional
-            => optional.IfValue(action);
-
-        /// <summary>
         /// Collects the non-empty values from the sequence.
         /// </summary>
         public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source)

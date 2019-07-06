@@ -158,29 +158,6 @@ namespace Recore
     public static class Either
     {
         /// <summary>
-        /// Combines two unary functions with the same return type
-        /// into a single function taking either of their parameters.
-        /// </summary>
-        public static Func<Either<TLeft, TRight>, TResult> Switch<TLeft, TRight, TResult>(
-            Func<TLeft, TResult> leftFunc,
-            Func<TRight, TResult> rightFunc)
-            => either
-            => either.Switch(
-                leftFunc,
-                rightFunc);
-
-        /// <summary>
-        /// Combines two unary actions into a single action taking either of their parameters.
-        /// </summary>
-        public static Action<Either<TLeft, TRight>> Switch<TLeft, TRight>(
-            Action<TLeft> leftAction,
-            Action<TRight> rightAction)
-            => either
-            => either.Switch(
-                leftAction,
-                rightAction);
-
-        /// <summary>
         /// Collects all the left-side values from the sequence.
         /// </summary>
         public static IEnumerable<TLeft> Lefts<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
