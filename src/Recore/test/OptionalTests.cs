@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -243,6 +244,13 @@ namespace Recore.Tests
         }
 
         [TestMethod]
+        public new void ToString()
+        {
+            Assert.AreEqual("hello", Optional.Of("hello").ToString());
+            Assert.AreEqual("none", Optional.Empty<string>().ToString());
+        }
+
+        [TestMethod]
         [DataRow(0)]
         [DataRow(1)]
         public void Equals(int value)
@@ -325,10 +333,36 @@ namespace Recore.Tests
         }
 
         [TestMethod]
-        public new void ToString()
+        public void GetEnumerator()
         {
-            Assert.AreEqual("hello", Optional.Of("hello").ToString());
-            Assert.AreEqual("none", Optional.Empty<string>().ToString());
+            {
+                var optional = Optional.Of(123);
+                var enumerator = optional.GetEnumerator();
+
+                Assert.IsTrue(enumerator.MoveNext());
+                Assert.AreEqual(123, enumerator.Current);
+                Assert.IsFalse(enumerator.MoveNext());
+
+                var numberOfElements = 0;
+                foreach (var item in optional)
+                {
+                    Assert.AreEqual(123, item);
+                    numberOfElements++;
+                }
+
+                Assert.AreEqual(1, numberOfElements);
+            }
+            {
+                var optional = Optional.Empty<int>();
+                var enumerator = optional.GetEnumerator();
+
+                Assert.IsFalse(enumerator.MoveNext());
+
+                foreach (var item in optional)
+                {
+                    Assert.Fail();
+                }
+            }
         }
 
         [TestMethod]
@@ -353,7 +387,7 @@ namespace Recore.Tests
             Assert.AreEqual(2, CountChar((string)optional, 'l'));
 
             optional = Optional.Empty<string>();
-            Assert.ThrowsException<InvalidCastException>(() => (string)optional);
+            Assert.IsNull((string)optional);
         }
 
         [TestMethod]
@@ -373,6 +407,30 @@ namespace Recore.Tests
 
             var valueNone = new Optional<Optional<string>>(Optional.Empty<string>());
             Assert.IsFalse(valueNone.Flatten().HasValue);
+        }
+
+        [TestMethod]
+        public void NonEmpty()
+        {
+            var collection = new[]
+            {
+                "hello",
+                Optional.Empty<string>(),
+                "abc",
+                "hello world",
+                Optional.Empty<string>()
+            };
+
+            var nonempty = new[]
+            {
+                "hello",
+                "abc",
+                "hello world"
+            };
+
+            CollectionAssert.AreEqual(
+                nonempty,
+                collection.NonEmpty().ToArray());
         }
     }
 }

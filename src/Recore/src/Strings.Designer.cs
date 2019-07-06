@@ -61,15 +61,6 @@ namespace Recore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attempted to cast an empty Optional to {0}..
-        /// </summary>
-        internal static string OptionalEmptyInvalidCast {
-            get {
-                return ResourceManager.GetString("OptionalEmptyInvalidCast", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to none.
         /// </summary>
         internal static string OptionalEmptyToString {

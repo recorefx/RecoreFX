@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Recore
 {
     /// <summary>
     /// Provides type-safe access to a nullable value.
     /// </summary>
-    public readonly struct Optional<T> : IEquatable<Optional<T>>
+    public readonly struct Optional<T> : IEquatable<Optional<T>>, IEnumerable<T>
     {
         private readonly T value;
+
+        /// <summary>
+        /// Indicates whether the <c cref="Optional{T}">Optional</c> was created with a value.
+        /// </summary>
+        public bool HasValue { get; }
 
         /// <summary>
         /// Creates an <c cref="Optional{T}">Optional</c> with a value.
@@ -21,11 +29,6 @@ namespace Recore
             this.value = value;
             this.HasValue = value != null;
         }
-
-        /// <summary>
-        /// Indicates whether the <c cref="Optional{T}">Optional</c> was created with a value.
-        /// </summary>
-        public bool HasValue { get; }
 
         /// <summary>
         /// Chooses a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
@@ -138,6 +141,46 @@ namespace Recore
                 x => x.GetHashCode(),
                 () => 0);
 
+        public IEnumerator<T> GetEnumerator() => new Enumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private sealed class Enumerator : IEnumerator<T>
+        {
+            private Optional<T> target;
+            private bool hasNextValue;
+
+            public Enumerator(Optional<T> target)
+            {
+                this.target = target;
+                Reset();
+            }
+
+            public T Current { get; private set; }
+            object IEnumerator.Current => Current;
+
+            public bool MoveNext()
+            {
+                if (hasNextValue)
+                {
+                    Current = target.value;
+                    hasNextValue = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public void Reset()
+            {
+                hasNextValue = target.HasValue;
+                Current = default; // undefined
+            }
+
+            public void Dispose() { }
+        }
+
         public static bool operator==(Optional<T> lhs, Optional<T> rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(Optional<T> lhs, Optional<T> rhs) => !lhs.Equals(rhs);
@@ -145,9 +188,7 @@ namespace Recore
         public static implicit operator Optional<T>(T value) => new Optional<T>(value);
 
         public static explicit operator T(Optional<T> optional)
-            => optional.Switch(
-                x => optional.value,
-                () => throw new InvalidCastException(string.Format(Strings.OptionalEmptyInvalidCast, typeof(T))));
+            => optional.ValueOr(default);
     }
 
     /// <summary>
@@ -183,5 +224,25 @@ namespace Recore
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)
             => doubleOption.Then(x => x);
+
+        /// <summary>
+        /// Converts a unary function to work with <c cref="Optional{T}">Optional</c>.
+        /// </summary>
+        public static Func<Optional<T>, Optional<TResult>> Lift<T, TResult>(Func<T, TResult> func)
+            => optional
+            => optional.OnValue(func);
+
+        /// <summary>
+        /// Converts a unary action to work with <c cref="Optional{T}">Optional</c>.
+        /// </summary>
+        public static Action<Optional<T>> Lift<T>(Action<T> action)
+            => optional
+            => optional.IfValue(action);
+
+        /// <summary>
+        /// Collects the non-empty values from the sequence.
+        /// </summary>
+        public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source)
+            => source.SelectMany(x => x);
     }
 }
