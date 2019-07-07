@@ -1,23 +1,11 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recore.Linq
 {
-    public static partial class RecoreEnumerable
+    public static partial class Renumerable
     {
         public static IEnumerable<(int index, TSource item)> Enumerate<TSource>(this IEnumerable<TSource> source)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            int i = 0;
-            foreach (var item in source)
-            {
-                yield return (index: i, item);
-                i++;
-            }
-        }
+            => Enumerable.Range(0, int.MaxValue).Zip(source);
     }
 }

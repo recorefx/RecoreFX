@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Recore\src\Recore.csproj" />
+    <ProjectReference Include="..\..\Recore.Linq\src\Recore.Linq.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

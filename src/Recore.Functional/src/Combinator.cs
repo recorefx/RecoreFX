@@ -17,6 +17,8 @@ namespace Recore.Functional
         // B combinator (aka function composition)
         public static Func<A, C> Then<A, B, C>(this Func<A, B> f, Func<B, C> g) => a => g(f(a));
 
+        public static Func<T, T> Fluent<T>(Action<T> action) => x => { action(x); return x; };
+
         // T combinator
         public static Func<Func<A, B>, B> ApplyTo<A, B>(A a) => (Func<A, B> f) => f(a);
 

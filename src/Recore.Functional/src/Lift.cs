@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Recore.Linq;
+
 namespace Recore.Functional
 {
     public static class Lift
@@ -48,12 +50,7 @@ namespace Recore.Functional
             => enumerable.Select(func);
 
         public static Action<IEnumerable<T>> OnEnumerable<T, U>(Action<T> action)
-            => enumerable =>
-            {
-                foreach (var item in enumerable)
-                {
-                    action(item);
-                }
-            };
+            => enumerable
+            => enumerable.ForEach(action);
     }
 }
