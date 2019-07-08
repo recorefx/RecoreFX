@@ -5,7 +5,7 @@ namespace Recore.Threading.Tasks
     public static class TaskExtensions
     {
         /// <summary>
-        /// Block the current thread until the task completes.
+        /// Blocks the current thread until the task completes.
         /// </summary>
         /// <remarks>
         /// If <paramref name="task"/> is terminated by an exception, that exception
@@ -17,7 +17,7 @@ namespace Recore.Threading.Tasks
         public static void Synchronize(this Task task) => task.GetAwaiter().GetResult();
 
         /// <summary>
-        /// Block the current thread until the task completes.
+        /// Blocks the current thread until the task completes.
         /// </summary>
         /// <remarks>
         /// If <paramref name="task"/> is terminated by an exception, that exception
