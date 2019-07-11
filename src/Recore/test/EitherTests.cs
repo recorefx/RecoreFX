@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Recore.Tests
 {
-[TestClass]
+    [TestClass]
     public class EitherTests
     {
         [TestMethod]
