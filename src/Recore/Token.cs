@@ -1,5 +1,7 @@
 using System;
 
+using Recore.Properties;
+
 namespace Recore
 {
     // A non-null, non-empty string value where whitespace is not allowed.
@@ -18,14 +20,14 @@ namespace Recore
 
             if (value == string.Empty)
             {
-                throw new ArgumentException(Strings.TokenEmpty);
+                throw new ArgumentException(Resources.TokenEmpty);
             }
 
             foreach (char c in value)
             {
                 if (char.IsWhiteSpace(c))
                 {
-                    throw new ArgumentException(string.Format(Strings.TokenWhitespace, value));
+                    throw new ArgumentException(string.Format(Resources.TokenWhitespace, value));
                 }
             }
 

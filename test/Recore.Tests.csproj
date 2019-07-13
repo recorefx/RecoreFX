@@ -1,13 +1,9 @@
-<!--
-Common properties for test projects
-This requires the `Namespace` property to be set before importing.
--->
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>$(Namespace).Tests</RootNamespace>
+    <RootNamespace>Recore.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +13,7 @@ This requires the `Namespace` property to be set before importing.
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\$(Namespace).csproj" />
+    <ProjectReference Include="..\src\Recore.csproj" />
   </ItemGroup>
 
 </Project>

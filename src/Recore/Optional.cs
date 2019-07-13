@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Recore.Properties;
+
 namespace Recore
 {
     /// <summary>
@@ -118,7 +120,7 @@ namespace Recore
         public override string ToString()
             => Switch(
                 x => x.ToString(),
-                () => Strings.OptionalEmptyToString);
+                () => Resources.OptionalEmptyToString);
 
         public override bool Equals(object obj)
             => obj is Optional<T>

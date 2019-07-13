@@ -16,10 +16,10 @@ steps:
     version: '2.1.503'
   displayName: Install .NET Core SDK 2.1.503
 
-- script: cd src && dotnet build --configuration Release
+- script: dotnet build --configuration Release
   displayName: dotnet build
 
-- script: cd src && dotnet test --configuration Release --logger trx --collect "Code coverage"
+- script: dotnet test --configuration Release --logger trx --collect "Code coverage"
   displayName: dotnet test
 
 - task: PublishTestResults@2

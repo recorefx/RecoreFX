@@ -3,6 +3,8 @@
 ## Versioning
 This project uses [semantic versioning](https://semver.org/).
 
+See <https://docs.microsoft.com/dotnet/standard/library-guidance/versioning>.
+
 ## Branching strategy
 This project uses [trunk-based development](https://trunkbaseddevelopment.com/).
 Once changes are accepted in a (hopefully compact) PR,
