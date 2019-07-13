@@ -397,6 +397,16 @@ namespace Recore.Tests
         }
 
         [TestMethod]
+        public void If()
+        {
+            var success = Optional.If(int.TryParse("123", out int result), result);
+            Assert.AreEqual(123, success);
+
+            var failure = Optional.If(int.TryParse("abc", out result), result);
+            Assert.IsFalse(failure.HasValue);
+        }
+
+        [TestMethod]
         public void Flatten()
         {
             var doubleValue = new Optional<Optional<string>>("hello");

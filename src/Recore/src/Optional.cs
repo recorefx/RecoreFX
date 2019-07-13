@@ -208,6 +208,24 @@ namespace Recore
         public static Optional<T> Of<T>(T value) => new Optional<T>(value);
 
         /// <summary>
+        /// Sets an optional value if a condition is true.
+        /// </summary>
+        /// <remarks>
+        /// This method is useful for converting the TryParse pattern to an <c>Optional</c> result.
+        /// </remarks>
+        public static Optional<T> If<T>(bool condition, T value)
+        {
+            if (condition)
+            {
+                return Optional.Of(value);
+            }
+            else
+            {
+                return Optional.Empty<T>();
+            }
+        }
+
+        /// <summary>
         /// Creates an <c cref="Optional{T}">Optional</c> without a value.
         /// </summary>
         /// <remarks>
