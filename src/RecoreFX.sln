@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Collections.Generic", "Recore.Collections.Generic\src\Recore.Collections.Generic.csproj", "{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Functional", "Recore.Functional\src\Recore.Functional.csproj", "{E07C84FA-D24F-4D7D-BC80-822057D490EE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq", "Recore.Linq\src\Recore.Linq.csproj", "{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security.Cryptography", "Recore.Security.Cryptography\src\Recore.Security.Cryptography.csproj", "{CBC9FA7A-7A34-4F10-AFCD-8E3D6D48770D}"
@@ -27,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Collections.Generic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Linq.Tests", "Recore.Linq\test\Recore.Linq.Tests.csproj", "{2A27B43E-E4D2-43FC-B405-F775E3ED227A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Functional.Tests", "Recore.Functional\test\Recore.Functional.Tests.csproj", "{EF3DB5FF-5568-403A-BFEB-162E218B44A8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Security.Cryptography.Tests", "Recore.Security.Cryptography\test\Recore.Security.Cryptography.Tests.csproj", "{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Recore.Threading.Tasks.Tests", "Recore.Threading.Tasks\test\Recore.Threading.Tasks.Tests.csproj", "{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0}"
@@ -43,10 +39,6 @@ Global
 		{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BEDA294-DCCE-4CAA-B2DC-8FB6D38C549E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E07C84FA-D24F-4D7D-BC80-822057D490EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E07C84FA-D24F-4D7D-BC80-822057D490EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E07C84FA-D24F-4D7D-BC80-822057D490EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E07C84FA-D24F-4D7D-BC80-822057D490EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C7630E3-BF55-42EB-B3D7-FBA8D9964BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,10 +75,6 @@ Global
 		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A27B43E-E4D2-43FC-B405-F775E3ED227A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF3DB5FF-5568-403A-BFEB-162E218B44A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -104,7 +92,6 @@ Global
 		{52CA3CAC-E294-4D93-8D30-C6005ACAA040} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 		{08371D46-C615-4515-83B1-BBA9455778EE} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 		{2A27B43E-E4D2-43FC-B405-F775E3ED227A} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
-		{EF3DB5FF-5568-403A-BFEB-162E218B44A8} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 		{B1CABB13-7B9B-4B20-9FBF-C64ED0726D33} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 		{E1AD1E4E-ED96-468B-9FA7-2A6373514FE0} = {06E6BADC-7B3A-4F05-9294-9B0ADA0E3666}
 	EndGlobalSection
