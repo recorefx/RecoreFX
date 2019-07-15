@@ -5,6 +5,9 @@ namespace Recore.Linq
 {
     public static partial class Renumerable
     {
+        /// <summary>
+        /// Returns each element from a sequence along with its number from the beginning of the sequence, starting from zero.
+        /// </summary>
         public static IEnumerable<(int index, TSource item)> Enumerate<TSource>(this IEnumerable<TSource> source)
             => Enumerable.Range(0, int.MaxValue).Zip(source);
     }

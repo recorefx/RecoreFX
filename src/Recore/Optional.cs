@@ -76,7 +76,7 @@ namespace Recore
                 () => fallback);
 
         /// <summary>
-        /// Maps a function over the <c cref="Optional{T}">Optional</c>'s value, or propagates <c cref="Empty">Empty</c>.
+        /// Maps a function over the <c cref="Optional{T}">Optional</c>'s value, or propagates <c cref="Optional.Empty{T}">Empty</c>.
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
@@ -122,10 +122,19 @@ namespace Recore
                 x => x.ToString(),
                 () => Resources.OptionalEmptyToString);
 
+        /// <summary>
+        /// Determines whether this instance and another object,
+        /// which must also be an <c cref="Optional{T}">Optional&lt;T&gt;</c>,
+        /// have the same value.
+        /// </summary>
         public override bool Equals(object obj)
             => obj is Optional<T>
             && this.Equals((Optional<T>)obj);
 
+        /// <summary>
+        /// Determines whether this instance and another <c cref="Optional{T}">Optional&lt;T&gt;</c>
+        /// have the same value.
+        /// </summary>
         public bool Equals(Optional<T> other)
         {
             if (!this.HasValue || !other.HasValue)
@@ -138,12 +147,25 @@ namespace Recore
             }
         }
 
+        /// <summary>
+        /// Returns the hash code for the underlying type
+        /// or zero if there is no value.
+        /// </summary>
         public override int GetHashCode()
             => Switch(
                 x => x.GetHashCode(),
                 () => 0);
 
+        /// <summary>
+        /// Returns an object that either yields the underlying value once
+        /// or yields nothing if there is no value.
+        /// </summary>
         public IEnumerator<T> GetEnumerator() => new Enumerator(this);
+
+        /// <summary>
+        /// Returns an object that either yields the underlying value once
+        /// or yields nothing if there is no value.
+        /// </summary>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private sealed class Enumerator : IEnumerator<T>
@@ -183,12 +205,27 @@ namespace Recore
             public void Dispose() { }
         }
 
-        public static bool operator==(Optional<T> lhs, Optional<T> rhs) => lhs.Equals(rhs);
+        /// <summary>
+        /// Determines whether two instances of <c cref="Optional{T}">Optional&lt;T&gt;</c>
+        /// have the same value.
+        /// </summary>
+        public static bool operator ==(Optional<T> lhs, Optional<T> rhs) => lhs.Equals(rhs);
 
+        /// <summary>
+        /// Determines whether two instances of <c cref="Optional{T}">Optional&lt;T&gt;</c>
+        /// have different values.
+        /// </summary>
         public static bool operator !=(Optional<T> lhs, Optional<T> rhs) => !lhs.Equals(rhs);
 
+        /// <summary>
+        /// Converts an instance of a type to an optional value.
+        /// </summary>
         public static implicit operator Optional<T>(T value) => new Optional<T>(value);
 
+        /// <summary>
+        /// Casts this instance to its underlying value
+        /// or the default value for the underlying type.
+        /// </summary>
         public static explicit operator T(Optional<T> optional)
             => optional.ValueOr(default);
     }
@@ -239,7 +276,7 @@ namespace Recore
         public static Optional<T> Empty<T>() => new Optional<T>();
 
         /// <summary>
-        /// Converts an <c cref="Optional{Optional{T}}">Optional&lt;Optional&lt;T&gt;&gt;</c>
+        /// Converts an <c cref="Optional{T}">Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)

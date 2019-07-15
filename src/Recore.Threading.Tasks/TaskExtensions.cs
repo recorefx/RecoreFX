@@ -2,6 +2,9 @@ using System.Threading.Tasks;
 
 namespace Recore.Threading.Tasks
 {
+    /// <summary>
+    /// Provides additional methods for working with tasks.
+    /// </summary>
     public static class TaskExtensions
     {
         /// <summary>

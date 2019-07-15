@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace Recore.Collections.Generic
 {
+    /// <summary>
+    /// Provides additional methods for working with <c cref="LinkedList{T}">LinkedList</c>.
+    /// </summary>
     public static class LinkedListExtensions
     {
         /// <summary>

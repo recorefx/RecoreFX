@@ -6,35 +6,25 @@ trigger:
     exclude:
     - docs/*
 
-jobs:
-- job: Build
-  pool:
-    vmImage: vs2017-win2016
+pool:
+  vmImage: vs2017-win2016
 
-  steps:
-  # You can't `dotnet test` on a solution file correctly before 2.1.5
-  - task: DotNetCoreInstaller@0
-    inputs:
-      version: '2.1.503'
-    displayName: Install .NET Core SDK 2.1.503
+steps:
+# You can't `dotnet test` on a solution file correctly before 2.1.5
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.503'
+  displayName: Install .NET Core SDK 2.1.503
 
-  - script: dotnet build --configuration Release -p:TreatWarningsAsErrors=true
-    displayName: dotnet build
+- script: dotnet build --configuration Release
+  displayName: dotnet build
 
-  - script: dotnet test --configuration Release --logger trx --collect "Code coverage"
-    displayName: dotnet test
+- script: dotnet test --configuration Release --logger trx --collect "Code coverage"
+  displayName: dotnet test
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testRunner: VSTest
-      testResultsFiles: '**/*.trx'
-    displayName: Publish test results
-
-- job: Docs
-  pool:
-    vmImage: vs2017-win2016
-
-  steps:
-    - script: dotnet build -p:GenerateDocumentation=true -p:DocumentationFile=bin/docs/Recore.xml
-      displayName: dotnet build docs
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
+  displayName: Publish test results

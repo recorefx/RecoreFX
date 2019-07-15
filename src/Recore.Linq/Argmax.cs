@@ -55,6 +55,9 @@ namespace Recore.Linq
         //     return source.GetEnumerator().Current;
         // }
 
+        /// <summary>
+        /// Returns the maximizing argument for a function from a sequence of values.
+        /// </summary>
         public static TSource Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source == null)

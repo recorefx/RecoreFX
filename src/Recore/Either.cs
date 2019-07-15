@@ -4,15 +4,27 @@ using System.Linq;
 
 namespace Recore
 {
+    /// <summary>
+    /// Represents a value that can be one of two types.
+    /// </summary>
     public sealed class Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {
         private readonly TLeft left;
         private readonly TRight right;
 
+        /// <summary>
+        /// Indicates whether the value is of type <typeparamref name="TLeft"/>.
+        /// </summary>
         public bool IsLeft { get; }
 
+        /// <summary>
+        /// Indicates whether the value is of type <typeparamref name="TRight"/>.
+        /// </summary>
         public bool IsRight => !IsLeft;
 
+        /// <summary>
+        /// Constructs an instance of the type from a value of <typeparamref name="TLeft"/>.
+        /// </summary>
         public Either(TLeft left)
         {
             this.left = left;
@@ -20,6 +32,9 @@ namespace Recore
             IsLeft = true;
         }
 
+        /// <summary>
+        /// Constructs an instance of the type from a value of <typeparamref name="TLeft"/>.
+        /// </summary>
         public Either(TRight right)
         {
             left = default;
@@ -27,6 +42,9 @@ namespace Recore
             IsLeft = false;
         }
 
+        /// <summary>
+        /// Calls one of two functions depending on the underlying value.
+        /// </summary>
         public T Switch<T>(Func<TLeft, T> onLeft, Func<TRight, T> onRight)
         {
             if (IsLeft)
@@ -39,6 +57,9 @@ namespace Recore
             }
         }
 
+        /// <summary>
+        /// Takes one of two actions depending on the underlying value.
+        /// </summary>
         public void Switch(Action<TLeft> onLeft, Action<TRight> onRight)
         {
             if (IsLeft)
@@ -51,18 +72,26 @@ namespace Recore
             }
         }
 
+        /// <summary>
+        /// Converts <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
+        /// to <c cref="Optional{TLeft}">Optional&lt;TLeft&gt;</c>
+        /// </summary>
         public Optional<TLeft> GetLeft()
             => Switch(
                 left => new Optional<TLeft>(left),
                 right => Optional.Empty<TLeft>());
 
+        /// <summary>
+        /// Converts <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
+        /// to <c cref="Optional{TRight}">Optional&lt;TRight&gt;</c>
+        /// </summary>
         public Optional<TRight> GetRight()
             => Switch(
                 left => Optional.Empty<TRight>(),
                 right => new Optional<TRight>(right));
 
         /// <summary>
-        /// Calls a function only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TLeft</c>.
+        /// Maps a function over the <c cref="Either{TLeft, TRight}">Either</c> only if the value is an instance of <c>TLeft</c>.
         /// </summary>
         public Either<TResult, TRight> OnLeft<TResult>(Func<TLeft, TResult> onLeft)
             => Switch(
@@ -70,7 +99,7 @@ namespace Recore
                 right => new Either<TResult, TRight>(right));
 
         /// <summary>
-        /// Calls a function only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TRight</c>.
+        /// Maps a function over the <c cref="Either{TLeft, TRight}">Either</c> only if the value is an instance of <c>TRight</c>.
         /// </summary>
         public Either<TLeft, TResult> OnRight<TResult>(Func<TRight, TResult> onRight)
             => Switch(
@@ -78,7 +107,7 @@ namespace Recore
                 right => new Either<TLeft, TResult>(onRight(right)));
 
         /// <summary>
-        /// Takes an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TLeft</c>.
+        /// Takes an action only if the value is an instance of <typeparamref name="TLeft"/>.
         /// </summary>
         public void IfLeft(Action<TLeft> onLeft)
             => Switch(
@@ -86,7 +115,7 @@ namespace Recore
                 right => { });
 
         /// <summary>
-        /// Takes an action only if the <c cref="Either{TLeft, TRight}">Either</c> holds a value of <c>TRight</c>.
+        /// Takes an action only if the value is an instance of <typeparamref name="TRight"/>.
         /// </summary>
         public void IfRight(Action<TRight> onRight)
             => Switch(
@@ -102,6 +131,9 @@ namespace Recore
                 left => new Either<TRight, TLeft>(left),
                 right => new Either<TRight, TLeft>(right));
 
+        /// <summary>
+        /// Returns the string representation of the underlying value.
+        /// </summary>
         public override string ToString()
             => Switch(
                 left => left.ToString(),
@@ -121,8 +153,8 @@ namespace Recore
             && this.Equals((Either<TLeft, TRight>)obj);
 
         /// <summary>
-        /// Compares two <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
-        /// instances for equality.
+        /// Compares two instances of <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
+        /// for equality.
         /// </summary>
         /// <remarks>
         /// Equality is defined as both objects' underlying values being equal
@@ -140,15 +172,34 @@ namespace Recore
                     otherLeft => false,
                     otherRight => Equals(right, otherRight)));
 
+        /// <summary>
+        /// Returns the hash code of the underlying value.
+        /// </summary>
         public override int GetHashCode()
             => Switch(
                 left => left.GetHashCode(),
                 right => right.GetHashCode());
 
-        public static bool operator==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => Equals(lhs, rhs);
-        public static bool operator!=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !Equals(lhs, rhs);
+        /// <summary>
+        /// Determines whether two instances of <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
+        /// have the same value.
+        /// </summary>
+        public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => Equals(lhs, rhs);
 
+        /// <summary>
+        /// Determines whether two instances of <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
+        /// have the same value.
+        /// </summary>
+        public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !Equals(lhs, rhs);
+
+        /// <summary>
+        /// Converts an instance of a type to an <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>.
+        /// </summary>
         public static implicit operator Either<TLeft, TRight>(TLeft left) => new Either<TLeft, TRight>(left);
+
+        /// <summary>
+        /// Converts an instance of a type to an <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>.
+        /// </summary>
         public static implicit operator Either<TLeft, TRight>(TRight right) => new Either<TLeft, TRight>(right);
     }
 

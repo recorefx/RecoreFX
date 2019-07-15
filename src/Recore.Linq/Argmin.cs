@@ -55,6 +55,9 @@ namespace Recore.Linq
         //     return source.GetEnumerator().Current;
         // }
 
+        /// <summary>
+        /// Returns the minimizing argument for a function from a sequence of values.
+        /// </summary>
         public static TSource Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source == null)
