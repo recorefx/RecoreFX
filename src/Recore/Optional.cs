@@ -33,6 +33,16 @@ namespace Recore
         }
 
         /// <summary>
+        /// Creates an <c cref="Optional{T}">Optional</c> without a value.
+        /// </summary>
+        /// <remarks>
+        /// While an empty <c cref="Optional{T}">Optional</c> can also be created by calling the default constructor
+        /// or passing <c>null</c> to the constructor,
+        /// <c cref="Empty">Empty</c> is more expressive, making the absence of a value more obvious.
+        /// </remarks>
+        public static Optional<T> Empty => new Optional<T>();
+
+        /// <summary>
         /// Chooses a function to call depending on whether the <c cref="Optional{T}">Optional</c> has a value.
         /// </summary>
         /// <param name="onValue">Called when the <c cref="Optional{T}">Optional</c> has a value.</param>
@@ -40,6 +50,16 @@ namespace Recore
         /// <returns>Result of the function that was called.</returns>
         public U Switch<U>(Func<T, U> onValue, Func<U> onEmpty)
         {
+            if (onValue == null)
+            {
+                throw new ArgumentNullException(nameof(onValue));
+            }
+
+            if (onEmpty == null)
+            {
+                throw new ArgumentNullException(nameof(onEmpty));
+            }
+
             if (HasValue)
             {
                 return onValue(value);
@@ -57,6 +77,16 @@ namespace Recore
         /// <param name="onEmpty">Called when the <c cref="Optional{T}">Optional</c> does not have a value.</param>
         public void Switch(Action<T> onValue, Action onEmpty)
         {
+            if (onValue == null)
+            {
+                throw new ArgumentNullException(nameof(onValue));
+            }
+
+            if (onEmpty == null)
+            {
+                throw new ArgumentNullException(nameof(onEmpty));
+            }
+
             if (HasValue)
             {
                 onValue(value);
@@ -76,12 +106,12 @@ namespace Recore
                 () => fallback);
 
         /// <summary>
-        /// Maps a function over the <c cref="Optional{T}">Optional</c>'s value, or propagates <c cref="Optional.Empty{T}">Empty</c>.
+        /// Maps a function over the <c cref="Optional{T}">Optional</c>'s value, or propagates <c cref="Optional{T}.Empty">Empty</c>.
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
                 x => Optional.Of(f(x)),
-                Optional.Empty<U>);
+                () => Optional<U>.Empty);
 
         /// <summary>
         /// Takes an action only if the <c cref="Optional{T}">Optional</c> has a value.
@@ -112,7 +142,7 @@ namespace Recore
         public Optional<U> Then<U>(Func<T, Optional<U>> f)
             => Switch(
                 f,
-                Optional.Empty<U>);
+                () => Optional<U>.Empty);
 
         /// <summary>
         /// Returns the value's string representation, or a localized "none" message.
@@ -260,20 +290,9 @@ namespace Recore
             }
             else
             {
-                return Optional.Empty<T>();
+                return Optional<T>.Empty;
             }
         }
-
-        /// <summary>
-        /// Creates an <c cref="Optional{T}">Optional</c> without a value.
-        /// </summary>
-        /// <remarks>
-        /// While an empty <c cref="Optional{T}">Optional</c> can also be created by calling the default constructor
-        /// or passing <c>null</c> to the constructor,
-        /// <c cref="Empty">Empty</c> is more expressive, making the absence of a value more obvious.
-        /// It can also be passed as a delegate whereas the constructor can't be.
-        /// </remarks>
-        public static Optional<T> Empty<T>() => new Optional<T>();
 
         /// <summary>
         /// Converts an <c cref="Optional{T}">Optional&lt;Optional&lt;T&gt;&gt;</c>

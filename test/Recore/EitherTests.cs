@@ -37,6 +37,16 @@ namespace Recore.Tests
                 left => throw new Exception("Should not be called"),
                 right => right * 2);
             Assert.AreEqual(24, result);
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => either.Switch(
+                    left => throw new Exception("Should not be called"),
+                    null));
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => either.Switch(
+                    null,
+                    right => throw new Exception("Should not be called")));
         }
 
         [TestMethod]
@@ -58,6 +68,16 @@ namespace Recore.Tests
                 left => throw new Exception("Should not be called"),
                 right => { called = true; });
             Assert.IsTrue(called);
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => either.Switch(
+                    left => throw new Exception("Should not be called"),
+                    null));
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => either.Switch(
+                    null,
+                    right => throw new Exception("Should not be called")));
         }
 
         [TestMethod]
@@ -65,10 +85,10 @@ namespace Recore.Tests
         {
             var left = new Either<int, string>(-5);
             Assert.AreEqual(-5, left.GetLeft());
-            Assert.AreEqual(Optional.Empty<string>(), left.GetRight());
+            Assert.AreEqual(Optional<string>.Empty, left.GetRight());
 
             var right = new Either<int, string>("hello");
-            Assert.AreEqual(Optional.Empty<int>(), right.GetLeft());
+            Assert.AreEqual(Optional<int>.Empty, right.GetLeft());
             Assert.AreEqual("hello", right.GetRight());
         }
 
@@ -110,7 +130,7 @@ namespace Recore.Tests
                 Equals(new Either<int, string>(right), new Either<int, string>(right)));
 
             Assert.IsFalse(
-                Equals(new Either<int, string>(left), Optional.Empty<string>()));
+                Equals(new Either<int, string>(left), Optional<string>.Empty));
 
             // Either.Equals
             Assert.IsTrue(

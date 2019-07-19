@@ -47,6 +47,16 @@ namespace Recore
         /// </summary>
         public T Switch<T>(Func<TLeft, T> onLeft, Func<TRight, T> onRight)
         {
+            if (onLeft == null)
+            {
+                throw new ArgumentNullException(nameof(onLeft));
+            }
+
+            if (onRight == null)
+            {
+                throw new ArgumentNullException(nameof(onLeft));
+            }
+
             if (IsLeft)
             {
                 return onLeft(left);
@@ -62,6 +72,16 @@ namespace Recore
         /// </summary>
         public void Switch(Action<TLeft> onLeft, Action<TRight> onRight)
         {
+            if (onLeft == null)
+            {
+                throw new ArgumentNullException(nameof(onLeft));
+            }
+
+            if (onRight == null)
+            {
+                throw new ArgumentNullException(nameof(onLeft));
+            }
+
             if (IsLeft)
             {
                 onLeft(left);
@@ -78,8 +98,8 @@ namespace Recore
         /// </summary>
         public Optional<TLeft> GetLeft()
             => Switch(
-                left => new Optional<TLeft>(left),
-                right => Optional.Empty<TLeft>());
+                Optional.Of,
+                right => Optional<TLeft>.Empty);
 
         /// <summary>
         /// Converts <c cref="Either{TLeft, TRight}">Either&lt;TLeft, TRight&gt;</c>
@@ -87,8 +107,8 @@ namespace Recore
         /// </summary>
         public Optional<TRight> GetRight()
             => Switch(
-                left => Optional.Empty<TRight>(),
-                right => new Optional<TRight>(right));
+                left => Optional<TRight>.Empty,
+                Optional.Of);
 
         /// <summary>
         /// Maps a function over the <c cref="Either{TLeft, TRight}">Either</c> only if the value is an instance of <c>TLeft</c>.

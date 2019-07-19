@@ -34,10 +34,10 @@ namespace Recore.Tests
         [TestMethod]
         public void Empty()
         {
-            var referenceOptional = Optional.Empty<object>();
+            var referenceOptional = Optional<object>.Empty;
             Assert.IsFalse(referenceOptional.HasValue);
 
-            var valueOptional = Optional.Empty<int>();
+            var valueOptional = Optional<int>.Empty;
             Assert.IsFalse(valueOptional.HasValue);
         }
 
@@ -53,11 +53,21 @@ namespace Recore.Tests
                 () => throw new Exception("Should not be called"));
             Assert.AreEqual(1, result);
 
-            optional = Optional.Empty<int>();
+            optional = Optional<int>.Empty;
             result = optional.Switch(
                 x => throw new Exception("Should not be called"),
                 () => 10);
             Assert.AreEqual(10, result);
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => optional.Switch(
+                    null,
+                    () => throw new Exception("Should not be called")));
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => optional.Switch(
+                    x => throw new Exception("Should not be called"),
+                    null));
         }
 
         [TestMethod]
@@ -73,12 +83,22 @@ namespace Recore.Tests
                 () => throw new Exception("Should not be called"));
             Assert.IsTrue(called);
 
-            optional = Optional.Empty<int>();
+            optional = Optional<int>.Empty;
             called = false;
             optional.Switch(
                 x => throw new Exception("Should not be called"),
                 () => { called = true; });
             Assert.IsTrue(called);
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => optional.Switch(
+                    null,
+                    () => throw new Exception("Should not be called")));
+
+            Assert.ThrowsException<ArgumentNullException>(
+                () => optional.Switch(
+                    x => throw new Exception("Should not be called"),
+                    null));
         }
 
         [TestMethod]
@@ -102,7 +122,7 @@ namespace Recore.Tests
             optional = 10;
             Assert.AreEqual(100, optional.OnValue(Square));
 
-            optional = Optional.Empty<int>();
+            optional = Optional<int>.Empty;
             Assert.IsFalse(optional.OnValue(Square).HasValue);
 
             optional = 100;
@@ -124,7 +144,7 @@ namespace Recore.Tests
             optional.IfEmpty(() => { called = true; });
             Assert.IsFalse(called);
 
-            optional = Optional.Empty<int>();
+            optional = Optional<int>.Empty;
             called = false;
             optional.IfValue(x => { called = true; });
             Assert.IsFalse(called);
@@ -144,7 +164,7 @@ namespace Recore.Tests
 
             Assert.AreEqual("hello world", referenceOptional.OnValue(Id));
             Assert.AreEqual(123, valueOptional.OnValue(Id));
-            Assert.AreEqual(Optional.Empty<object>(), Optional.Empty<object>().OnValue(Id));
+            Assert.AreEqual(Optional<object>.Empty, Optional<object>.Empty.OnValue(Id));
 
             // Composition
             int Square(int n) => n * n;
@@ -155,8 +175,8 @@ namespace Recore.Tests
                 new Optional<int>(10).OnValue(x => PlusTwo(Square(x))));
 
             Assert.AreEqual(
-                Optional.Empty<int>().OnValue(Square).OnValue(PlusTwo),
-                Optional.Empty<int>().OnValue(x => PlusTwo(Square(x))));
+                Optional<int>.Empty.OnValue(Square).OnValue(PlusTwo),
+                Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
         [TestMethod]
@@ -167,7 +187,7 @@ namespace Recore.Tests
                 var result = str.IndexOf(' ');
                 if (result == -1)
                 {
-                    return Optional.Empty<int>();
+                    return Optional<int>.Empty;
                 }
                 else
                 {
@@ -186,7 +206,7 @@ namespace Recore.Tests
             actual = optionalString.Then(FindFirstSpace);
             Assert.IsFalse(actual.HasValue);
 
-            optionalString = Optional.Empty<string>();
+            optionalString = Optional<string>.Empty;
             actual = optionalString.Then(FindFirstSpace);
             Assert.IsFalse(actual.HasValue);
         }
@@ -198,7 +218,7 @@ namespace Recore.Tests
             {
                 if (string.IsNullOrEmpty(str))
                 {
-                    return Optional.Empty<string>();
+                    return Optional<string>.Empty;
                 }
                 else
                 {
@@ -215,7 +235,7 @@ namespace Recore.Tests
             }
 
             // Right identity
-            foreach (var optional in new[] { "hello", null, Optional.Empty<string>() })
+            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
                 Assert.AreEqual(
                     optional,
@@ -227,7 +247,7 @@ namespace Recore.Tests
             {
                 if (str == null)
                 {
-                    return Optional.Empty<int>();
+                    return Optional<int>.Empty;
                 }
                 else
                 {
@@ -235,7 +255,7 @@ namespace Recore.Tests
                 }
             }
 
-            foreach (var optional in new[] { "hello", null, Optional.Empty<string>() })
+            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
                 Assert.AreEqual(
                     optional.Then(StringToOption).Then(NullsafeLength),
@@ -247,7 +267,7 @@ namespace Recore.Tests
         public new void ToString()
         {
             Assert.AreEqual("hello", Optional.Of("hello").ToString());
-            Assert.AreEqual("none", Optional.Empty<string>().ToString());
+            Assert.AreEqual("none", Optional<string>.Empty.ToString());
         }
 
         [TestMethod]
@@ -263,17 +283,17 @@ namespace Recore.Tests
                 Equals(new Optional<string>(), new Optional<string>()));
 
             Assert.IsFalse(
-                Equals(Optional.Of(value), Optional.Empty<string>()));
+                Equals(Optional.Of(value), Optional<string>.Empty));
 
             // Optional.Equals
             Assert.IsTrue(
                 Optional.Of(value).Equals(Optional.Of(value)));
 
             Assert.IsTrue(
-                Optional.Empty<int>().Equals(Optional.Empty<int>()));
+                Optional<int>.Empty.Equals(Optional<int>.Empty));
 
             Assert.IsFalse(
-                Optional.Empty<int>().Equals(Optional.Of(value)));
+                Optional<int>.Empty.Equals(Optional.Of(value)));
         }
 
         [TestMethod]
@@ -289,7 +309,7 @@ namespace Recore.Tests
                 new Optional<int>() == new Optional<int>());
 
             Assert.IsFalse(
-                Optional.Of(0) == Optional.Empty<int>());
+                Optional.Of(0) == Optional<int>.Empty);
 
             // operator!=
             Assert.IsFalse(
@@ -299,7 +319,7 @@ namespace Recore.Tests
                 new Optional<int>() != new Optional<int>());
 
             Assert.IsTrue(
-                Optional.Of(value) != Optional.Empty<int>());
+                Optional.Of(value) != Optional<int>.Empty);
         }
 
         [TestMethod]
@@ -353,7 +373,7 @@ namespace Recore.Tests
                 Assert.AreEqual(1, numberOfElements);
             }
             {
-                var optional = Optional.Empty<int>();
+                var optional = Optional<int>.Empty;
                 var enumerator = optional.GetEnumerator();
 
                 Assert.IsFalse(enumerator.MoveNext());
@@ -386,7 +406,7 @@ namespace Recore.Tests
             optional = "hello";
             Assert.AreEqual(2, CountChar((string)optional, 'l'));
 
-            optional = Optional.Empty<string>();
+            optional = Optional<string>.Empty;
             Assert.IsNull((string)optional);
         }
 
@@ -415,7 +435,7 @@ namespace Recore.Tests
             var doubleNone = new Optional<Optional<string>>();
             Assert.IsFalse(doubleNone.Flatten().HasValue);
 
-            var valueNone = new Optional<Optional<string>>(Optional.Empty<string>());
+            var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
             Assert.IsFalse(valueNone.Flatten().HasValue);
         }
 
@@ -425,10 +445,10 @@ namespace Recore.Tests
             var collection = new[]
             {
                 "hello",
-                Optional.Empty<string>(),
+                Optional<string>.Empty,
                 "abc",
                 "hello world",
-                Optional.Empty<string>()
+                Optional<string>.Empty
             };
 
             var nonempty = new[]

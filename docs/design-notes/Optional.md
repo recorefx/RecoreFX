@@ -22,9 +22,11 @@ Without this constraint, you have to maintain additional state to know whether t
     - `None` is Python's concept for null, which I think sounds natural
     - `Empty` matches Java's `optional`
     - `Empty` matches `string.Empty`, `Array.Empty<T>()`, and `Enumerable.Empty<T>()`
-    - Why is `Empty` a method? Why doesn't it return a single instance?
+    - Should `Empty` be a property or method?
       - Since `Optional<T>` is a value type, you can't have a single instance.
-      -  While `string.Empty` is a property, `Array.Empty<T>()` and `Enumerable.Empty<T>()` are extensions because properties can't be generic. While `Optional<T>.Empty` could be a property, `Optional.Empty<T>()` complements `Optional.Of<T>()` and hints that an allocation is happening. Also, you can pass the method as a delegate.
+      -  While `string.Empty` is a property, `Array.Empty<T>()` and `Enumerable.Empty<T>()` are extensions because properties can't be generic.
+      - `Optional.Empty<T>()` complements `Optional.Of<T>()` and hints that a new object is being created. Also, you can pass the method as a delegate.
+      - On the other hand, `Span<T>.Empty` is a property and most closely matches this case.
       - C#'s type inference is not strong enough to infer `T` from the return type alone, but perhaps one day it will be.
     - `Empty` consolidates concepts.  When talking about optionals in prose, it's more natual to say "empty optional" than "none optional."
     - I considered having an `EmptyType` with a single instance that was implicitly convertible to `Optional<T>` for any `T`. This would function like `null` for `Optional` and follows `nullopt` / `nullopt_t` from C++.  However, I'm leaving it out for the following reasons:
