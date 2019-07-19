@@ -30,7 +30,7 @@ namespace Recore.Security.Cryptography
         /// this method should not be used
         /// as it will leak that information in a timing attack.
         /// </remarks>
-        public static bool SafeEquals(byte[] lhs, byte[] rhs)
+        public static bool TimeInvariantEquals(byte[] lhs, byte[] rhs)
         {
             if (lhs == null)
             {
