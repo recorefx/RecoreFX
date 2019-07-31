@@ -87,6 +87,19 @@ namespace Recore
             => either.IfRight(onError);
 
         /// <summary>
+        /// Chains another <c cref="Result{TValue, TError}">Result</c>-producing operation from another.
+        /// </summary>
+        /// <remarks>
+        /// This is a monad bind operation.
+        /// Conceptually, it is the same as passing <paramref name="f"/> to <c cref="OnValue{TResult}(Func{TValue, TResult})">OnValue</c>
+        /// and then "flattening" the result.
+        /// </remarks>
+        public Result<TResult, TError> Then<TResult>(Func<TValue, Result<TResult, TError>> f)
+            => Switch(
+                f,
+                Result.Failure<TResult, TError>);
+
+        /// <summary>
         /// Returns the string representation of the underlying value or error.
         /// </summary>
         public override string ToString()
@@ -150,6 +163,25 @@ namespace Recore
     /// </summary>
     public static class Result
     {
+        /// <summary>
+        /// Creates a successful result.
+        /// </summary>
+        public static Result<TValue, TError> Success<TValue, TError>(TValue value)
+            => new Result<TValue, TError>(value);
+
+        /// <summary>
+        /// Creates a failed result.
+        /// </summary>
+        public static Result<TValue, TError> Failure<TValue, TError>(TError error)
+            => new Result<TValue, TError>(error);
+
+        /// <summary>
+        /// Converts a <c cref="Result{TValue, TError}">Result&lt;Result&lt;TValue, TError&gt;, TError&gt;</c>
+        /// to a <c cref="Result{TValue, TError}">Result&lt;TValue, TError&gt;</c>.
+        /// </summary>
+        public static Result<TValue, TError> Flatten<TValue, TError>(this Result<Result<TValue, TError>, TError> resultResult)
+            => resultResult.Then(x => x);
+
         /// <summary>
         /// Collects all the values of successful results from the sequence.
         /// </summary>
