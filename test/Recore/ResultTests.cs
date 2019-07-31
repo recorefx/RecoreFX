@@ -50,32 +50,50 @@ namespace Recore.Tests
         [TestMethod]
         public void SwitchAction()
         {
-            Result<string, int> Result;
+            Result<string, int> result;
             bool called;
 
-            Result = "hello";
+            result = "hello";
             called = false;
-            Result.Switch(
+            result.Switch(
                 value => { called = true; },
                 error => throw new Exception("Should not be called"));
             Assert.IsTrue(called);
 
-            Result = 12;
+            result = 12;
             called = false;
-            Result.Switch(
+            result.Switch(
                 value => throw new Exception("Should not be called"),
                 error => { called = true; });
             Assert.IsTrue(called);
 
             Assert.ThrowsException<ArgumentNullException>(
-                () => Result.Switch(
+                () => result.Switch(
                     value => throw new Exception("Should not be called"),
                     null));
 
             Assert.ThrowsException<ArgumentNullException>(
-                () => Result.Switch(
+                () => result.Switch(
                     null,
                     error => throw new Exception("Should not be called")));
+        }
+
+        [TestMethod]
+        public void SwitchThrow()
+        {
+            Result<int, Exception> result;
+
+            result = 1;
+            var actual = result.Switch(
+                value => value,
+                error => throw error);
+            Assert.AreEqual(1, actual);
+
+            result = new DivideByZeroException();
+            Assert.ThrowsException<DivideByZeroException>(
+                () => result.Switch(
+                    value => value,
+                    error => throw error));
         }
 
         [TestMethod]
@@ -116,32 +134,59 @@ namespace Recore.Tests
         }
 
         [TestMethod]
+        public void Then()
+        {
+            Result<int, Exception> LengthOfString(string str)
+            {
+                if (str == null)
+                {
+                    return new ArgumentNullException();
+                }
+                else
+                {
+                    return str.Length;
+                }
+            }
+
+            Result<string, Exception> resultString;
+            Result<int, Exception> actual;
+
+            resultString = "hello world";
+            actual = resultString.Then(LengthOfString);
+            Assert.AreEqual(11, actual);
+
+            resultString = null;
+            actual = resultString.Then(LengthOfString);
+            Assert.IsFalse(actual.IsSuccessful);
+        }
+
+        [TestMethod]
         [DataRow(0, "")]
         [DataRow(1, "abc")]
-        public void Equals(int left, string right)
+        public void Equals(int value, string error)
         {
             // object.Equals
             Assert.IsTrue(
-                Equals(new Result<int, string>(left), new Result<int, string>(left)));
+                Equals(new Result<int, string>(value), new Result<int, string>(value)));
 
             Assert.IsTrue(
-                Equals(new Result<int, string>(right), new Result<int, string>(right)));
+                Equals(new Result<int, string>(error), new Result<int, string>(error)));
 
             Assert.IsFalse(
-                Equals(new Result<int, string>(left), Optional<string>.Empty));
+                Equals(new Result<int, string>(value), Optional<string>.Empty));
 
             Assert.IsFalse(
                 Equals(Result.Success<int, int>(1), Result.Failure<int, int>(1)));
 
             // Result.Equals
             Assert.IsTrue(
-                new Result<int, string>(left).Equals(new Result<int, string>(left)));
+                new Result<int, string>(value).Equals(new Result<int, string>(value)));
 
             Assert.IsTrue(
-                new Result<int, string>(right).Equals(new Result<int, string>(right)));
+                new Result<int, string>(error).Equals(new Result<int, string>(error)));
 
             Assert.IsFalse(
-                new Result<int, string>(right).Equals(new Result<int, string>(left)));
+                new Result<int, string>(error).Equals(new Result<int, string>(value)));
         }
 
         [TestMethod]
@@ -160,27 +205,45 @@ namespace Recore.Tests
         [TestMethod]
         [DataRow(0, "")]
         [DataRow(1, "abc")]
-        public void EqualityOperators(int left, string right)
+        public void EqualityOperators(int value, string error)
         {
             // operator==
             Assert.IsTrue(
-                new Result<int, string>(left) == new Result<int, string>(left));
+                new Result<int, string>(value) == new Result<int, string>(value));
 
             Assert.IsTrue(
-                new Result<int, string>(right) == new Result<int, string>(right));
+                new Result<int, string>(error) == new Result<int, string>(error));
 
             Assert.IsFalse(
-                new Result<int, string>(left) == new Result<int, string>(right));
+                new Result<int, string>(value) == new Result<int, string>(error));
 
             // operator!=
             Assert.IsFalse(
-                new Result<int, string>(left) != new Result<int, string>(left));
+                new Result<int, string>(value) != new Result<int, string>(value));
 
             Assert.IsFalse(
-                new Result<int, string>(right) != new Result<int, string>(right));
+                new Result<int, string>(error) != new Result<int, string>(error));
 
             Assert.IsTrue(
-                new Result<int, string>(left) != new Result<int, string>(right));
+                new Result<int, string>(value) != new Result<int, string>(error));
+        }
+
+        [TestMethod]
+        public void EqualsEquivalenceRelation()
+        {
+            // Reflexive
+            Result<int, Exception> a = 1;
+            Assert.AreEqual(a, a);
+
+            // Symmetric
+            Result<int, Exception> b = 1;
+            Assert.AreEqual(a, b);
+            Assert.AreEqual(b, a);
+
+            // Transitive
+            Result<int, Exception> c = 1;
+            Assert.AreEqual(b, c);
+            Assert.AreEqual(a, c);
         }
 
         [TestMethod]
@@ -200,6 +263,16 @@ namespace Recore.Tests
 
             var failure = Result.Failure<int, string>("hello");
             Assert.AreEqual("hello", failure.ToString());
+        }
+
+        [TestMethod]
+        public void Flatten()
+        {
+            var doubleValue = new Result<Result<string, Exception>, Exception>("hello");
+            Assert.AreEqual("hello", doubleValue.Flatten());
+
+            var valueOfError = new Result<Result<string, Exception>, Exception>(new Exception());
+            Assert.IsFalse(valueOfError.Flatten().IsSuccessful);
         }
 
         [TestMethod]
