@@ -148,12 +148,6 @@ namespace Recore.Tests
         {
             Assert.IsFalse(
                 new Either<int, string>("abc").Equals((Either<int, string>)null));
-
-            Assert.IsFalse(
-                new Either<int, string>("abc").Equals(new Either<int, string>(null)));
-
-            Assert.IsTrue(
-                new Either<int, string>(null).Equals(new Either<int, string>(null)));
         }
 
         [TestMethod]

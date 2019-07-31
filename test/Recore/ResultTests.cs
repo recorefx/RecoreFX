@@ -138,9 +138,9 @@ namespace Recore.Tests
         {
             Result<int, Exception> LengthOfString(string str)
             {
-                if (str == null)
+                if (str == string.Empty)
                 {
-                    return new ArgumentNullException();
+                    return new DivideByZeroException();
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace Recore.Tests
             actual = resultString.Then(LengthOfString);
             Assert.AreEqual(11, actual);
 
-            resultString = null;
+            resultString = string.Empty;
             actual = resultString.Then(LengthOfString);
             Assert.IsFalse(actual.IsSuccessful);
         }
@@ -194,12 +194,6 @@ namespace Recore.Tests
         {
             Assert.IsFalse(
                 new Result<int, string>("abc").Equals((Result<int, string>)null));
-
-            Assert.IsFalse(
-                new Result<int, string>("abc").Equals(new Result<int, string>(null)));
-
-            Assert.IsTrue(
-                new Result<int, string>(null).Equals(new Result<int, string>(null)));
         }
 
         [TestMethod]

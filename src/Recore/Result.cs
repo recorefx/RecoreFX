@@ -21,6 +21,11 @@ namespace Recore
         /// </summary>
         public Result(TValue value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             either = value;
         }
 
@@ -29,6 +34,11 @@ namespace Recore
         /// </summary>
         public Result(TError error)
         {
+            if (error == null)
+            {
+                throw new ArgumentNullException(nameof(error));
+            }
+
             either = error;
         }
 

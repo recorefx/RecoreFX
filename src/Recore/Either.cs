@@ -27,6 +27,11 @@ namespace Recore
         /// </summary>
         public Either(TLeft left)
         {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
             this.left = left;
             right = default;
             IsLeft = true;
@@ -37,6 +42,11 @@ namespace Recore
         /// </summary>
         public Either(TRight right)
         {
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
             left = default;
             this.right = right;
             IsLeft = false;
