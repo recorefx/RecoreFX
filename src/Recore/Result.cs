@@ -63,16 +63,16 @@ namespace Recore
         /// </summary>
         public Result<TResult, TError> OnValue<TResult>(Func<TValue, TResult> onValue)
             => Switch(
-                value => new Result<TResult, TError>(onValue(value)),
-                error => new Result<TResult, TError>(error));
+                value => Result.Success<TResult, TError>(onValue(value)),
+                Result.Failure<TResult, TError>);
 
         /// <summary>
         /// Maps a function over the <c cref="Result{TValue, TError}">Result</c> only if the result is failed.
         /// </summary>
         public Result<TValue, TResult> OnError<TResult>(Func<TError, TResult> onError)
             => Switch(
-                value => new Result<TValue, TResult>(value),
-                error => new Result<TValue, TResult>(onError(error)));
+                Result.Success<TValue, TResult>,
+                error => Result.Failure<TValue, TResult>(onError(error)));
 
         /// <summary>
         /// Takes an action only if the result is successful.
