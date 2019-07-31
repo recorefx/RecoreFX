@@ -79,7 +79,7 @@ namespace Recore.Tests
         }
 
         [TestMethod]
-        public void GetLeftGetRight()
+        public void GetValueGetError()
         {
             var success = Result.Success<int, string>(-5);
             Assert.AreEqual(-5, success.GetValue());
