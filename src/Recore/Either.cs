@@ -33,7 +33,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Constructs an instance of the type from a value of <typeparamref name="TLeft"/>.
+        /// Constructs an instance of the type from a value of <typeparamref name="TRight"/>.
         /// </summary>
         public Either(TRight right)
         {
