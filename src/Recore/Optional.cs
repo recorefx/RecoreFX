@@ -298,8 +298,8 @@ namespace Recore
         /// Converts an <c cref="Optional{T}">Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
         /// </summary>
-        public static Optional<T> Flatten<T>(this Optional<Optional<T>> doubleOption)
-            => doubleOption.Then(x => x);
+        public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional)
+            => optionalOptional.Then(x => x);
 
         /// <summary>
         /// Collects the non-empty values from the sequence.
