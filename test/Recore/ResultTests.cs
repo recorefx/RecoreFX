@@ -260,6 +260,55 @@ namespace Recore.Tests
         }
 
         [TestMethod]
+        public void TryCatch()
+        {
+            var success = Result
+                .Try(() => 1)
+                .Catch<Exception>();
+
+            Assert.AreEqual(1, success);
+
+            // Avoid "divide by constant zero" compiler error
+            int zero = 0;
+
+            var failure = Result
+                .Try<double>(() => 1 / zero) // throws DivideByZeroException
+                .Catch<DivideByZeroException>();
+
+            Assert.IsFalse(failure.IsSuccessful);
+
+            Assert.ThrowsException<ArgumentException>(
+                () => Result
+                    .Try<double>(() => throw new ArgumentException())
+                    .Catch<DivideByZeroException>());
+        }
+
+        [TestMethod]
+        public void TryCatchFilter()
+        {
+            var success = Result
+                .Try(() => 1)
+                .Catch<Exception>(e => true);
+
+            Assert.AreEqual(1, success);
+
+            var failure = Result
+                .Try<int>(() =>
+                {
+                    var array = new int[0];
+                    return array[1]; // throws IndexOutOfRangeException
+                })
+                .Catch<Exception>(e => e is ArgumentNullException || e is IndexOutOfRangeException);
+
+            Assert.IsFalse(failure.IsSuccessful);
+
+            Assert.ThrowsException<ArgumentException>(
+                () => Result
+                    .Try<int>(() => throw new ArgumentException())
+                    .Catch<Exception>(e => e is ArgumentNullException || e is ArgumentOutOfRangeException));
+        }
+
+        [TestMethod]
         public void Flatten()
         {
             var doubleValue = new Result<Result<string, Exception>, Exception>("hello");

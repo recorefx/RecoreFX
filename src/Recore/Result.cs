@@ -186,6 +186,62 @@ namespace Recore
             => new Result<TValue, TError>(error);
 
         /// <summary>
+        /// Wraps a function to be executed and converted to <c>Result</c>.
+        /// </summary>
+        public sealed class Catcher<TValue>
+        {
+            private readonly Func<TValue> func;
+
+            internal Catcher(Func<TValue> func)
+            {
+                this.func = func;
+            }
+
+            /// <summary>
+            /// Executes the stored function and catches exceptions of the given type.
+            /// </summary>
+            public Result<TValue, TException> Catch<TException>() where TException : Exception
+            {
+                try
+                {
+                    return func();
+                }
+                catch (TException e)
+                {
+                    return e;
+                }
+            }
+
+            /// <summary>
+            /// Executes the stored function and catches exceptions of the given type matching the given predicate.
+            /// </summary>
+            public Result<TValue, TException> Catch<TException>(Func<TException, bool> predicate = null) where TException : Exception
+            {
+                try
+                {
+                    return func();
+                }
+                catch (TException e) when (predicate(e))
+                {
+                    return e;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Suspends a function to be executed by <c cref="Catcher{TValue}.Catch{TException}()">Catcher&lt;TValue&gt;.Catch</c>.
+        /// </summary>
+        public static Catcher<TValue> Try<TValue>(Func<TValue> func)
+        {
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            return new Catcher<TValue>(func);
+        }
+
+        /// <summary>
         /// Converts a <c cref="Result{TValue, TError}">Result&lt;Result&lt;TValue, TError&gt;, TError&gt;</c>
         /// to a <c cref="Result{TValue, TError}">Result&lt;TValue, TError&gt;</c>.
         /// </summary>
