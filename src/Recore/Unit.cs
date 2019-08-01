@@ -30,7 +30,7 @@ namespace Recore
         public override bool Equals(object obj) => obj is Unit;
 
         /// <summary>
-        /// Two unit instance are always equal.
+        /// Two unit instances are always equal.
         /// </summary>
         public bool Equals(Unit other) => true;
 
@@ -43,5 +43,15 @@ namespace Recore
         /// Returns a string representation of the unit value.
         /// </summary>
         public override string ToString() => "()";
+
+        /// <summary>
+        /// Two unit instances are always equal.
+        /// </summary>
+        public static bool operator ==(Unit lhs, Unit rhs) => true;
+
+        /// <summary>
+        /// Two unit instances are always equal.
+        /// </summary>
+        public static bool operator !=(Unit lhs, Unit rhs) => false;
     }
 }
