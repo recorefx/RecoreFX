@@ -9,21 +9,12 @@ namespace Recore.Linq.Tests
     [TestClass]
     public class EnumerateTests
     {
-        /// <summary>
-        /// A method that uses <c>yield return</c> won't evaluate its body until its result is enumerated.
-        /// </summary>
-        private static void ForceExecution<T>(Func<IEnumerable<T>> generator)
-        {
-            foreach (var x in generator())
-            {
-            }
-        }
-
         [TestMethod]
         public void ThrowsOnNull()
         {
             IEnumerable<object> nullEnumerable = null;
-            Assert.ThrowsException<ArgumentNullException>(() => ForceExecution(nullEnumerable.Enumerate));
+            Assert.ThrowsException<ArgumentNullException>(
+                () => TestHelpers.ForceExecution(nullEnumerable.Enumerate));
         }
 
         [TestMethod]
