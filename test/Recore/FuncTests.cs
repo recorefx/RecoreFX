@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class FuncTests
     {
-        [TestMethod]
+        [Fact]
         public void Invoke()
         {
             string name = null;
@@ -21,7 +20,7 @@ namespace Recore.Tests
                 }
             });
 
-            Assert.AreEqual(-1, result);
+            Assert.Equal(-1, result);
         }
     }
 }

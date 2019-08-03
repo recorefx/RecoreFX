@@ -2,29 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class EnumerateTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
             IEnumerable<object> nullEnumerable = null;
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => TestHelpers.ForceExecution(nullEnumerable.Enumerate));
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyEnumerable()
         {
             var result = Enumerable.Empty<object>().Enumerate();
-            Assert.IsFalse(result.Any());
+            Assert.False(result.Any());
         }
 
-        [TestMethod]
+        [Fact]
         public void AddsIndexToElements()
         {
             var enumerable = new[]
@@ -44,7 +43,7 @@ namespace Recore.Linq.Tests
             };
 
             var result = enumerable.Enumerate();
-            CollectionAssert.AreEqual(expected, result.ToList());
+            Assert.Equal(expected, result.ToList());
         }
     }
 }

@@ -1,13 +1,12 @@
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class ZipTupleTests
     {
-        [TestMethod]
+        [Fact]
         public void ZipSameLength()
         {
             var collection1 = new[] { "abc", string.Empty, "hello world" };
@@ -20,20 +19,20 @@ namespace Recore.Linq.Tests
                 ("hello world", 3)
             };
 
-            CollectionAssert.AreEqual(zipped, collection1.Zip(collection2).ToArray());
+            Assert.Equal(zipped, collection1.Zip(collection2).ToArray());
         }
 
-        [TestMethod]
+        [Fact]
         public void ZipDifferentLength()
         {
             var empty = Enumerable.Empty<string>();
             var collection = new[] { 1, 2, 3 };
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 Enumerable.Empty<(string, int)>().ToArray(),
                 empty.Zip(collection).ToArray());
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 Enumerable.Empty<(int, string)>().ToArray(),
                 collection.Zip(empty).ToArray());
         }

@@ -2,25 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class ProductTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
             IEnumerable<object> nullEnumerable = null;
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => TestHelpers.ForceExecution(() => nullEnumerable.Product(new[] { 0 })));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => TestHelpers.ForceExecution(() => new[] { 0 }.Product(nullEnumerable)));
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductSingleton()
         {
             var collection = new[] { 0 };
@@ -30,10 +29,10 @@ namespace Recore.Linq.Tests
                 (0, 0)
             };
 
-            CollectionAssert.AreEqual(result, collection.Product(collection).ToArray());
+            Assert.Equal(result, collection.Product(collection).ToArray());
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductSameLength()
         {
             var collection1 = new[] { "abc", string.Empty, "hello world" };
@@ -52,10 +51,10 @@ namespace Recore.Linq.Tests
                 ("hello world", 3)
             };
 
-            CollectionAssert.AreEqual(result, collection1.Product(collection2).ToArray());
+            Assert.Equal(result, collection1.Product(collection2).ToArray());
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductDifferentLength()
         {
             var collection1 = new[] { "abc" };
@@ -68,7 +67,7 @@ namespace Recore.Linq.Tests
                 ("abc", 3)
             };
 
-            CollectionAssert.AreEqual(result12, collection1.Product(collection2).ToArray());
+            Assert.Equal(result12, collection1.Product(collection2).ToArray());
 
             var result21 = new[]
             {
@@ -77,25 +76,25 @@ namespace Recore.Linq.Tests
                 (3, "abc")
             };
 
-            CollectionAssert.AreEqual(result21, collection2.Product(collection1).ToArray());
+            Assert.Equal(result21, collection2.Product(collection1).ToArray());
         }
 
-        [TestMethod]
+        [Fact]
         public void ProductEmpty()
         {
             var empty = Enumerable.Empty<string>();
             var collection = new[] { 1, 2, 3 };
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 Enumerable.Empty<(string, int)>().ToArray(),
                 empty.Product(collection).ToArray());
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 Enumerable.Empty<(int, string)>().ToArray(),
                 collection.Product(empty).ToArray());
 
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 Enumerable.Empty<(string, string)>().ToArray(),
                 empty.Product(empty).ToArray());
         }

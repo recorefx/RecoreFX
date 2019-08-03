@@ -1,11 +1,10 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class UnitTests
     {
-        [TestMethod]
+        [Fact]
         public void Close()
         {
             bool called = false;
@@ -15,8 +14,8 @@ namespace Recore.Tests
                 called = true;
             })();
 
-            Assert.IsTrue(called);
-            Assert.AreEqual(new Unit(), result);
+            Assert.True(called);
+            Assert.Equal(new Unit(), result);
         }
     }
 }
