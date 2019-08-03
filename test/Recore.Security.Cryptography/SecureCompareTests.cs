@@ -1,41 +1,40 @@
 using System;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Security.Cryptography.Tests
 {
-    [TestClass]
     public class SecureCompareTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => SecureCompare.TimeInvariantEquals(null, new byte[] { }));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => SecureCompare.TimeInvariantEquals(new byte[] { }, null));
         }
 
-        [TestMethod]
+        [Fact]
         public void UnequalLength()
         {
-            Assert.IsFalse(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { }));
+            Assert.False(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { }));
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualSequences()
         {
-            Assert.IsTrue(SecureCompare.TimeInvariantEquals(new byte[] { }, new byte[] { }));
-            Assert.IsTrue(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { 0 }));
-            Assert.IsTrue(SecureCompare.TimeInvariantEquals(new byte[] { 0, 1, 2, 3 }, new byte[] { 0, 1, 2, 3 }));
+            Assert.True(SecureCompare.TimeInvariantEquals(new byte[] { }, new byte[] { }));
+            Assert.True(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { 0 }));
+            Assert.True(SecureCompare.TimeInvariantEquals(new byte[] { 0, 1, 2, 3 }, new byte[] { 0, 1, 2, 3 }));
         }
 
-        [TestMethod]
+        [Fact]
         public void UnequalSequences()
         {
-            Assert.IsFalse(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { 1 }));
-            Assert.IsFalse(SecureCompare.TimeInvariantEquals(new byte[] { 1 }, new byte[] { 0 }));
+            Assert.False(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { 1 }));
+            Assert.False(SecureCompare.TimeInvariantEquals(new byte[] { 1 }, new byte[] { 0 }));
         }
     }
 }

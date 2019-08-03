@@ -1,47 +1,46 @@
 ﻿using System;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class OptionalTests
     {
-        [TestMethod]
+        [Fact]
         public void Constructor()
         {
             var referenceOptional = new Optional<string>("Hello world");
-            Assert.IsTrue(referenceOptional.HasValue);
+            Assert.NotEmpty(referenceOptional);
 
             var valueOptional = new Optional<int>(123);
-            Assert.IsTrue(valueOptional.HasValue);
+            Assert.NotEmpty(valueOptional);
 
             var nullOptional = new Optional<object>(null);
-            Assert.IsFalse(nullOptional.HasValue);
+            Assert.Empty(nullOptional);
         }
 
-        [TestMethod]
+        [Fact]
         public void DefaultConstructor()
         {
             var referenceOptional = new Optional<object>();
-            Assert.IsFalse(referenceOptional.HasValue);
+            Assert.Empty(referenceOptional);
 
             var valueOptional = new Optional<int>();
-            Assert.IsFalse(valueOptional.HasValue);
+            Assert.Empty(valueOptional);
         }
 
-        [TestMethod]
+        [Fact]
         public void Empty()
         {
             var referenceOptional = Optional<object>.Empty;
-            Assert.IsFalse(referenceOptional.HasValue);
+            Assert.Empty(referenceOptional);
 
             var valueOptional = Optional<int>.Empty;
-            Assert.IsFalse(valueOptional.HasValue);
+            Assert.Empty(valueOptional);
         }
 
-        [TestMethod]
+        [Fact]
         public void SwitchFunc()
         {
             Optional<int> optional;
@@ -51,26 +50,26 @@ namespace Recore.Tests
             result = optional.Switch(
                 x => 1,
                 () => throw new Exception("Should not be called"));
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
 
             optional = Optional<int>.Empty;
             result = optional.Switch(
                 x => throw new Exception("Should not be called"),
                 () => 10);
-            Assert.AreEqual(10, result);
+            Assert.Equal(10, result);
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     null,
                     () => throw new Exception("Should not be called")));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     x => throw new Exception("Should not be called"),
                     null));
         }
 
-        [TestMethod]
+        [Fact]
         public void SwitchAction()
         {
             Optional<int> optional;
@@ -81,55 +80,55 @@ namespace Recore.Tests
             optional.Switch(
                 x => { called = true; },
                 () => throw new Exception("Should not be called"));
-            Assert.IsTrue(called);
+            Assert.True(called);
 
             optional = Optional<int>.Empty;
             called = false;
             optional.Switch(
                 x => throw new Exception("Should not be called"),
                 () => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     null,
                     () => throw new Exception("Should not be called")));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     x => throw new Exception("Should not be called"),
                     null));
         }
 
-        [TestMethod]
+        [Fact]
         public void ValueOr()
         {
             Optional<string> optional;
 
             optional = "hello world";
-            Assert.AreEqual("hello world", optional.ValueOr("xxx"));
+            Assert.Equal("hello world", optional.ValueOr("xxx"));
 
             optional = null;
-            Assert.AreEqual("xxx", optional.ValueOr("xxx"));
+            Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
-        [TestMethod]
+        [Fact]
         public void OnValue()
         {
             Optional<int> optional;
             int Square(int n) => n * n;
 
             optional = 10;
-            Assert.AreEqual(100, optional.OnValue(Square));
+            Assert.Equal(100, optional.OnValue(Square));
 
             optional = Optional<int>.Empty;
-            Assert.IsFalse(optional.OnValue(Square).HasValue);
+            Assert.Empty(optional.OnValue(Square));
 
             optional = 100;
-            Assert.AreEqual("100", optional.OnValue(x => x.ToString()));
+            Assert.Equal("100", optional.OnValue(x => x.ToString()));
         }
 
-        [TestMethod]
+        [Fact]
         public void IfValueIfEmpty()
         {
             Optional<int> optional;
@@ -138,23 +137,23 @@ namespace Recore.Tests
             optional = 123;
             called = false;
             optional.IfValue(x => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
 
             called = false;
             optional.IfEmpty(() => { called = true; });
-            Assert.IsFalse(called);
+            Assert.False(called);
 
             optional = Optional<int>.Empty;
             called = false;
             optional.IfValue(x => { called = true; });
-            Assert.IsFalse(called);
+            Assert.False(called);
 
             called = false;
             optional.IfEmpty(() => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
         }
 
-        [TestMethod]
+        [Fact]
         public void FunctorLaws()
         {
             // Identity
@@ -162,24 +161,24 @@ namespace Recore.Tests
             Optional<int> valueOptional = 123;
             T Id<T>(T t) => t;
 
-            Assert.AreEqual("hello world", referenceOptional.OnValue(Id));
-            Assert.AreEqual(123, valueOptional.OnValue(Id));
-            Assert.AreEqual(Optional<object>.Empty, Optional<object>.Empty.OnValue(Id));
+            Assert.Equal("hello world", referenceOptional.OnValue(Id));
+            Assert.Equal(123, valueOptional.OnValue(Id));
+            Assert.Equal(Optional<object>.Empty, Optional<object>.Empty.OnValue(Id));
 
             // Composition
             int Square(int n) => n * n;
             int PlusTwo(int n) => n + 2;
 
-            Assert.AreEqual(
+            Assert.Equal(
                 new Optional<int>(10).OnValue(Square).OnValue(PlusTwo),
                 new Optional<int>(10).OnValue(x => PlusTwo(Square(x))));
 
-            Assert.AreEqual(
+            Assert.Equal(
                 Optional<int>.Empty.OnValue(Square).OnValue(PlusTwo),
                 Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
-        [TestMethod]
+        [Fact]
         public void Then()
         {
             Optional<int> FindFirstSpace(string str)
@@ -200,18 +199,18 @@ namespace Recore.Tests
 
             optionalString = "hello world";
             actual = optionalString.Then(FindFirstSpace);
-            Assert.AreEqual(5, actual);
+            Assert.Equal(5, actual);
 
             optionalString = "hello";
             actual = optionalString.Then(FindFirstSpace);
-            Assert.IsFalse(actual.HasValue);
+            Assert.Empty(actual);
 
             optionalString = Optional<string>.Empty;
             actual = optionalString.Then(FindFirstSpace);
-            Assert.IsFalse(actual.HasValue);
+            Assert.Empty(actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void MonadLaws()
         {
             Optional<string> StringToOption(string str)
@@ -229,7 +228,7 @@ namespace Recore.Tests
             // Left identity
             foreach (var value in new[] { "hello", string.Empty, null })
             {
-                Assert.AreEqual(
+                Assert.Equal(
                     StringToOption(value),
                     new Optional<string>(value).Then(StringToOption));
             }
@@ -237,7 +236,7 @@ namespace Recore.Tests
             // Right identity
             foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
-                Assert.AreEqual(
+                Assert.Equal(
                     optional,
                     optional.Then(Optional.Of<string>));
             }
@@ -257,135 +256,135 @@ namespace Recore.Tests
 
             foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
-                Assert.AreEqual(
+                Assert.Equal(
                     optional.Then(StringToOption).Then(NullsafeLength),
                     optional.Then(x => StringToOption(x).Then(NullsafeLength)));
             }
         }
 
-        [TestMethod]
-        public new void ToString()
+        [Fact]
+        public void ToString_()
         {
-            Assert.AreEqual("hello", Optional.Of("hello").ToString());
-            Assert.AreEqual("none", Optional<string>.Empty.ToString());
+            Assert.Equal("hello", Optional.Of("hello").ToString());
+            Assert.Equal("none", Optional<string>.Empty.ToString());
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
-        public void Equals(int value)
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        public void Equals_(int value)
         {
             // object.Equals
-            Assert.IsTrue(
+            Assert.True(
                 Equals(Optional.Of(value), Optional.Of(value)));
 
-            Assert.IsTrue(
+            Assert.True(
                 Equals(new Optional<string>(), new Optional<string>()));
 
-            Assert.IsFalse(
+            Assert.False(
                 Equals(Optional.Of(value), Optional<string>.Empty));
 
             // Optional.Equals
-            Assert.IsTrue(
+            Assert.True(
                 Optional.Of(value).Equals(Optional.Of(value)));
 
-            Assert.IsTrue(
+            Assert.True(
                 Optional<int>.Empty.Equals(Optional<int>.Empty));
 
-            Assert.IsFalse(
+            Assert.False(
                 Optional<int>.Empty.Equals(Optional.Of(value)));
         }
 
-        [TestMethod]
-        [DataRow(0)]
-        [DataRow(1)]
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
         public void EqualityOperators(int value)
         {
             // operator==
-            Assert.IsTrue(
+            Assert.True(
                 Optional.Of(value) == Optional.Of(value));
 
-            Assert.IsTrue(
+            Assert.True(
                 new Optional<int>() == new Optional<int>());
 
-            Assert.IsFalse(
+            Assert.False(
                 Optional.Of(0) == Optional<int>.Empty);
 
             // operator!=
-            Assert.IsFalse(
+            Assert.False(
                 Optional.Of(value) != Optional.Of(value));
 
-            Assert.IsFalse(
+            Assert.False(
                 new Optional<int>() != new Optional<int>());
 
-            Assert.IsTrue(
+            Assert.True(
                 Optional.Of(value) != Optional<int>.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualsEquivalenceRelation()
         {
             // Reflexive
             Optional<int> a = 1;
-            Assert.AreEqual(a, a);
+            Assert.Equal(a, a);
 
             // Symmetric
             Optional<int> b = 1;
-            Assert.AreEqual(a, b);
-            Assert.AreEqual(b, a);
+            Assert.Equal(a, b);
+            Assert.Equal(b, a);
 
             // Transitive
             Optional<int> c = 1;
-            Assert.AreEqual(b, c);
-            Assert.AreEqual(a, c);
+            Assert.Equal(b, c);
+            Assert.Equal(a, c);
         }
 
-        [TestMethod]
-        public new void GetHashCode()
+        [Fact]
+        public void GetHashCode_()
         {
             Optional<string> optional = "hello";
 
             // Idempotence
-            Assert.AreEqual(optional.GetHashCode(), optional.GetHashCode());
+            Assert.Equal(optional.GetHashCode(), optional.GetHashCode());
 
             // Does not depend on object identity
-            Assert.AreEqual(optional.GetHashCode(), Optional.Of("hello").GetHashCode());
+            Assert.Equal(optional.GetHashCode(), Optional.Of("hello").GetHashCode());
         }
 
-        [TestMethod]
+        [Fact]
         public void GetEnumerator()
         {
             {
                 var optional = Optional.Of(123);
                 var enumerator = optional.GetEnumerator();
 
-                Assert.IsTrue(enumerator.MoveNext());
-                Assert.AreEqual(123, enumerator.Current);
-                Assert.IsFalse(enumerator.MoveNext());
+                Assert.True(enumerator.MoveNext());
+                Assert.Equal(123, enumerator.Current);
+                Assert.False(enumerator.MoveNext());
 
                 var numberOfElements = 0;
                 foreach (var item in optional)
                 {
-                    Assert.AreEqual(123, item);
+                    Assert.Equal(123, item);
                     numberOfElements++;
                 }
 
-                Assert.AreEqual(1, numberOfElements);
+                Assert.Equal(1, numberOfElements);
             }
             {
                 var optional = Optional<int>.Empty;
                 var enumerator = optional.GetEnumerator();
 
-                Assert.IsFalse(enumerator.MoveNext());
+                Assert.False(enumerator.MoveNext());
 
                 foreach (var item in optional)
                 {
-                    Assert.Fail();
+                    Assert.True(false);
                 }
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void Cast()
         {
             int CountChar(string str, char toCount)
@@ -404,42 +403,42 @@ namespace Recore.Tests
             Optional<string> optional;
 
             optional = "hello";
-            Assert.AreEqual(2, CountChar((string)optional, 'l'));
+            Assert.Equal(2, CountChar((string)optional, 'l'));
 
             optional = Optional<string>.Empty;
-            Assert.IsNull((string)optional);
+            Assert.Null((string)optional);
         }
 
-        [TestMethod]
+        [Fact]
         public void Of()
         {
-            Assert.AreEqual(new Optional<int>(12), Optional.Of(12));
+            Assert.Equal(new Optional<int>(12), Optional.Of(12));
         }
 
-        [TestMethod]
+        [Fact]
         public void If()
         {
             var success = Optional.If(int.TryParse("123", out int result), result);
-            Assert.AreEqual(123, success);
+            Assert.Equal(123, success);
 
             var failure = Optional.If(int.TryParse("abc", out result), result);
-            Assert.IsFalse(failure.HasValue);
+            Assert.Empty(failure);
         }
 
-        [TestMethod]
+        [Fact]
         public void Flatten()
         {
             var doubleValue = new Optional<Optional<string>>("hello");
-            Assert.AreEqual("hello", doubleValue.Flatten());
+            Assert.Equal("hello", doubleValue.Flatten());
 
             var doubleNone = new Optional<Optional<string>>();
-            Assert.IsFalse(doubleNone.Flatten().HasValue);
+            Assert.Empty(doubleNone.Flatten());
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
-            Assert.IsFalse(valueNone.Flatten().HasValue);
+            Assert.Empty(valueNone.Flatten());
         }
 
-        [TestMethod]
+        [Fact]
         public void NonEmpty()
         {
             var collection = new[]
@@ -458,7 +457,7 @@ namespace Recore.Tests
                 "hello world"
             };
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 nonempty,
                 collection.NonEmpty().ToArray());
         }

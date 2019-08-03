@@ -1,30 +1,29 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class OfTests
     {
         class Address : Of<string> {}
 
-        [TestMethod]
-        public void Equals()
+        [Fact]
+        public void Equals_()
         {
             var address1 = new Address { Value = "1 Microsoft Way" };
             var address2 = new Address { Value = "1 Microsoft Way" };
-            Assert.AreEqual(address1, address2);
+            Assert.Equal(address1, address2);
 
             var address3 = new Address { Value = "1 Infinite Loop" };
-            Assert.AreNotEqual(address1, address3);
+            Assert.NotEqual(address1, address3);
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualsWithNull()
         {
             var address1 = new Address { Value = "1 Microsoft Way" };
             Address address2 = null;
 
-            Assert.AreNotEqual(address1, address2);
+            Assert.NotEqual(address1, address2);
         }
     }
 }

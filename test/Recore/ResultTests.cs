@@ -1,24 +1,23 @@
 using System;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class ResultTests
     {
-        [TestMethod]
+        [Fact]
         public void Constructor()
         {
             var success = new Result<int, bool>(-5);
-            Assert.IsTrue(success.IsSuccessful);
+            Assert.True(success.IsSuccessful);
 
             var failure = new Result<int, bool>(false);
-            Assert.IsFalse(failure.IsSuccessful);
+            Assert.False(failure.IsSuccessful);
         }
 
-        [TestMethod]
+        [Fact]
         public void SwitchFunc()
         {
             Result<string, int> Result;
@@ -28,26 +27,26 @@ namespace Recore.Tests
             result = Result.Switch(
                 value => 1,
                 error => throw new Exception("Should not be called"));
-            Assert.AreEqual(1, result);
+            Assert.Equal(1, result);
 
             Result = 12;
             result = Result.Switch(
                 value => throw new Exception("Should not be called"),
                 error => error * 2);
-            Assert.AreEqual(24, result);
+            Assert.Equal(24, result);
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
                     value => throw new Exception("Should not be called"),
                     null));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
                     null,
                     error => throw new Exception("Should not be called")));
         }
 
-        [TestMethod]
+        [Fact]
         public void SwitchAction()
         {
             Result<string, int> result;
@@ -58,27 +57,27 @@ namespace Recore.Tests
             result.Switch(
                 value => { called = true; },
                 error => throw new Exception("Should not be called"));
-            Assert.IsTrue(called);
+            Assert.True(called);
 
             result = 12;
             called = false;
             result.Switch(
                 value => throw new Exception("Should not be called"),
                 error => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
                     value => throw new Exception("Should not be called"),
                     null));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
                     null,
                     error => throw new Exception("Should not be called")));
         }
 
-        [TestMethod]
+        [Fact]
         public void SwitchThrow()
         {
             Result<int, Exception> result;
@@ -87,28 +86,28 @@ namespace Recore.Tests
             var actual = result.Switch(
                 value => value,
                 error => throw error);
-            Assert.AreEqual(1, actual);
+            Assert.Equal(1, actual);
 
             result = new DivideByZeroException();
-            Assert.ThrowsException<DivideByZeroException>(
+            Assert.Throws<DivideByZeroException>(
                 () => result.Switch(
                     value => value,
                     error => throw error));
         }
 
-        [TestMethod]
+        [Fact]
         public void GetValueGetError()
         {
             var success = Result.Success<int, string>(-5);
-            Assert.AreEqual(-5, success.GetValue());
-            Assert.AreEqual(Optional<string>.Empty, success.GetError());
+            Assert.Equal(-5, success.GetValue());
+            Assert.Empty(success.GetError());
 
             var failure = Result.Failure<int, string>("hello");
-            Assert.AreEqual(Optional<int>.Empty, failure.GetValue());
-            Assert.AreEqual("hello", failure.GetError());
+            Assert.Empty(failure.GetValue());
+            Assert.Equal("hello", failure.GetError());
         }
 
-        [TestMethod]
+        [Fact]
         public void IfValueIfError()
         {
             Result<int, string> result;
@@ -117,23 +116,23 @@ namespace Recore.Tests
             result = 123;
             called = false;
             result.IfValue(x => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
 
             called = false;
             result.IfError(x => { called = true; });
-            Assert.IsFalse(called);
+            Assert.False(called);
 
             result = string.Empty;
             called = false;
             result.IfValue(x => { called = true; });
-            Assert.IsFalse(called);
+            Assert.False(called);
 
             called = false;
             result.IfError(x => { called = true; });
-            Assert.IsTrue(called);
+            Assert.True(called);
         }
 
-        [TestMethod]
+        [Fact]
         public void Then()
         {
             Result<int, Exception> LengthOfString(string str)
@@ -153,120 +152,120 @@ namespace Recore.Tests
 
             resultString = "hello world";
             actual = resultString.Then(LengthOfString);
-            Assert.AreEqual(11, actual);
+            Assert.Equal(11, actual);
 
             resultString = string.Empty;
             actual = resultString.Then(LengthOfString);
-            Assert.IsFalse(actual.IsSuccessful);
+            Assert.False(actual.IsSuccessful);
         }
 
-        [TestMethod]
-        [DataRow(0, "")]
-        [DataRow(1, "abc")]
-        public void Equals(int value, string error)
+        [Theory]
+        [InlineData(0, "")]
+        [InlineData(1, "abc")]
+        public void Equals_(int value, string error)
         {
             // object.Equals
-            Assert.IsTrue(
+            Assert.True(
                 Equals(new Result<int, string>(value), new Result<int, string>(value)));
 
-            Assert.IsTrue(
+            Assert.True(
                 Equals(new Result<int, string>(error), new Result<int, string>(error)));
 
-            Assert.IsFalse(
+            Assert.False(
                 Equals(new Result<int, string>(value), Optional<string>.Empty));
 
-            Assert.IsFalse(
+            Assert.False(
                 Equals(Result.Success<int, int>(1), Result.Failure<int, int>(1)));
 
             // Result.Equals
-            Assert.IsTrue(
+            Assert.True(
                 new Result<int, string>(value).Equals(new Result<int, string>(value)));
 
-            Assert.IsTrue(
+            Assert.True(
                 new Result<int, string>(error).Equals(new Result<int, string>(error)));
 
-            Assert.IsFalse(
+            Assert.False(
                 new Result<int, string>(error).Equals(new Result<int, string>(value)));
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualsWithNull()
         {
-            Assert.IsFalse(
+            Assert.False(
                 new Result<int, string>("abc").Equals((Result<int, string>)null));
         }
 
-        [TestMethod]
-        [DataRow(0, "")]
-        [DataRow(1, "abc")]
+        [Theory]
+        [InlineData(0, "")]
+        [InlineData(1, "abc")]
         public void EqualityOperators(int value, string error)
         {
             // operator==
-            Assert.IsTrue(
+            Assert.True(
                 new Result<int, string>(value) == new Result<int, string>(value));
 
-            Assert.IsTrue(
+            Assert.True(
                 new Result<int, string>(error) == new Result<int, string>(error));
 
-            Assert.IsFalse(
+            Assert.False(
                 new Result<int, string>(value) == new Result<int, string>(error));
 
             // operator!=
-            Assert.IsFalse(
+            Assert.False(
                 new Result<int, string>(value) != new Result<int, string>(value));
 
-            Assert.IsFalse(
+            Assert.False(
                 new Result<int, string>(error) != new Result<int, string>(error));
 
-            Assert.IsTrue(
+            Assert.True(
                 new Result<int, string>(value) != new Result<int, string>(error));
         }
 
-        [TestMethod]
+        [Fact]
         public void EqualsEquivalenceRelation()
         {
             // Reflexive
             Result<int, Exception> a = 1;
-            Assert.AreEqual(a, a);
+            Assert.Equal(a, a);
 
             // Symmetric
             Result<int, Exception> b = 1;
-            Assert.AreEqual(a, b);
-            Assert.AreEqual(b, a);
+            Assert.Equal(a, b);
+            Assert.Equal(b, a);
 
             // Transitive
             Result<int, Exception> c = 1;
-            Assert.AreEqual(b, c);
-            Assert.AreEqual(a, c);
+            Assert.Equal(b, c);
+            Assert.Equal(a, c);
         }
 
-        [TestMethod]
-        public new void GetHashCode()
+        [Fact]
+        public void GetHashCode_()
         {
             Result<string, double> Result = "hello";
 
-            Assert.AreEqual(Result.GetHashCode(), Result.GetHashCode());
-            Assert.AreEqual(Result.GetHashCode(), new Result<string, Uri>("he" + "llo").GetHashCode());
+            Assert.Equal(Result.GetHashCode(), Result.GetHashCode());
+            Assert.Equal(Result.GetHashCode(), new Result<string, Uri>("he" + "llo").GetHashCode());
         }
 
-        [TestMethod]
-        public new void ToString()
+        [Fact]
+        public void ToString_()
         {
             var success = Result.Success<int, string>(-5);
-            Assert.AreEqual("-5", success.ToString());
+            Assert.Equal("-5", success.ToString());
 
             var failure = Result.Failure<int, string>("hello");
-            Assert.AreEqual("hello", failure.ToString());
+            Assert.Equal("hello", failure.ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void TryCatch()
         {
             var success = Result
                 .Try(() => 1)
                 .Catch<Exception>();
 
-            Assert.AreEqual(1, success);
+            Assert.Equal(1, success);
 
             // Avoid "divide by constant zero" compiler error
             int zero = 0;
@@ -275,22 +274,22 @@ namespace Recore.Tests
                 .Try<double>(() => 1 / zero) // throws DivideByZeroException
                 .Catch<DivideByZeroException>();
 
-            Assert.IsFalse(failure.IsSuccessful);
+            Assert.False(failure.IsSuccessful);
 
-            Assert.ThrowsException<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => Result
                     .Try<double>(() => throw new ArgumentException())
                     .Catch<DivideByZeroException>());
         }
 
-        [TestMethod]
+        [Fact]
         public void TryCatchFilter()
         {
             var success = Result
                 .Try(() => 1)
                 .Catch<Exception>(e => true);
 
-            Assert.AreEqual(1, success);
+            Assert.Equal(1, success);
 
             var failure = Result
                 .Try<int>(() =>
@@ -300,25 +299,25 @@ namespace Recore.Tests
                 })
                 .Catch<Exception>(e => e is ArgumentNullException || e is IndexOutOfRangeException);
 
-            Assert.IsFalse(failure.IsSuccessful);
+            Assert.False(failure.IsSuccessful);
 
-            Assert.ThrowsException<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => Result
                     .Try<int>(() => throw new ArgumentException())
                     .Catch<Exception>(e => e is ArgumentNullException || e is ArgumentOutOfRangeException));
         }
 
-        [TestMethod]
+        [Fact]
         public void Flatten()
         {
             var doubleValue = new Result<Result<string, Exception>, Exception>("hello");
-            Assert.AreEqual("hello", doubleValue.Flatten());
+            Assert.Equal("hello", doubleValue.Flatten());
 
             var valueOfError = new Result<Result<string, Exception>, Exception>(new Exception());
-            Assert.IsFalse(valueOfError.Flatten().IsSuccessful);
+            Assert.False(valueOfError.Flatten().IsSuccessful);
         }
 
-        [TestMethod]
+        [Fact]
         public void Values()
         {
             var collection = new Result<string, int>[]
@@ -339,10 +338,10 @@ namespace Recore.Tests
                 "hello world"
             };
 
-            CollectionAssert.AreEqual(values, collection.Values().ToArray());
+            Assert.Equal(values, collection.Values().ToArray());
         }
 
-    [   TestMethod]
+    [   Fact]
         public void Errors()
         {
             var collection = new Result<string, int>[]
@@ -361,7 +360,7 @@ namespace Recore.Tests
                 23
             };
 
-            CollectionAssert.AreEqual(errors, collection.Errors().ToArray());
+            Assert.Equal(errors, collection.Errors().ToArray());
         }
     }
 }

@@ -2,29 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class FlattenTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
             IEnumerable<IEnumerable<object>> nullEnumerable = null;
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => nullEnumerable.Flatten());
         }
 
-        [TestMethod]
+        [Fact]
         public void FlattenEmpty()
         {
             var empty = Enumerable.Empty<IEnumerable<object>>();
-            Assert.IsFalse(empty.Flatten().Any());
+            Assert.False(empty.Flatten().Any());
         }
 
-        [TestMethod]
+        [Fact]
         public void FlattenList()
         {
             var listOfLists = new List<List<int>>
@@ -35,12 +34,12 @@ namespace Recore.Linq.Tests
                 new List<int> { 9 }
             };
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
                 listOfLists.Flatten().ToList());
         }
 
-        [TestMethod]
+        [Fact]
         public void FlattenHeterogeneous()
         {
             var linkedList = new LinkedList<int>();
@@ -60,12 +59,12 @@ namespace Recore.Linq.Tests
                 Generator()
             };
 
-            CollectionAssert.AreEqual(
+            Assert.Equal(
                 new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
                 listOfEnumerables.Flatten().ToList());
         }
 
-        [TestMethod]
+        [Fact]
         public void FlattenThreeLevels()
         {
             var listOfListsOfLists = new List<List<List<int>>>
@@ -95,10 +94,10 @@ namespace Recore.Linq.Tests
 
             var actual = listOfListsOfLists.Flatten().ToList();
 
-            Assert.AreEqual(expected.Count, actual.Count);
+            Assert.Equal(expected.Count, actual.Count);
             foreach (var (expectedSublist, actualSublist) in Renumerable.Zip(expected, actual))
             {
-                CollectionAssert.AreEqual(expectedSublist, actualSublist);
+                Assert.Equal(expectedSublist, actualSublist);
             }
         }
     }

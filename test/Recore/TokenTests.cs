@@ -2,100 +2,99 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Tests
 {
-    [TestClass]
     public class TokenTests
     {
-        [TestMethod]
+        [Fact]
         public void NullNotAllowed()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new Token(null));
+            Assert.Throws<ArgumentNullException>(() => new Token(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyStringNotAllowed()
         {
-            Assert.ThrowsException<ArgumentException>(() => new Token(string.Empty));
+            Assert.Throws<ArgumentException>(() => new Token(string.Empty));
         }
 
-        [TestMethod]
+        [Fact]
         public void WhitespaceNotAllowed()
         {
-            Assert.ThrowsException<ArgumentException>(() => new Token("  hello"));
-            Assert.ThrowsException<ArgumentException>(() => new Token("hello  "));
-            Assert.ThrowsException<ArgumentException>(() => new Token("hello  world"));
-            Assert.ThrowsException<ArgumentException>(() => new Token("new\nline"));
-            Assert.ThrowsException<ArgumentException>(() => new Token("tab\ttab"));
+            Assert.Throws<ArgumentException>(() => new Token("  hello"));
+            Assert.Throws<ArgumentException>(() => new Token("hello  "));
+            Assert.Throws<ArgumentException>(() => new Token("hello  world"));
+            Assert.Throws<ArgumentException>(() => new Token("new\nline"));
+            Assert.Throws<ArgumentException>(() => new Token("tab\ttab"));
         }
 
-        [TestMethod]
+        [Fact]
         public void ConvertToString()
         {
-            Assert.AreEqual("hello", new Token("hello").ToString());
-            Assert.AreNotEqual("asdf", new Token("hello").ToString());
+            Assert.Equal("hello", new Token("hello").ToString());
+            Assert.NotEqual("asdf", new Token("hello").ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void IEquatableEquals()
         {
             // reflexive
             var helloworld1 = new Token("helloworld");
-            Assert.IsTrue(helloworld1.Equals(helloworld1));
+            Assert.True(helloworld1.Equals(helloworld1));
 
             // symmetric
             var helloworld2 = new Token("hello" + "world");
-            Assert.IsTrue(helloworld1.Equals(helloworld2));
-            Assert.IsTrue(helloworld2.Equals(helloworld1));
+            Assert.True(helloworld1.Equals(helloworld2));
+            Assert.True(helloworld2.Equals(helloworld1));
 
             // transitive
             var helloworld3 = new Token("he" + "lloworld");
-            Assert.IsTrue(helloworld2.Equals(helloworld3));
-            Assert.IsTrue(helloworld1.Equals(helloworld3));
+            Assert.True(helloworld2.Equals(helloworld3));
+            Assert.True(helloworld1.Equals(helloworld3));
 
             // not equal
             var hello = new Token("hello");
-            Assert.IsFalse(helloworld1.Equals(hello));
-            Assert.IsFalse(hello.Equals(helloworld1));
+            Assert.False(helloworld1.Equals(hello));
+            Assert.False(hello.Equals(helloworld1));
         }
 
-        [TestMethod]
+        [Fact]
         public void ObjectEquals()
         {
             var helloworld1 = new Token("helloworld");
             var helloworld2 = new Token("hello" + "world");
-            Assert.IsTrue(helloworld1.Equals((object)helloworld2));
+            Assert.True(helloworld1.Equals((object)helloworld2));
 
-            Assert.IsTrue(helloworld1.Equals("helloworld"));
-            Assert.IsTrue("helloworld".Equals(helloworld1));
-            Assert.IsFalse(helloworld1.Equals(new Exception()));
+            Assert.True(helloworld1.Equals("helloworld"));
+            Assert.Equal("helloworld", helloworld1);
+            Assert.False(helloworld1.Equals(new Exception()));
 
-            Assert.IsTrue(Equals(helloworld1, helloworld2));
-            Assert.IsTrue(Equals(helloworld1, "helloworld"));
+            Assert.True(Equals(helloworld1, helloworld2));
+            Assert.True(Equals(helloworld1, "helloworld"));
 
             // string.Equals
-            Assert.IsTrue(string.Equals("hello", new Token("HELLO"), StringComparison.InvariantCultureIgnoreCase));
+            Assert.True(string.Equals("hello", new Token("HELLO"), StringComparison.InvariantCultureIgnoreCase));
 
             // operator==
-            Assert.IsTrue(helloworld1 == helloworld2);
-            Assert.IsTrue(helloworld2 == helloworld1);
+            Assert.True(helloworld1 == helloworld2);
+            Assert.True(helloworld2 == helloworld1);
 
-            Assert.IsTrue(helloworld1 == "helloworld");
-            Assert.IsTrue("helloworld" == helloworld1);
+            Assert.True(helloworld1 == "helloworld");
+            Assert.True("helloworld" == helloworld1);
 
             var asdf = new Token("asdf");
-            Assert.IsFalse(helloworld1 == asdf);
-            Assert.IsTrue(helloworld1 != asdf);
+            Assert.False(helloworld1 == asdf);
+            Assert.True(helloworld1 != asdf);
         }
 
-        [TestMethod]
+        [Fact]
         public void ImplicitConversionToString()
         {
             var world = new Token("world");
             var message = "hello " + world;
-            Assert.AreEqual("hello world", message);
+            Assert.Equal("hello world", message);
 
             var dictionary = new Dictionary<string, int>
             {
@@ -104,10 +103,10 @@ namespace Recore.Tests
                 ["chalupa"] = 3
             };
 
-            Assert.AreEqual(1, dictionary[new Token("burrito")]);
+            Assert.Equal(1, dictionary[new Token("burrito")]);
         }
 
-        [TestMethod]
+        [Fact]
         public void Hashable()
         {
             var dictionary = new Dictionary<Token, int>
@@ -117,23 +116,23 @@ namespace Recore.Tests
                 [new Token("chalupa")] = 3
             };
 
-            Assert.AreEqual(2, dictionary[new Token("enchil" + "ada")]);
-            Assert.IsFalse(dictionary.ContainsKey(new Token("taco")));
+            Assert.Equal(2, dictionary[new Token("enchil" + "ada")]);
+            Assert.False(dictionary.ContainsKey(new Token("taco")));
         }
 
-        [TestMethod]
+        [Fact]
         public void Comparable()
         {
-            Assert.AreEqual(-1, new Token("abc").CompareTo(new Token("def")));
-            Assert.AreEqual(0, new Token("abc").CompareTo(new Token("abc")));
-            Assert.AreEqual(1, new Token("def").CompareTo(new Token("abc")));
+            Assert.Equal(-1, new Token("abc").CompareTo(new Token("def")));
+            Assert.Equal(0, new Token("abc").CompareTo(new Token("abc")));
+            Assert.Equal(1, new Token("def").CompareTo(new Token("abc")));
 
-            Assert.AreEqual(-1, "abc".CompareTo(new Token("def")));
-            Assert.AreEqual(0, "abc".CompareTo(new Token("abc")));
-            Assert.AreEqual(1, "def".CompareTo(new Token("abc")));
+            Assert.Equal(-1, "abc".CompareTo(new Token("def")));
+            Assert.Equal(0, "abc".CompareTo(new Token("abc")));
+            Assert.Equal(1, "def".CompareTo(new Token("abc")));
         }
 
-        [TestMethod]
+        [Fact]
         public void Tokenize()
         {
             var gettysburg = @"Four score and seven years ago,
@@ -145,13 +144,13 @@ namespace Recore.Tests
                 "our", "fathers", "brought", "forth", "on", "this", "continent", "a", "new", "nation"
             }.Select(x => new Token(x));
 
-            Assert.IsTrue(tokens.SequenceEqual(gettysburg.Tokenize()));
+            Assert.True(tokens.SequenceEqual(gettysburg.Tokenize()));
 
-            Assert.AreEqual(0, string.Empty.Tokenize().Length);
+            Assert.Empty(string.Empty.Tokenize());
 
             var doubleSpace = "    hello  world    ";
             tokens = new[] { new Token("hello"), new Token("world") };
-            Assert.IsTrue(tokens.SequenceEqual(doubleSpace.Tokenize()));
+            Assert.True(tokens.SequenceEqual(doubleSpace.Tokenize()));
         }
     }
 }

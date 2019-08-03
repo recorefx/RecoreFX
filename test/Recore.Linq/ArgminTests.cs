@@ -1,35 +1,34 @@
 using System;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class ArgminTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => Renumerable.Argmin<object, int>(null, x => x.GetHashCode()));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => new[] { 0 }.Argmin<int, int>(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyEnumerable()
         {
             // Nullable types return null
-            Assert.IsNull(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()));
+            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()));
 
             // Non-nullable types throw
-            Assert.ThrowsException<InvalidOperationException>(
+            Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmin(x => x * x));
         }
 
-        [TestMethod]
+        [Fact]
         public void IncomparableValues()
         {
             // Singleton collection returns its only element
@@ -38,7 +37,7 @@ namespace Recore.Linq.Tests
                 new { Age = 1 }
             };
 
-            Assert.AreEqual(singletonCollection[0], singletonCollection.Argmin(x => x));
+            Assert.Equal(singletonCollection[0], singletonCollection.Argmin(x => x));
 
             // Multiple elements throws exception
             var collection = new[]
@@ -47,10 +46,10 @@ namespace Recore.Linq.Tests
                 new { Age = 2 }
             };
 
-            Assert.ThrowsException<ArgumentException>(() => collection.Argmin(x => x));
+            Assert.Throws<ArgumentException>(() => collection.Argmin(x => x));
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgminGeneric()
         {
             var collection = new[]
@@ -60,7 +59,7 @@ namespace Recore.Linq.Tests
                 new { Age = 2 }
             };
 
-            Assert.AreEqual(
+            Assert.Equal(
                 collection[0],
                 collection.Argmin(x => x.Age));
         }

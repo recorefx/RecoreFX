@@ -1,35 +1,34 @@
 using System;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Linq.Tests
 {
-    [TestClass]
     public class ArgmaxTests
     {
-        [TestMethod]
+        [Fact]
         public void ThrowsOnNull()
         {
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => Renumerable.Argmax<object, int>(null, x => x.GetHashCode()));
 
-            Assert.ThrowsException<ArgumentNullException>(
+            Assert.Throws<ArgumentNullException>(
                 () => new[] { 0 }.Argmax<int, int>(null));
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyEnumerable()
         {
             // Nullable types return null
-            Assert.IsNull(Enumerable.Empty<string>().Argmax(x => x.GetHashCode()));
+            Assert.Null(Enumerable.Empty<string>().Argmax(x => x.GetHashCode()));
 
             // Non-nullable types throw
-            Assert.ThrowsException<InvalidOperationException>(
+            Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmax(x => x * x));
         }
 
-        [TestMethod]
+        [Fact]
         public void IncomparableValues()
         {
             // Singleton collection returns its only element
@@ -38,7 +37,7 @@ namespace Recore.Linq.Tests
                 new { Age = 1 }
             };
 
-            Assert.AreEqual(singletonCollection[0], singletonCollection.Argmax(x => x));
+            Assert.Equal(singletonCollection[0], singletonCollection.Argmax(x => x));
 
             // Multiple elements throws exception
             var collection = new[]
@@ -47,10 +46,10 @@ namespace Recore.Linq.Tests
                 new { Age = 2 }
             };
 
-            Assert.ThrowsException<ArgumentException>(() => collection.Argmax(x => x));
+            Assert.Throws<ArgumentException>(() => collection.Argmax(x => x));
         }
 
-        [TestMethod]
+        [Fact]
         public void ArgmaxGeneric()
         {
             var collection = new[]
@@ -60,7 +59,7 @@ namespace Recore.Linq.Tests
                 new { Age = 2 }
             };
 
-            Assert.AreEqual(
+            Assert.Equal(
                 collection[1],
                 collection.Argmax(x => x.Age));
         }

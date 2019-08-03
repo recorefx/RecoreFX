@@ -2,24 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Recore.Collections.Generic.Tests
 {
-    [TestClass]
     public class ICollectionExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void Append_NullCollection()
         {
-            Assert.ThrowsException<NullReferenceException>(() =>
+            Assert.Throws<NullReferenceException>(() =>
             {
                 ICollection<string> collection = null;
                 collection.Append("hello");
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void Append_NullItem()
         {
             var collection = new List<string>()
@@ -30,7 +29,7 @@ namespace Recore.Collections.Generic.Tests
                 null
             };
 
-            Assert.IsTrue(collection.SequenceEqual(expected));
+            Assert.True(collection.SequenceEqual(expected));
         }
     }
 }
