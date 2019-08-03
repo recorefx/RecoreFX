@@ -84,10 +84,10 @@ namespace Recore.Tests
         {
             var left = new Either<int, string>(-5);
             Assert.Equal(-5, left.GetLeft());
-            Assert.Equal(Optional<string>.Empty, left.GetRight());
+            Assert.Empty(left.GetRight());
 
             var right = new Either<int, string>("hello");
-            Assert.Equal(Optional<int>.Empty, right.GetLeft());
+            Assert.Empty(right.GetLeft());
             Assert.Equal("hello", right.GetRight());
         }
 

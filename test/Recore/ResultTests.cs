@@ -100,10 +100,10 @@ namespace Recore.Tests
         {
             var success = Result.Success<int, string>(-5);
             Assert.Equal(-5, success.GetValue());
-            Assert.Equal(Optional<string>.Empty, success.GetError());
+            Assert.Empty(success.GetError());
 
             var failure = Result.Failure<int, string>("hello");
-            Assert.Equal(Optional<int>.Empty, failure.GetValue());
+            Assert.Empty(failure.GetValue());
             Assert.Equal("hello", failure.GetError());
         }
 

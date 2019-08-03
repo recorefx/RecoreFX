@@ -11,33 +11,33 @@ namespace Recore.Tests
         public void Constructor()
         {
             var referenceOptional = new Optional<string>("Hello world");
-            Assert.True(referenceOptional.HasValue);
+            Assert.NotEmpty(referenceOptional);
 
             var valueOptional = new Optional<int>(123);
-            Assert.True(valueOptional.HasValue);
+            Assert.NotEmpty(valueOptional);
 
             var nullOptional = new Optional<object>(null);
-            Assert.False(nullOptional.HasValue);
+            Assert.Empty(nullOptional);
         }
 
         [Fact]
         public void DefaultConstructor()
         {
             var referenceOptional = new Optional<object>();
-            Assert.False(referenceOptional.HasValue);
+            Assert.Empty(referenceOptional);
 
             var valueOptional = new Optional<int>();
-            Assert.False(valueOptional.HasValue);
+            Assert.Empty(valueOptional);
         }
 
         [Fact]
         public void Empty()
         {
             var referenceOptional = Optional<object>.Empty;
-            Assert.False(referenceOptional.HasValue);
+            Assert.Empty(referenceOptional);
 
             var valueOptional = Optional<int>.Empty;
-            Assert.False(valueOptional.HasValue);
+            Assert.Empty(valueOptional);
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace Recore.Tests
             Assert.Equal(100, optional.OnValue(Square));
 
             optional = Optional<int>.Empty;
-            Assert.False(optional.OnValue(Square).HasValue);
+            Assert.Empty(optional.OnValue(Square));
 
             optional = 100;
             Assert.Equal("100", optional.OnValue(x => x.ToString()));
@@ -203,11 +203,11 @@ namespace Recore.Tests
 
             optionalString = "hello";
             actual = optionalString.Then(FindFirstSpace);
-            Assert.False(actual.HasValue);
+            Assert.Empty(actual);
 
             optionalString = Optional<string>.Empty;
             actual = optionalString.Then(FindFirstSpace);
-            Assert.False(actual.HasValue);
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -422,7 +422,7 @@ namespace Recore.Tests
             Assert.Equal(123, success);
 
             var failure = Optional.If(int.TryParse("abc", out result), result);
-            Assert.False(failure.HasValue);
+            Assert.Empty(failure);
         }
 
         [Fact]
@@ -432,10 +432,10 @@ namespace Recore.Tests
             Assert.Equal("hello", doubleValue.Flatten());
 
             var doubleNone = new Optional<Optional<string>>();
-            Assert.False(doubleNone.Flatten().HasValue);
+            Assert.Empty(doubleNone.Flatten());
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
-            Assert.False(valueNone.Flatten().HasValue);
+            Assert.Empty(valueNone.Flatten());
         }
 
         [Fact]
