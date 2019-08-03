@@ -150,18 +150,18 @@ namespace Recore.Tests
         }
 
         [Theory]
-        [InlineData(0, "")]
-        [InlineData(1, "abc")]
-        public void SwapEquals(int left, string right)
+        [InlineData(0)]
+        [InlineData(1)]
+        public void SwapEquals(int value)
         {
             Assert.True(
-                Equals(new Either<int, string>(left), new Either<string, int>(left).Swap()));
+                Equals(new Either<int, string>(value), new Either<string, int>(value).Swap()));
 
             Assert.True(
-                new Either<int, string>(left).Equals(new Either<string, int>(left).Swap()));
+                new Either<int, string>(value).Equals(new Either<string, int>(value).Swap()));
 
             Assert.True(
-                new Either<string, int>(left).Equals(new Either<int, string>(left).Swap()));
+                new Either<string, int>(value).Equals(new Either<int, string>(value).Swap()));
         }
 
         [Theory]

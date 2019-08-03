@@ -68,7 +68,7 @@ namespace Recore.Tests
             Assert.True(helloworld1.Equals((object)helloworld2));
 
             Assert.True(helloworld1.Equals("helloworld"));
-            Assert.True("helloworld".Equals(helloworld1));
+            Assert.Equal("helloworld", helloworld1);
             Assert.False(helloworld1.Equals(new Exception()));
 
             Assert.True(Equals(helloworld1, helloworld2));
@@ -146,7 +146,7 @@ namespace Recore.Tests
 
             Assert.True(tokens.SequenceEqual(gettysburg.Tokenize()));
 
-            Assert.Equal(0, string.Empty.Tokenize().Length);
+            Assert.Empty(string.Empty.Tokenize());
 
             var doubleSpace = "    hello  world    ";
             tokens = new[] { new Token("hello"), new Token("world") };
