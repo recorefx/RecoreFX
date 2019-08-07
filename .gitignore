@@ -4,5 +4,7 @@
 bin/
 obj/
 
-*.coverage
 *.csproj.user
+
+# coverlet output
+TestResults/
