@@ -21,7 +21,7 @@ steps:
 - task: DotNetCoreInstaller@0
   displayName: Install .NET Core SDK
   inputs:
-    version: '>= 2.2.300' # required by Coverlet
+    version: '2.2.401' # required by Coverlet
 
 - script: dotnet build --configuration Release
   displayName: dotnet build
