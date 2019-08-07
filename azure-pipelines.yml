@@ -18,21 +18,26 @@ pool:
   vmImage: vs2017-win2016
 
 steps:
-# You can't `dotnet test` on a solution file correctly before 2.1.5
 - task: DotNetCoreInstaller@0
+  displayName: Install .NET Core SDK
   inputs:
-    version: '2.1.503'
-  displayName: Install .NET Core SDK 2.1.503
+    version: '2.2.401' # required by Coverlet
 
 - script: dotnet build --configuration Release
   displayName: dotnet build
 
-- script: dotnet test --configuration Release --logger trx --collect "Code coverage"
+- script: dotnet test --configuration Release --logger trx --collect "XPlat code coverage"
   displayName: dotnet test
 
 - task: PublishTestResults@2
+  displayName: Publish test results
   condition: succeededOrFailed()
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
-  displayName: Publish test results
+
+- task: PublishCodeCoverageResults@1
+  displayName: Publish code coverage
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: $(Build.SourcesDirectory)/test/TestResults/**/coverage.cobertura.xml
