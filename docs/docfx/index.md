@@ -1,6 +1,7 @@
 # RecoreFX
 
-[![Build Status](https://dev.azure.com/briancristante/RecoreFX/_apis/build/status/RecoreFX?branchName=master)](https://dev.azure.com/briancristante/RecoreFX/_build/latest?definitionId=8&branchName=master)
+> [!NOTE]
+> This is DocFX-flavored Markdown!
 
 **RecoreFX** is the minimal supplement to the .NET standard library.
 
