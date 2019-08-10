@@ -9,3 +9,6 @@ There are many other great libraries out there for .NET, and Recore duplicates s
 Recore seeks to fill in the most commonly needed missing features from CoreFX.
 
 Recore is meant to feel like a natural extension of CoreFX and is built on the same principles.
+
+## API documentation
+<https://brcrista.github.io/RecoreFX.Docs>
