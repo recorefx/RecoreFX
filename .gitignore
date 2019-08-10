@@ -8,3 +8,6 @@ obj/
 
 # coverlet output
 TestResults/
+
+# DocFX output
+docs/docfx/_site/
