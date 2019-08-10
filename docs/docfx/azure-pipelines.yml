@@ -1,0 +1,11 @@
+trigger: none
+
+pool:
+  vmImage: vs2017-win2016
+
+steps:
+  - script: choco install docfx
+    displayName: Install DocFX
+
+  - script: docfx docs/docfx
+    displayName: Run docfx
