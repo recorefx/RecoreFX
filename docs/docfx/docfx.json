@@ -1,0 +1,41 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "src": "../../src"
+        }
+      ],
+      "dest": "obj"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "*.yml"
+        ],
+        "src": "obj",
+        "dest": "api"
+      },
+      {
+        "files": [
+          "index.md",
+          "toc.yml"
+        ]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "RecoreFX",
+      "_enableSearch": true
+    },
+    "markdownEngineName": "markdig",
+    "dest": "_site",
+    "xrefService": [
+      "https://xref.docs.microsoft.com/query?uid={uid}"
+    ]
+  }
+}
