@@ -70,6 +70,8 @@ namespace Recore
             };
         }
 
+        #region TupleArgs
+
         /// <summary>
         /// Converts a function's arguments to a tuple.
         /// </summary>
@@ -123,5 +125,64 @@ namespace Recore
             if (func == null) throw new ArgumentNullException(nameof(func));
             return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3, tupleArgs.Item4, tupleArgs.Item5, tupleArgs.Item6, tupleArgs.Item7);
         }
+
+        #endregion TupleArgs
+        #region UntupleArgs
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, TResult> UntupleArgs<T1, T2, TResult>(Func<Tuple<T1, T2>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2) => func(Tuple.Create(arg1, arg2));
+        }
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, T3, TResult> UntupleArgs<T1, T2, T3, TResult>(Func<Tuple<T1, T2, T3>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2, arg3) => func(Tuple.Create(arg1, arg2, arg3));
+        }
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, T3, T4, TResult> UntupleArgs<T1, T2, T3, T4, TResult>(Func<Tuple<T1, T2, T3, T4>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2, arg3, arg4) => func(Tuple.Create(arg1, arg2, arg3, arg4));
+        }
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, T3, T4, T5, TResult> UntupleArgs<T1, T2, T3, T4, T5, TResult>(Func<Tuple<T1, T2, T3, T4, T5>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2, arg3, arg4, arg5) => func(Tuple.Create(arg1, arg2, arg3, arg4, arg5));
+        }
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, T3, T4, T5, T6, TResult> UntupleArgs<T1, T2, T3, T4, T5, T6, TResult>(Func<Tuple<T1, T2, T3, T4, T5, T6>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2, arg3, arg4, arg5, arg6) => func(Tuple.Create(arg1, arg2, arg3, arg4, arg5, arg6));
+        }
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, T2, T3, T4, T5, T6, T7, TResult> UntupleArgs<T1, T2, T3, T4, T5, T6, T7, TResult>(Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return (arg1, arg2, arg3, arg4, arg5, arg6, arg7) => func(Tuple.Create(arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+        }
+
+        #endregion UntupleArgs
     }
 }
