@@ -21,11 +21,7 @@ namespace Recore
         /// </summary>
         public static Func<T, T> Fluent<T>(Action<T> action)
         {
-            if (action == null)
-            {
-                throw new ArgumentNullException(nameof(action));
-            }
-
+            if (action == null) throw new ArgumentNullException(nameof(action));
             return x => { action(x); return x; };
         }
 
@@ -40,13 +36,25 @@ namespace Recore
         /// to prevent the memoized results from consuming too much memory.
         /// </remarks>
         public static Func<TSource, TResult> Memoize<TSource, TResult>(Func<TSource, TResult> func)
-        {
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
+            => Memoize(func, EqualityComparer<TSource>.Default);
 
-            var memo = new Dictionary<TSource, TResult>();
+        /// <summary>
+        /// Creates a function that caches the results <paramref name="func"/> to avoid calling it more than once,
+        /// using <paramref name="comparer"/> to determine when two arguments should be considered the same.
+        /// </summary>
+        /// <remarks>
+        /// For the memoized function to be correct, <paramref name="func"/> should return the same result every time it is called with the same argument.
+        /// The memoized function is not thread-safe.
+        /// The memoized function is not meant to serve as a general-purpose cache.
+        /// The lifetime of the memoized function should be bounded
+        /// to prevent the memoized results from consuming too much memory.
+        /// </remarks>
+        public static Func<TSource, TResult> Memoize<TSource, TResult>(Func<TSource, TResult> func, IEqualityComparer<TSource> comparer)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            if (comparer == null) throw new ArgumentNullException(nameof(comparer));
+
+            var memo = new Dictionary<TSource, TResult>(comparer);
             return arg =>
             {
                 if (memo.TryGetValue(arg, out var memoResult))
