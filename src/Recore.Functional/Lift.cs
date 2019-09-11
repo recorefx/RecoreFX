@@ -6,6 +6,9 @@ using Recore.Linq;
 
 namespace Recore.Functional
 {
+    /// <summary>
+    /// Adapts functions to operate on functors.
+    /// </summary>
     public static class Lift
     {
         /// <summary>
@@ -45,10 +48,16 @@ namespace Recore.Functional
                 leftAction,
                 rightAction);
 
+        /// <summary>
+        /// Converts a function operating on a scalar value to a function operating on a sequence of values.
+        /// </summary>
         public static Func<IEnumerable<T>, IEnumerable<U>> OnEnumerable<T, U>(Func<T, U> func)
             => enumerable
             => enumerable.Select(func);
 
+        /// <summary>
+        /// Converts an action operating on a scalar value to an action operating on a sequence of values.
+        /// </summary>
         public static Action<IEnumerable<T>> OnEnumerable<T, U>(Action<T> action)
             => enumerable
             => enumerable.ForEach(action);
