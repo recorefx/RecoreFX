@@ -61,5 +61,59 @@ namespace Recore
                 }
             };
         }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2>, TResult> TupleArgs<T1, T2, TResult>(Func<T1, T2, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2, T3>, TResult> TupleArgs<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2, T3, T4>, TResult> TupleArgs<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3, tupleArgs.Item4);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2, T3, T4, T5>, TResult> TupleArgs<T1, T2, T3, T4, T5, TResult>(Func<T1, T2, T3, T4, T5, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3, tupleArgs.Item4, tupleArgs.Item5);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2, T3, T4, T5, T6>, TResult> TupleArgs<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3, tupleArgs.Item4, tupleArgs.Item5, tupleArgs.Item6);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
+        public static Func<Tuple<T1, T2, T3, T4, T5, T6, T7>, TResult> TupleArgs<T1, T2, T3, T4, T5, T6, T7, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, TResult> func)
+        {
+            if (func == null) throw new ArgumentNullException(nameof(func));
+            return tupleArgs => func(tupleArgs.Item1, tupleArgs.Item2, tupleArgs.Item3, tupleArgs.Item4, tupleArgs.Item5, tupleArgs.Item6, tupleArgs.Item7);
+        }
     }
 }
