@@ -19,7 +19,7 @@ namespace Recore
         /// <summary>
         /// Passes through the argument passed to a void-returning routine.
         /// </summary>
-        public static Func<T, T> Fluent<T>(Action<T> action)
+        public static Func<T, T> Fluent<T>(this Action<T> action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
             return x => { action(x); return x; };
