@@ -5,6 +5,7 @@ using System.Linq;
 
 using Recore.Properties;
 
+
 namespace Recore
 {
     /// <summary>
