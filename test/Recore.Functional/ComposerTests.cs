@@ -8,38 +8,37 @@ namespace Recore.Functional.Tests
         public void TrivialComposer()
         {
             var result = Composer.Of(1 + 1)
-                .Result;
+                .Func();
 
             Assert.Equal(2, result);
         }
 
         [Fact]
-        public void EmptyComposer()
+        public void ThenAllFuncs()
         {
-            var Composer = new Composer<string>();
-            Assert.Null(Composer.Result);
-
-            var result = Composer
+            var result = Composer.Of<string>(null)
                 .Then(string.IsNullOrEmpty)
                 .Then(x => x.ToString())
-                .Result;
+                .Func();
 
             Assert.Equal("True", result);
         }
 
         [Fact]
-        public void Then()
+        public void ThenWithAction()
         {
             bool calledPrint = false;
             void Print(string value) => calledPrint = true;
 
-            var result = Composer.Of("hello world")
+            var composer = Composer.Of("hello world")
                 .Then(Print)
                 .Then(x => x.Split())
-                .Then(x => string.Join(", ", x))
-                .Result;
+                .Then(x => string.Join(", ", x));
 
-            Assert.Equal("hello, world", result);
+            // Action should be called lazily
+            Assert.False(calledPrint);
+
+            Assert.Equal("hello, world", composer.Func());
             Assert.True(calledPrint);
         }
     }
