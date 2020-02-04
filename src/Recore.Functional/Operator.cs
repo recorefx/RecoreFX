@@ -1,3 +1,5 @@
+using System;
+
 namespace Recore.Functional
 {
     /// <summary>
@@ -5,6 +7,10 @@ namespace Recore.Functional
     /// </summary>
     public static class Operator
     {
-        // TODO
+        Func<bool> Not(Func<bool> predicate)
+            => () => !predicate();
+
+        Func<T1, bool> Not<T1>(Func<T1, bool> predicate)
+            => t1 => !predicate(t1);
     }
 }
