@@ -10,7 +10,7 @@ namespace Recore.Functional
     /// var result = Baz(Bar(Foo(value)));
     ///
     /// // With Composer
-    /// var result = Composer.Create(value)
+    /// var result = Composer.Of(value)
     ///     .Then(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
