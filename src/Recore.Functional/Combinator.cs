@@ -1,6 +1,6 @@
 using System;
 
-namespace Recore.Functional
+namespace Recore.Functional.Experimental
 {
     /// <summary>
     /// Defines operations for creating new functions out of other functions.
