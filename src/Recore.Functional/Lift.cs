@@ -72,7 +72,7 @@ namespace Recore.Functional
             if (func == null)
                 throw new ArgumentNullException(nameof(func));
 
-            return enumerable.Select(func);
+            return enumerable => enumerable.Select(func);
         }
 
         /// <summary>
