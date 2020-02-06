@@ -7,10 +7,20 @@ namespace Recore.Functional
     /// </summary>
     public static class Operator
     {
-        Func<bool> Not(Func<bool> predicate)
-            => () => !predicate();
+        /// <summary>
+        /// Returns the logical negation of a boolean value.
+        /// </summary>
+        public static bool Not(bool value) => !value;
 
-        Func<T1, bool> Not<T1>(Func<T1, bool> predicate)
-            => t1 => !predicate(t1);
+        /// <summary>
+        /// Returns the logical negation of a predicate function.
+        /// </summary>
+        public static Func<T1, bool> Not<T1>(Func<T1, bool> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            return x => !predicate(x);
+        }
     }
 }
