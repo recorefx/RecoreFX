@@ -3,8 +3,12 @@ using System;
 namespace Recore.Functional
 {
     /// <summary>
-    /// Composes many functions or actions into a single function.
+    /// Creates a function pipeline, calling each function or action on the value
+    /// with postfix syntax.
     /// </summary>
+    /// <remarks>
+    /// Functions are called on the value eagerly.
+    /// </remarks>
     /// <example>
     /// // Without Composer
     /// var result = Baz(Bar(Foo(value)));
@@ -14,24 +18,65 @@ namespace Recore.Functional
     ///     .Then(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
-    ///     .Func();
+    ///     .Result;
     /// </example>
     public sealed class Composer<T>
     {
         /// <summary>
+        /// Gets the result of the Composer.
+        /// </summary>
+        public T Result { get; }
+
+        /// <summary>
+        /// Initializes the Composer from a value.
+        /// </summary>
+        public Composer(T value)
+        {
+            Result = value;
+        }
+
+        /// <summary>
+        /// Invokes a function on the Composer's current value
+        /// and passes the result through the Composer.
+        /// </summary>
+        public Composer<U> Then<U>(Func<T, U> func)
+            => new Composer<U>(func(Result));
+
+        /// <summary>
+        /// Invokes an action on the Composer's current value
+        /// and passes the value through the Composer.
+        /// </summary>
+        public Composer<T> Then(Action<T> action)
+            => Then(action.Fluent());
+    }
+
+    /// <summary>
+    /// Composes many functions or actions into a single function.
+    /// </summary>
+    /// <example>
+    /// // Without Composer
+    /// var result = Baz(Bar(Foo(value)));
+    ///
+    /// // With Composer
+    /// var result = new Composer&lt;string, int&gt;(Foo)
+    ///     .Then(Bar)
+    ///     .Then(Baz)
+    ///     .Func();
+    /// </example>
+    public sealed class Composer<TValue, TResult>
+    {
+        /// <summary>
         /// Gets the composed function.
         /// </summary>
-        public Func<T> Func { get; }
+        public Func<TValue, TResult> Func { get; }
 
         /// <summary>
         /// Initializes the <see cref="Composer" /> from a function.
         /// </summary>
-        public Composer(Func<T> func)
+        public Composer(Func<TValue, TResult> func)
         {
             if (func == null)
-            {
                 throw new ArgumentNullException(nameof(func));
-            }
 
             Func = func;
         }
@@ -39,8 +84,8 @@ namespace Recore.Functional
         /// <summary>
         /// Adds another function to the composed result.
         /// </summary>
-        public Composer<U> Then<U>(Func<T, U> func)
-            => new Composer<U>(() => func(Func()));
+        public Composer<TValue, TNextResult> Then<TNextResult>(Func<TResult, TNextResult> func)
+            => new Composer<TValue, TNextResult>(x => func(Func(x)));
 
         /// <summary>
         /// Adds an action to be performed when evaluating the composed function.
@@ -49,7 +94,7 @@ namespace Recore.Functional
         /// Note that the action will be called lazily.
         /// It will not be called until the composed function is called.
         /// </remarks>
-        public Composer<T> Then(Action<T> action)
+        public Composer<TValue, TResult> Then(Action<TResult> action)
             => Then(action.Fluent());
     }
 
@@ -64,6 +109,6 @@ namespace Recore.Functional
         /// <remarks>
         /// This method works the the same as the constructor, but it is useful for type inference.
         /// </remarks>
-        public static Composer<T> Of<T>(T value) => new Composer<T>(() => value);
+        public static Composer<T> Of<T>(T value) => new Composer<T>(value);
     }
 }

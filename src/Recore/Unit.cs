@@ -6,8 +6,8 @@ namespace Recore
     /// A type with only one value.
     /// </summary>
     /// <remarks>
-    /// Whereas <c>void</c> is a type with no values,
-    /// <c cref="Unit">Unit</c> is a type with one value.
+    /// Whereas <see cref="System.Void" />is a type with no values,
+    /// <see cref="Unit" /> is a type with one value.
     /// It is useful when designing generic types or methods so that a non-generic version
     /// does not have to be provided.
     /// It is also useful for fluent interfaces (such as LINQ)
@@ -16,13 +16,24 @@ namespace Recore
     public readonly struct Unit : IEquatable<Unit>
     {
         /// <summary>
-        /// Converts a return type of <c>void</c> to a return type of <c cref="Unit">Unit</c>.
+        /// A singleton <see cref="Unit" /> value.
         /// </summary>
-        public static Func<Unit> Close(Action action) => () =>
+        public static Unit Value { get; } = new Unit();
+
+        /// <summary>
+        /// Converts a return type of <c>void</c> to a return type of <see cref="Unit" />.
+        /// </summary>
+        public static Func<Unit> Close(Action action)
         {
-            action();
-            return new Unit();
-        };
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            return () =>
+            {
+                action();
+                return Unit.Value;
+            };
+        }
 
         /// <summary>
         /// Determines whether another object is the unit value.
