@@ -67,7 +67,7 @@ namespace Recore.Functional
         /// <summary>
         /// Converts a function operating on a scalar value to a function operating on a sequence of values.
         /// </summary>
-        public static Func<IEnumerable<T>, IEnumerable<U>> OnEnumerable<T, U>(Func<T, U> func)
+        public static Func<IEnumerable<T>, IEnumerable<TResult>> OnEnumerable<T, TResult>(Func<T, TResult> func)
         {
             if (func == null)
                 throw new ArgumentNullException(nameof(func));
@@ -78,7 +78,7 @@ namespace Recore.Functional
         /// <summary>
         /// Converts an action operating on a scalar value to an action operating on a sequence of values.
         /// </summary>
-        public static Action<IEnumerable<T>> OnEnumerable<T, U>(Action<T> action)
+        public static Action<IEnumerable<T>> OnEnumerable<T>(Action<T> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
