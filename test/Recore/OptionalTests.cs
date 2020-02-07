@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -460,6 +461,17 @@ namespace Recore.Tests
             Assert.Equal(
                 nonempty,
                 collection.NonEmpty().ToArray());
+        }
+
+        [Fact]
+        public async Task AwaitAsync()
+        {
+            var optionalTask = Optional.Of(Task.FromResult(1));
+            var optional = await optionalTask.AwaitAsync();
+            Assert.Equal(1, optional);
+
+            optional = await Optional<Task<int>>.Empty.AwaitAsync();
+            Assert.Empty(optional);
         }
     }
 }
