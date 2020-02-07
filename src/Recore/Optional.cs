@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Recore.Properties;
 
@@ -200,7 +201,7 @@ namespace Recore
 
         private sealed class Enumerator : IEnumerator<T>
         {
-            private Optional<T> target;
+            private readonly Optional<T> target;
             private bool hasNextValue;
 
             public Enumerator(Optional<T> target)
@@ -295,8 +296,8 @@ namespace Recore
         }
 
         /// <summary>
-        /// Converts an <c cref="Optional{T}">Optional&lt;Optional&lt;T&gt;&gt;</c>
-        /// to an <c cref="Optional{T}">Optional&lt;T&gt;</c>.
+        /// Converts an <c>Optional&lt;Optional&lt;T&gt;&gt;</c>
+        /// to an <c>Optional&lt;T&gt;</c>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional)
             => optionalOptional.Then(x => x);
@@ -306,5 +307,14 @@ namespace Recore
         /// </summary>
         public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source)
             => source.SelectMany(x => x);
+
+        /// <summary>
+        /// Converts an <c>Optional&lt;Task&lt;T&gt;&gt;</c>
+        /// to a <c>Task&lt;Optional&lt;T&gt;&gt;</c>.
+        /// </summary>
+        public static Task<Optional<T>> AwaitAsync<T>(this Optional<Task<T>> optionalTask)
+            => optionalTask.Switch(
+                async x => Of(await x),
+                () => Task.FromResult(Optional<T>.Empty));
     }
 }
