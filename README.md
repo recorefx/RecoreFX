@@ -1,7 +1,7 @@
 # RecoreFX
 
 [![CI](https://github.com/brcrista/RecoreFX/workflows/CI/badge.svg)](https://github.com/recorefx/RecoreFX/actions?query=workflow%3ACI)
-[![Build Status](https://dev.azure.com/briancristante/RecoreFX/_apis/build/status/RecoreFX?branchName=master)](https://dev.azure.com/briancristante/RecoreFX/_build/latest?definitionId=8&branchName=master)
+[![Build Status](https://dev.azure.com/briancristante/RecoreFX/_apis/build/status/RecoreFX?branchName=master)](https://dev.azure.com/briancristante/RecoreFX/_build/latest?definitionId=11&branchName=master)
 
 **RecoreFX** fills the most commonly-needed missing features from the .NET standard library.
 
