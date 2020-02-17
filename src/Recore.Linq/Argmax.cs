@@ -56,9 +56,9 @@ namespace Recore.Linq
         // }
 
         /// <summary>
-        /// Returns the maximizing argument for a function from a sequence of values.
+        /// Returns the maximum value and the maximizing value for a function from a sequence of values.
         /// </summary>
-        public static TSource Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        public static (TResult Max, TSource Argmax) Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source == null)
             {
@@ -101,7 +101,7 @@ namespace Recore.Linq
                     }
                 }
 
-                return argmax;
+                return (max, argmax);
             }
         }
     }

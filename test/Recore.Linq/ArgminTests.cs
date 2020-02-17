@@ -21,7 +21,7 @@ namespace Recore.Linq.Tests
         public void EmptyEnumerable()
         {
             // Nullable types return null
-            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()));
+            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()).Argmin);
 
             // Non-nullable types throw
             Assert.Throws<InvalidOperationException>(
@@ -37,7 +37,7 @@ namespace Recore.Linq.Tests
                 new { Age = 1 }
             };
 
-            Assert.Equal(singletonCollection[0], singletonCollection.Argmin(x => x));
+            Assert.Equal(singletonCollection[0], singletonCollection.Argmin(x => x).Argmin);
 
             // Multiple elements throws exception
             var collection = new[]
@@ -46,7 +46,7 @@ namespace Recore.Linq.Tests
                 new { Age = 2 }
             };
 
-            Assert.Throws<ArgumentException>(() => collection.Argmin(x => x));
+            Assert.Throws<ArgumentException>(() => collection.Argmin(x => x).Argmin);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Recore.Linq.Tests
 
             Assert.Equal(
                 collection[0],
-                collection.Argmin(x => x.Age));
+                collection.Argmin(x => x.Age).Argmin);
         }
     }
 }

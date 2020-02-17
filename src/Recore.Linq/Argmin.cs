@@ -56,9 +56,9 @@ namespace Recore.Linq
         // }
 
         /// <summary>
-        /// Returns the minimizing argument for a function from a sequence of values.
+        /// Returns the minimum and the minimizing value for a function from a sequence of values.
         /// </summary>
-        public static TSource Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        public static (TResult Min, TSource Argmin) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source == null)
             {
@@ -101,7 +101,7 @@ namespace Recore.Linq
                     }
                 }
 
-                return argmin;
+                return (min, argmin);
             }
         }
     }
