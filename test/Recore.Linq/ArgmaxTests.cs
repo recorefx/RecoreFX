@@ -21,7 +21,7 @@ namespace Recore.Linq.Tests
         public void EmptyEnumerable()
         {
             // Nullable types return null
-            Assert.Null(Enumerable.Empty<string>().Argmax(x => x.GetHashCode()));
+            Assert.Null(Enumerable.Empty<string>().Argmax(x => x.GetHashCode()).Argmax);
 
             // Non-nullable types throw
             Assert.Throws<InvalidOperationException>(
@@ -37,7 +37,7 @@ namespace Recore.Linq.Tests
                 new { Age = 1 }
             };
 
-            Assert.Equal(singletonCollection[0], singletonCollection.Argmax(x => x));
+            Assert.Equal(singletonCollection[0], singletonCollection.Argmax(x => x).Argmax);
 
             // Multiple elements throws exception
             var collection = new[]
@@ -61,7 +61,7 @@ namespace Recore.Linq.Tests
 
             Assert.Equal(
                 collection[1],
-                collection.Argmax(x => x.Age));
+                collection.Argmax(x => x.Age).Argmax);
         }
     }
 }
