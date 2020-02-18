@@ -15,10 +15,10 @@
     <PackageId>RecoreFX</PackageId>
     <PackageProjectUrl>https://recorefx.github.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/recorefx/RecoreFX</RepositoryUrl>
-    <Description>RecoreFX</Description>
+    <Description>A simple library for a better C#</Description>
     <Product>RecoreFX</Product>
     <Copyright>Copyright (c) 2019 Brian Cristante</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
