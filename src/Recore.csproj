@@ -4,12 +4,21 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
     <RootNamespace>Recore</RootNamespace>
-    <AssemblyVersion>0.3.0.0</AssemblyVersion>
-    <FileVersion>0.3.0.0</FileVersion>
-    <Version>0.3.0</Version>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <FileVersion>0.5.0.0</FileVersion>
+    <Version>0.5.0</Version>
     <GenerateDocumentation>true</GenerateDocumentation>
     <DocumentationFile>bin/docs/Recore.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Authors>Brian Cristante</Authors>
+    <Company />
+    <PackageId>RecoreFX</PackageId>
+    <PackageProjectUrl>https://recorefx.github.io/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/recorefx/RecoreFX</RepositoryUrl>
+    <Description>A simple library for a better C#</Description>
+    <Product>RecoreFX</Product>
+    <Copyright>Copyright (c) 2019 Brian Cristante</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +42,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

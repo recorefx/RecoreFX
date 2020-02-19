@@ -27,6 +27,6 @@ namespace Recore.Text
         /// where each input string is separated by <see cref="Environment.NewLine" />.
         /// </summary>
         public static string JoinLines(params string[] lines)
-            => JoinLines(lines);
+            => JoinLines((IEnumerable<string>)lines);
     }
 }
