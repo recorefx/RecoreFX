@@ -1,12 +1,17 @@
 # RecoreFX
 
-> [!NOTE]
-> This is DocFX-flavored Markdown!
+**RecoreFX** fills the most common needs for C# code after the .NET standard library.
 
-**RecoreFX** is the minimal supplement to the .NET standard library.
+## Installation
+Install from [NuGet](https://www.nuget.org/packages/RecoreFX/):
+
+```
+dotnet add package RecoreFX
+```
 
 ## Why Recore?
-There are many other great libraries out there for .NET, and Recore duplicates some of their functionality.
-Recore seeks to fill in the most commonly needed missing features from CoreFX.
+There are other packages offering more LINQ-style methods, better URI handling, or implementations of `Optional`.
+These packages admittedly have richer feature sets than Recore has, and may be right for your project if you want that depth of functionality.
 
-Recore is meant to feel like a natural extension of CoreFX and is built on the same principles.
+RecoreFX is designed to feel like a natural extension of CoreFX.
+It's meant to be a one-stop shop, filling in the most common use cases without a steep learning curve.
