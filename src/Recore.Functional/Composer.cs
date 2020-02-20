@@ -23,12 +23,12 @@ namespace Recore.Functional
     public sealed class Composer<T>
     {
         /// <summary>
-        /// Gets the result of the Composer.
+        /// Gets the result of the <see cref="Composer{T}"/>.
         /// </summary>
         public T Result { get; }
 
         /// <summary>
-        /// Initializes the Composer from a value.
+        /// Initializes the <see cref="Composer{T}"/> from a value.
         /// </summary>
         public Composer(T value)
         {
@@ -43,8 +43,8 @@ namespace Recore.Functional
             => new Composer<U>(func(Result));
 
         /// <summary>
-        /// Invokes an action on the Composer's current value
-        /// and passes the value through the Composer.
+        /// Invokes an action on the <see cref="Composer{T}"/>'s current value
+        /// and passes the value through the <see cref="Composer{T}"/>.
         /// </summary>
         public Composer<T> Then(Action<T> action)
             => Then(action.Fluent());
@@ -71,7 +71,7 @@ namespace Recore.Functional
         public Func<TValue, TResult> Func { get; }
 
         /// <summary>
-        /// Initializes the <see cref="Composer"/> from a function.
+        /// Initializes the <see cref="Composer{TValue, TResult}"/> from a function.
         /// </summary>
         public Composer(Func<TValue, TResult> func)
         {
@@ -99,12 +99,12 @@ namespace Recore.Functional
     }
 
     /// <summary>
-    /// Provides additional methods for <c cref="Composer{T}">Composer&lt;T&gt;</c>.
+    /// Provides additional methods for <see cref="Composer{T}"/>.
     /// </summary>
     public static class Composer
     {
         /// <summary>
-        /// Creates a Composer from a value.
+        /// Creates a <see cref="Composer{T}"/> from a value.
         /// </summary>
         /// <remarks>
         /// This method works the the same as the constructor, but it is useful for type inference.
