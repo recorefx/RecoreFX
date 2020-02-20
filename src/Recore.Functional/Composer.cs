@@ -36,8 +36,8 @@ namespace Recore.Functional
         }
 
         /// <summary>
-        /// Invokes a function on the Composer's current value
-        /// and passes the result through the Composer.
+        /// Invokes a function on the <see cref="Composer{T}"/>'s current value
+        /// and passes the result through the <see cref="Composer{T}"/>.
         /// </summary>
         public Composer<U> Then<U>(Func<T, U> func)
             => new Composer<U>(func(Result));

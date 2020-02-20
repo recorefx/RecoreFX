@@ -103,7 +103,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{TLeft}"/>.
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TLeft&gt;</c>.
         /// </summary>
         public Optional<TLeft> GetLeft()
             => Switch(
@@ -111,7 +111,7 @@ namespace Recore
                 right => Optional<TLeft>.Empty);
 
         /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{TRight}"/>.
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
         /// </summary>
         public Optional<TRight> GetRight()
             => Switch(
