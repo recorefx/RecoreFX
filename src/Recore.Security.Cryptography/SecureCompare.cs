@@ -15,7 +15,7 @@ namespace Recore.Security.Cryptography
         ///
         /// When checking untrusted input against a secret,
         /// using a regular element-by-element equality method
-        /// such as <c>String.Equals</c> is insecure.
+        /// such as <see cref="string.Equals(string)"/> is insecure.
         /// For example, suppose you are checking whether an incoming request's signature
         /// matches what you expect.
         /// In this case, you hash the request payload with your own private key

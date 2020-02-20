@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Recore.Collections.Generic
 {
     /// <summary>
-    /// Provides additional methods for working with <see cref="List{T}" />.
+    /// Provides additional methods for working with <see cref="List{T}"/>.
     /// </summary>
     public static class ListExtensions
     {

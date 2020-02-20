@@ -10,8 +10,9 @@ namespace Recore
         /// </summary>
         /// <remarks>
         /// This is useful for computing the hash code for a type from the hash codes of all its members.
-        /// It is superseded in .NET Core 3.0 by the <c>System.HashCode</c> type.
+        /// It is superseded in .NET Standard 2.1 by the <c>System.HashCode</c> type.
         /// </remarks>
+        // TODO .NET STandard 2.1 use <see>
         public static int GetHashCode(int seed1=17, int seed2=23, int nullHash = 0, params object[] fields)
         {
             unchecked
