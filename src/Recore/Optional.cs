@@ -16,15 +16,15 @@ namespace Recore
         private readonly T value;
 
         /// <summary>
-        /// Indicates whether the <see cref="Optional{T}" /> was created with a value.
+        /// Indicates whether the <see cref="Optional{T}"/> was created with a value.
         /// </summary>
         public bool HasValue { get; }
 
         /// <summary>
-        /// Creates an <see cref="Optional{T}" /> with a value.
+        /// Creates an <see cref="Optional{T}"/> with a value.
         /// </summary>
         /// <remarks>
-        /// If <c>null</c> is passed for <paramref name="value"/>, then the <see cref="Optional{T}" />
+        /// If <c>null</c> is passed for <paramref name="value"/>, then the <see cref="Optional{T}"/>
         /// is considered empty.
         /// </remarks>
         public Optional(T value)
@@ -34,20 +34,20 @@ namespace Recore
         }
 
         /// <summary>
-        /// Creates an <see cref="Optional{T}" /> without a value.
+        /// Creates an <see cref="Optional{T}"/> without a value.
         /// </summary>
         /// <remarks>
-        /// While an empty <see cref="Optional{T}" /> can also be created by calling the default constructor
+        /// While an empty <see cref="Optional{T}"/> can also be created by calling the default constructor
         /// or passing <c>null</c> to the constructor,
-        /// <see cref="Empty" /> is more expressive, making the absence of a value more obvious.
+        /// <see cref="Empty"/> is more expressive, making the absence of a value more obvious.
         /// </remarks>
         public static Optional<T> Empty => new Optional<T>();
 
         /// <summary>
-        /// Chooses a function to call depending on whether the <see cref="Optional{T}" /> has a value.
+        /// Chooses a function to call depending on whether the <see cref="Optional{T}"/> has a value.
         /// </summary>
-        /// <param name="onValue">Called when the <see cref="Optional{T}" /> has a value.</param>
-        /// <param name="onEmpty">Called when the <see cref="Optional{T}" /> does not have a value.</param>
+        /// <param name="onValue">Called when the <see cref="Optional{T}"/> has a value.</param>
+        /// <param name="onEmpty">Called when the <see cref="Optional{T}"/> does not have a value.</param>
         /// <returns>Result of the function that was called.</returns>
         public U Switch<U>(Func<T, U> onValue, Func<U> onEmpty)
         {
@@ -72,10 +72,10 @@ namespace Recore
         }
 
         /// <summary>
-        /// Chooses an action to take depending on whether the <see cref="Optional{T}" /> has a value.
+        /// Chooses an action to take depending on whether the <see cref="Optional{T}"/> has a value.
         /// </summary>
-        /// <param name="onValue">Called when the <see cref="Optional{T}" /> has a value.</param>
-        /// <param name="onEmpty">Called when the <see cref="Optional{T}" /> does not have a value.</param>
+        /// <param name="onValue">Called when the <see cref="Optional{T}"/> has a value.</param>
+        /// <param name="onEmpty">Called when the <see cref="Optional{T}"/> does not have a value.</param>
         public void Switch(Action<T> onValue, Action onEmpty)
         {
             if (onValue == null)
@@ -99,7 +99,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Extracts the value with a fallback if the <see cref="Optional{T}" /> is empty.
+        /// Extracts the value with a fallback if the <see cref="Optional{T}"/> is empty.
         /// </summary>
         public T ValueOr(T fallback)
             => Switch(
@@ -107,7 +107,7 @@ namespace Recore
                 () => fallback);
 
         /// <summary>
-        /// Maps a function over the <see cref="Optional{T}" />'s value, or propagates <see cref="Optional{T}.Empty" />.
+        /// Maps a function over the <see cref="Optional{T}"/>'s value, or propagates <see cref="Optional{T}.Empty"/>.
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
             => Switch(
@@ -115,7 +115,7 @@ namespace Recore
                 () => Optional<U>.Empty);
 
         /// <summary>
-        /// Takes an action only if the <see cref="Optional{T}" /> has a value.
+        /// Takes an action only if the <see cref="Optional{T}"/> has a value.
         /// </summary>
         public void IfValue(Action<T> onValue)
             => Switch(
@@ -123,7 +123,7 @@ namespace Recore
                 () => { });
 
         /// <summary>
-        /// Takes an action only if the <see cref="Optional{T}" /> is empty.
+        /// Takes an action only if the <see cref="Optional{T}"/> is empty.
         /// </summary>
         public void IfEmpty(Action onEmpty)
             => Switch(
@@ -131,13 +131,13 @@ namespace Recore
                 onEmpty);
 
         /// <summary>
-        /// Chains another <see cref="Optional{T}" />-producing operation onto the result of another.
+        /// Chains another <see cref="Optional{T}"/>-producing operation onto the result of another.
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
         /// Conceptually, it is the same as passing <paramref name="f"/> to <c cref="OnValue{U}(Func{T, U})">OnValue</c>
         /// and then "flattening" the <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> into an <c>Optional&lt;<typeparamref name="T"/>&gt;</c>.
-        /// (Note that <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> is not a valid <see cref="Optional{T}" /> because of the
+        /// (Note that <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> is not a valid <see cref="Optional{T}"/> because of the
         /// type constraint <c>where T : class</c>.)
         /// </remarks>
         public Optional<U> Then<U>(Func<T, Optional<U>> f)
@@ -155,7 +155,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether this instance and another object,
-        /// which must also be an <see cref="Optional{T}" />,
+        /// which must also be an <see cref="Optional{T}"/>,
         /// have the same value.
         /// </summary>
         public override bool Equals(object obj)
@@ -163,7 +163,7 @@ namespace Recore
             && this.Equals((Optional<T>)obj);
 
         /// <summary>
-        /// Determines whether this instance and another <see cref="Optional{T}" />
+        /// Determines whether this instance and another <see cref="Optional{T}"/>
         /// have the same value.
         /// </summary>
         public bool Equals(Optional<T> other)
@@ -237,12 +237,12 @@ namespace Recore
         }
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Optional{T}" /> have the same value.
+        /// Determines whether two instances of <see cref="Optional{T}"/> have the same value.
         /// </summary>
         public static bool operator ==(Optional<T> lhs, Optional<T> rhs) => lhs.Equals(rhs);
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Optional{T}" /> have different values.
+        /// Determines whether two instances of <see cref="Optional{T}"/> have different values.
         /// </summary>
         public static bool operator !=(Optional<T> lhs, Optional<T> rhs) => !lhs.Equals(rhs);
 
@@ -260,7 +260,7 @@ namespace Recore
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Optional{T}" />.
+    /// Provides additional methods for <see cref="Optional{T}"/>.
     /// </summary>
     public static class Optional
     {
@@ -269,7 +269,7 @@ namespace Recore
         /// </summary>
         /// <remarks>
         /// This is useful for type inference in some cases where the implicit conversion
-        /// can't be used, such as creating an <see cref="Optional{T}" />
+        /// can't be used, such as creating an <see cref="Optional{T}"/>
         /// and immediately invoking a method.
         /// It can also be passed as a delegate whereas the constructor can't be.
         /// </remarks>
@@ -279,7 +279,7 @@ namespace Recore
         /// Sets an optional value if a condition is true.
         /// </summary>
         /// <remarks>
-        /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}" /> result.
+        /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}"/> result.
         /// </remarks>
         public static Optional<T> If<T>(bool condition, T value)
         {
@@ -295,7 +295,7 @@ namespace Recore
 
         /// <summary>
         /// Converts an <c>Optional&lt;Optional&lt;T&gt;&gt;</c>
-        /// to an <see cref="Optional{T}" />.
+        /// to an <see cref="Optional{T}"/>.
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional)
             => optionalOptional.Then(x => x);

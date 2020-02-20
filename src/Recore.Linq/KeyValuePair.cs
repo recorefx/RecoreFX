@@ -7,7 +7,7 @@ namespace Recore.Linq
     public static partial class Renumerable
     {
         /// <summary>
-        /// Creates a <see cref="Dictionary{TKey, TValue}" /> from a sequence of key-value pairs.
+        /// Creates a <see cref="Dictionary{TKey, TValue}"/> from a sequence of key-value pairs.
         /// </summary>
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
             => source.ToDictionary(x => x.Key, x => x.Value);

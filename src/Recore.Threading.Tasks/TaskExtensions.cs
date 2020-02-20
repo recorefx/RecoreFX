@@ -14,8 +14,8 @@ namespace Recore.Threading.Tasks
         /// <remarks>
         /// If <paramref name="task"/> is terminated by an exception, that exception
         /// will be rethrown in the current context.
-        /// Unlike <see cref="Task.Wait()" />, that exception will be of its original type,
-        /// not <see cref="AggregateException" />.
+        /// Unlike <see cref="Task.Wait()"/>, that exception will be of its original type,
+        /// not <see cref="AggregateException"/>.
         /// It will also preserve its original stack trace.
         /// This exception-throwing behavior is the same as if you had used <c>await</c>.
         /// Note that it is still possible to deadlock with this method.
@@ -29,8 +29,8 @@ namespace Recore.Threading.Tasks
         /// <remarks>
         /// If <paramref name="task"/> is terminated by an exception, that exception
         /// will be rethrown in the current context.
-        /// Unlike <see cref="Task{TResult}.Result" />, that exception will be of its original type,
-        /// not <see cref="AggregateException" />.
+        /// Unlike <see cref="Task{TResult}.Result"/>, that exception will be of its original type,
+        /// not <see cref="AggregateException"/>.
         /// It will also preserve its original stack trace.
         /// This exception-throwing behavior is the same as if you had used <c>await</c>.
         /// Note that it is still possible to deadlock with this method.

@@ -55,21 +55,21 @@ namespace Recore
             => either.Switch(onValue, onError);
 
         /// <summary>
-        /// Converts <see cref="Result{TValue, TError}" />
+        /// Converts <see cref="Result{TValue, TError}"/>
         /// to <c cref="Optional{TValue}">Optional&lt;TValue&gt;</c>
         /// </summary>
         public Optional<TValue> GetValue()
             => either.GetLeft();
 
         /// <summary>
-        /// Converts <see cref="Result{TValue, TError}" />
+        /// Converts <see cref="Result{TValue, TError}"/>
         /// to <c cref="Optional{TError}">Optional&lt;TError&gt;</c>
         /// </summary>
         public Optional<TError> GetError()
             => either.GetRight();
 
         /// <summary>
-        /// Maps a function over the <see cref="Result{TValue, TError}" /> only if the result is successful.
+        /// Maps a function over the <see cref="Result{TValue, TError}"/> only if the result is successful.
         /// </summary>
         public Result<TResult, TError> OnValue<TResult>(Func<TValue, TResult> onValue)
             => Switch(
@@ -77,7 +77,7 @@ namespace Recore
                 Result.Failure<TResult, TError>);
 
         /// <summary>
-        /// Maps a function over the <see cref="Result{TValue, TError}" /> only if the result is failed.
+        /// Maps a function over the <see cref="Result{TValue, TError}"/> only if the result is failed.
         /// </summary>
         public Result<TValue, TResult> OnError<TResult>(Func<TError, TResult> onError)
             => Switch(
@@ -97,7 +97,7 @@ namespace Recore
             => either.IfRight(onError);
 
         /// <summary>
-        /// Chains another <see cref="Result{TValue, TError}" />-producing operation from another.
+        /// Chains another <see cref="Result{TValue, TError}"/>-producing operation from another.
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
@@ -116,11 +116,11 @@ namespace Recore
             => either.ToString();
 
         /// <summary>
-        /// Compares this <see cref="Result{TValue, TError}" />
+        /// Compares this <see cref="Result{TValue, TError}"/>
         /// to another object for equality.
         /// </summary>
         /// <remarks>
-        /// Two <see cref="Result{TValue, TError}" />s are equal only if they have the same type parameters in the same order.
+        /// Two <see cref="Result{TValue, TError}"/>s are equal only if they have the same type parameters in the same order.
         /// For example, an <c>Result&lt;int, string&gt;</c> and an <c>Result&lt;string, int&gt;</c>
         /// will always be nonequal.
         /// </remarks>
@@ -129,7 +129,7 @@ namespace Recore
             && this.Equals((Result<TValue, TError>)obj);
 
         /// <summary>
-        /// Compares two instances of <see cref="Result{TValue, TError}" />
+        /// Compares two instances of <see cref="Result{TValue, TError}"/>
         /// for equality.
         /// </summary>
         /// <remarks>
@@ -146,30 +146,30 @@ namespace Recore
             => either.GetHashCode();
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Result{TValue, TError}" />
+        /// Determines whether two instances of <see cref="Result{TValue, TError}"/>
         /// have the same value.
         /// </summary>
         public static bool operator ==(Result<TValue, TError> lhs, Result<TValue, TError> rhs) => Equals(lhs, rhs);
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Result{TValue, TError}" />
+        /// Determines whether two instances of <see cref="Result{TValue, TError}"/>
         /// have the same value.
         /// </summary>
         public static bool operator !=(Result<TValue, TError> lhs, Result<TValue, TError> rhs) => !Equals(lhs, rhs);
 
         /// <summary>
-        /// Converts an instance of a type to an <see cref="Result{TValue, TError}" />.
+        /// Converts an instance of a type to an <see cref="Result{TValue, TError}"/>.
         /// </summary>
         public static implicit operator Result<TValue, TError>(TValue value) => new Result<TValue, TError>(value);
 
         /// <summary>
-        /// Converts an instance of a type to an <see cref="Result{TValue, TError}" />.
+        /// Converts an instance of a type to an <see cref="Result{TValue, TError}"/>.
         /// </summary>
         public static implicit operator Result<TValue, TError>(TError error) => new Result<TValue, TError>(error);
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Result{TValue, TError}" />.
+    /// Provides additional methods for <see cref="Result{TValue, TError}"/>.
     /// </summary>
     public static class Result
     {
@@ -186,7 +186,7 @@ namespace Recore
             => new Result<TValue, TError>(error);
 
         /// <summary>
-        /// Wraps a function to be executed and converted to <see cref="Result{TValue, TError}" />.
+        /// Wraps a function to be executed and converted to <see cref="Result{TValue, TError}"/>.
         /// </summary>
         public sealed class Catcher<TValue>
         {
@@ -229,7 +229,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Suspends a function to be executed by <see cref="Catcher{TValue}.Catch{TException}()" />.
+        /// Suspends a function to be executed by <see cref="Catcher{TValue}.Catch{TException}()"/>.
         /// </summary>
         public static Catcher<TValue> Try<TValue>(Func<TValue> func)
         {
@@ -243,7 +243,7 @@ namespace Recore
 
         /// <summary>
         /// Converts a <c cref="Result{TValue, TError}">Result&lt;Result&lt;TValue, TError&gt;, TError&gt;</c>
-        /// to a <see cref="Result{TValue, TError}" />.
+        /// to a <see cref="Result{TValue, TError}"/>.
         /// </summary>
         public static Result<TValue, TError> Flatten<TValue, TError>(this Result<Result<TValue, TError>, TError> resultResult)
             => resultResult.Then(x => x);

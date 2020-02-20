@@ -8,7 +8,7 @@ namespace Recore
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
     /// <remarks>
-    /// This type is meant to feel like a subclass of <see cref="string" />, which is sealed.
+    /// This type is meant to feel like a subclass of <see cref="string"/>, which is sealed.
     /// </remarks>
     public sealed class Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
     {
@@ -16,7 +16,7 @@ namespace Recore
         private readonly string value;
 
         /// <summary>
-        /// Constructs an instance of <see cref="Token" /> from a string value.
+        /// Constructs an instance of <see cref="Token"/> from a string value.
         /// </summary>
         public Token(string value)
         {
@@ -48,7 +48,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether this instance and another object,
-        /// which must be a <see cref="Token" /> or a <see cref="string" />,
+        /// which must be a <see cref="Token"/> or a <see cref="string"/>,
         /// have the same value.
         /// </summary>
         public override bool Equals(object obj)
@@ -68,25 +68,25 @@ namespace Recore
         }
 
         /// <summary>
-        /// Determines whether this instance and another <see cref="Token" />
+        /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
         /// </summary>
         public bool Equals(Token other) => value == other.value;
 
         /// <summary>
-        /// Determines whether this instance and a <see cref="string" />
+        /// Determines whether this instance and a <see cref="string"/>
         /// have the same value.
         /// </summary>
         public bool Equals(string other) => value.Equals(other);
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Token" />
+        /// Determines whether two instances of <see cref="Token"/>
         /// have the same value.
         /// </summary>
         public static bool operator ==(Token lhs, Token rhs) => Equals(lhs, rhs);
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Token" />
+        /// Determines whether two instances of <see cref="Token"/>
         /// have different values.
         /// </summary>
         public static bool operator !=(Token lhs, Token rhs) => !Equals(lhs, rhs);
@@ -97,14 +97,14 @@ namespace Recore
         public override int GetHashCode() => value.GetHashCode();
 
         /// <summary>
-        /// Compares this instance with a specified <see cref="Token" /> object
+        /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
         public int CompareTo(Token other) => value.CompareTo(other.value);
 
         /// <summary>
-        /// Compares this instance with a specified <see cref="string" /> object
+        /// Compares this instance with a specified <see cref="string"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
@@ -130,7 +130,7 @@ namespace Recore
         /// <remarks>
         /// While a particular string may consist of tokens delimited by some other character or string,
         /// this method does not provide an option for this by design.
-        /// This is consistent with the <see cref="Token" /> type itself,
+        /// This is consistent with the <see cref="Token"/> type itself,
         /// which does not check for any characters besides whitespace.
         /// </remarks>
         public static Token[] Tokenize(this string str)

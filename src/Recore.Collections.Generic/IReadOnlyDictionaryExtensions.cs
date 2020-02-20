@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Recore.Collections.Generic
 {
     /// <summary>
-    /// Provides additional methods for working with <see cref="IReadOnlyDictionary{TKey, TValue}" />.
+    /// Provides additional methods for working with <see cref="IReadOnlyDictionary{TKey, TValue}"/>.
     /// </summary>
     public static class IReadOnlyDictionaryExtensions
     {

@@ -71,7 +71,7 @@ namespace Recore.Functional
         public Func<TValue, TResult> Func { get; }
 
         /// <summary>
-        /// Initializes the <see cref="Composer" /> from a function.
+        /// Initializes the <see cref="Composer"/> from a function.
         /// </summary>
         public Composer(Func<TValue, TResult> func)
         {

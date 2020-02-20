@@ -9,7 +9,7 @@ namespace Recore
     /// Not thread-safe.
     /// Concurrent calls to dispose the object may result in the action being invoked
     /// multiple times.
-    /// However, synchronous calls to <see cref="Dispose" /> are idempotent.
+    /// However, synchronous calls to <see cref="Dispose"/> are idempotent.
     /// If an instance of this type is created and never disposed, the callback will not be called.
     /// By design, the callback is not called from the finalizer, which would happen non-determinstically.
     /// </remarks>

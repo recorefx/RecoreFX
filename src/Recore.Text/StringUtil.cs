@@ -10,7 +10,7 @@ namespace Recore.Text
     {
         /// <summary>
         /// Concatenates a sequence of strings into a single string
-        /// where each input string is separated by <see cref="Environment.NewLine" />.
+        /// where each input string is separated by <see cref="Environment.NewLine"/>.
         /// </summary>
         public static string JoinLines(IEnumerable<string> lines)
         {
@@ -24,7 +24,7 @@ namespace Recore.Text
 
         /// <summary>
         /// Concatenates a variable number of string arguments into a single string
-        /// where each input string is separated by <see cref="Environment.NewLine" />.
+        /// where each input string is separated by <see cref="Environment.NewLine"/>.
         /// </summary>
         public static string JoinLines(params string[] lines)
             => JoinLines((IEnumerable<string>)lines);

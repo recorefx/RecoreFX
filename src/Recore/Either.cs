@@ -13,17 +13,17 @@ namespace Recore
         private readonly TRight right;
 
         /// <summary>
-        /// Indicates whether the value is of type <typeparamref name="TLeft" />.
+        /// Indicates whether the value is of type <typeparamref name="TLeft"/>.
         /// </summary>
         public bool IsLeft { get; }
 
         /// <summary>
-        /// Indicates whether the value is of type <typeparamref name="TRight" />.
+        /// Indicates whether the value is of type <typeparamref name="TRight"/>.
         /// </summary>
         public bool IsRight => !IsLeft;
 
         /// <summary>
-        /// Constructs an instance of the type from a value of <typeparamref name="TLeft" />.
+        /// Constructs an instance of the type from a value of <typeparamref name="TLeft"/>.
         /// </summary>
         public Either(TLeft left)
         {
@@ -38,7 +38,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Constructs an instance of the type from a value of <typeparamref name="TRight" />.
+        /// Constructs an instance of the type from a value of <typeparamref name="TRight"/>.
         /// </summary>
         public Either(TRight right)
         {
@@ -103,7 +103,7 @@ namespace Recore
         }
 
         /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}" /> to <see cref="Optional{TLeft}" />.
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{TLeft}"/>.
         /// </summary>
         public Optional<TLeft> GetLeft()
             => Switch(
@@ -111,7 +111,7 @@ namespace Recore
                 right => Optional<TLeft>.Empty);
 
         /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}" /> to <see cref="Optional{TRight}" />.
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{TRight}"/>.
         /// </summary>
         public Optional<TRight> GetRight()
             => Switch(
@@ -119,7 +119,7 @@ namespace Recore
                 Optional.Of);
 
         /// <summary>
-        /// Maps a function over the <see cref="Either{TLeft, TRight}" /> only if the value is an instance of <typeparamref name="TLeft" />.
+        /// Maps a function over the <see cref="Either{TLeft, TRight}"/> only if the value is an instance of <typeparamref name="TLeft"/>.
         /// </summary>
         public Either<TResult, TRight> OnLeft<TResult>(Func<TLeft, TResult> onLeft)
             => Switch(
@@ -127,7 +127,7 @@ namespace Recore
                 right => new Either<TResult, TRight>(right));
 
         /// <summary>
-        /// Maps a function over the <see cref="Either{TLeft, TRight}" /> only if the value is an instance of <typeparamref name="TRight" />.
+        /// Maps a function over the <see cref="Either{TLeft, TRight}"/> only if the value is an instance of <typeparamref name="TRight"/>.
         /// </summary>
         public Either<TLeft, TResult> OnRight<TResult>(Func<TRight, TResult> onRight)
             => Switch(
@@ -135,7 +135,7 @@ namespace Recore
                 right => new Either<TLeft, TResult>(onRight(right)));
 
         /// <summary>
-        /// Takes an action only if the value is an instance of <typeparamref name="TLeft" />.
+        /// Takes an action only if the value is an instance of <typeparamref name="TLeft"/>.
         /// </summary>
         public void IfLeft(Action<TLeft> onLeft)
             => Switch(
@@ -143,7 +143,7 @@ namespace Recore
                 right => { });
 
         /// <summary>
-        /// Takes an action only if the value is an instance of <typeparamref name="TRight" />.
+        /// Takes an action only if the value is an instance of <typeparamref name="TRight"/>.
         /// </summary>
         public void IfRight(Action<TRight> onRight)
             => Switch(
@@ -151,8 +151,8 @@ namespace Recore
                 onRight);
 
         /// <summary>
-        /// Converts this <see cref="Either{TLeft, TRight}" />
-        /// to an <see cref="Either{TRight, TLeft}" />
+        /// Converts this <see cref="Either{TLeft, TRight}"/>
+        /// to an <see cref="Either{TRight, TLeft}"/>
         /// </summary>
         public Either<TRight, TLeft> Swap()
             => Switch(
@@ -168,11 +168,11 @@ namespace Recore
                 right => right.ToString());
 
         /// <summary>
-        /// Compares this <see cref="Either{TLeft, TRight}" />
+        /// Compares this <see cref="Either{TLeft, TRight}"/>
         /// to another object for equality.
         /// </summary>
         /// <remarks>
-        /// Two <see cref="Either{TLeft, TRight}" />s are equal only if they have the same type parameters in the same order.
+        /// Two <see cref="Either{TLeft, TRight}"/>s are equal only if they have the same type parameters in the same order.
         /// For example, an <c>Either&lt;int, string&gt;</c> and an <c>Either&lt;string, int&gt;</c>
         /// will always be nonequal.
         /// </remarks>
@@ -181,7 +181,7 @@ namespace Recore
             && this.Equals((Either<TLeft, TRight>)obj);
 
         /// <summary>
-        /// Compares two instances of <see cref="Either{TLeft, TRight}" />
+        /// Compares two instances of <see cref="Either{TLeft, TRight}"/>
         /// for equality.
         /// </summary>
         /// <remarks>
@@ -209,30 +209,30 @@ namespace Recore
                 right => right.GetHashCode());
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Either{TLeft, TRight}" />
+        /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>
         /// have the same value.
         /// </summary>
         public static bool operator ==(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => Equals(lhs, rhs);
 
         /// <summary>
-        /// Determines whether two instances of <see cref="Either{TLeft, TRight}" />
+        /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>
         /// have the same value.
         /// </summary>
         public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !Equals(lhs, rhs);
 
         /// <summary>
-        /// Converts an instance of a type to an <see cref="Either{TLeft, TRight}" />.
+        /// Converts an instance of a type to an <see cref="Either{TLeft, TRight}"/>.
         /// </summary>
         public static implicit operator Either<TLeft, TRight>(TLeft left) => new Either<TLeft, TRight>(left);
 
         /// <summary>
-        /// Converts an instance of a type to an <see cref="Either{TLeft, TRight}" />.
+        /// Converts an instance of a type to an <see cref="Either{TLeft, TRight}"/>.
         /// </summary>
         public static implicit operator Either<TLeft, TRight>(TRight right) => new Either<TLeft, TRight>(right);
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Either{TLeft, TRight}" />.
+    /// Provides additional methods for <see cref="Either{TLeft, TRight}"/>.
     /// </summary>
     public static class Either
     {

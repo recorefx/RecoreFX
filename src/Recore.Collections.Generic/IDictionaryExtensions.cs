@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Recore.Collections.Generic
 {
     /// <summary>
-    /// Provides additional methods for working with <see cref="IDictionary{TKey, TValue}" />.
+    /// Provides additional methods for working with <see cref="IDictionary{TKey, TValue}"/>.
     /// </summary>
     public static class IDictionaryExtensions
     {
