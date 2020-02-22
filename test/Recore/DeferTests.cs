@@ -49,21 +49,17 @@ namespace Recore.Tests
         {
             bool called = false;
 
-            // Apparently, you need method scope for the GC to consider an object dead.
-            // A normal code block won't suffice.
-            void TestMethod()
+            // Allocate a Defer instance in a method scope
+            Func.Invoke(Unit.Close(() =>
             {
                 var defer = new Defer(() => called = true);
                 Assert.False(called);
-            }
+            }));
 
-            TestMethod();
-
-            // Even though GC.Collect() is supposed to block until GC is done,
-            // it seems that you have to wait on the finalizers as well.
+            // Garbage collection will put the finalizer in a queue,
+            // so we need to wait for the queue to empty.
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            GC.Collect();
 
             Assert.False(called);
         }
