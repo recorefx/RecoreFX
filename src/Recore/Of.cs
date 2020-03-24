@@ -6,7 +6,7 @@ namespace Recore
     /// Abstract base class for defining types that alias an existing type.
     /// </summary>
     /// <example>
-    /// Use <c cref="Of{T}">Of</c> to create a strongly-typed "alias" of another type.
+    /// Use <see cref="Of{T}"/> to create a strongly-typed "alias" of another type.
     /// <code>
     /// class Address : Of&lt;string&gt; {}
     /// var address = new Address { Value = "1 Microsoft Way" };

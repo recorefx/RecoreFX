@@ -10,15 +10,19 @@ namespace Recore.Functional
     /// Functions are called on the value eagerly.
     /// </remarks>
     /// <example>
-    /// // Without Composer
+    /// Without <see cref="Composer{T}"/>:
+    /// <code>
     /// var result = Baz(Bar(Foo(value)));
+    /// </code>
     ///
-    /// // With Composer
+    /// With <see cref="Composer{T}"/>:
+    /// <code>
     /// var result = Composer.Of(value)
     ///     .Then(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
     ///     .Result;
+    /// </code>
     /// </example>
     public sealed class Composer<T>
     {
@@ -54,14 +58,18 @@ namespace Recore.Functional
     /// Composes many functions or actions into a single function.
     /// </summary>
     /// <example>
-    /// // Without Composer
+    /// Without <see cref="Composer{T}"/>:
+    /// <code>
     /// var result = Baz(Bar(Foo(value)));
+    /// </code>
     ///
-    /// // With Composer
+    /// With <see cref="Composer{T}"/>:
+    /// <code>
     /// var result = new Composer&lt;string, int&gt;(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
     ///     .Func();
+    /// </code>
     /// </example>
     public sealed class Composer<TValue, TResult>
     {
@@ -76,7 +84,9 @@ namespace Recore.Functional
         public Composer(Func<TValue, TResult> func)
         {
             if (func == null)
+            {
                 throw new ArgumentNullException(nameof(func));
+            }
 
             Func = func;
         }
