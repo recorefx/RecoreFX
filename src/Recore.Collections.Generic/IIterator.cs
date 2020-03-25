@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Recore.Collections.Generic
@@ -116,6 +117,11 @@ namespace Recore.Collections.Generic
         /// </summary>
         public static IIterator<T> ToIterator<T>(this IEnumerator<T> enumerator)
         {
+            if (enumerator == null)
+            {
+                throw new ArgumentNullException(nameof(enumerator));
+            }
+
             return new IteratorFromEnumerator<T>(enumerator);
         }
 
