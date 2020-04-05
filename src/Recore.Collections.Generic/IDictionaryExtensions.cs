@@ -11,8 +11,8 @@ namespace Recore.Collections.Generic
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
         /// <remarks>
-        /// This is duplicated from <c cref="IReadOnlyDictionaryExtensions">IReadOnlyDictionaryExtensions</c>
-        /// because <c cref="IDictionary{TKey, TValue}">IDictionary</c> does not extend <c cref="IReadOnlyDictionary{TKey, TValue}">IReadOnlyDictionary</c>.
+        /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions"/>
+        /// because <see cref="IDictionary{TKey, TValue}"/> does not extend <see cref="IReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
         public static TValue ValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
