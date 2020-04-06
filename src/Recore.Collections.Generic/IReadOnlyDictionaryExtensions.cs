@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Recore.Collections.Generic
 {
@@ -20,6 +21,19 @@ namespace Recore.Collections.Generic
             {
                 return default;
             }
+        }
+
+        /// <summary>
+        /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is duplicated from <see cref="ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
+        /// in order to resolve the compile-time ambiguity between that method and <see cref="IDictionaryExtensions.ValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
+        /// for instances of <see cref="ReadOnlyDictionary{TKey, TValue}"/>.
+        /// </remarks>
+        public static TValue ValueOrDefault<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        {
+            return dict.StaticCast<IReadOnlyDictionary<TKey, TValue>>().ValueOrDefault(key);
         }
     }
 }
