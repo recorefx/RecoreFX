@@ -11,10 +11,10 @@ namespace Recore.Collections.Generic
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
         /// <remarks>
-        /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions"/>
+        /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions.ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
         /// because <see cref="IDictionary{TKey, TValue}"/> does not extend <see cref="IReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
-        public static TValue ValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        public static TValue ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
             {
@@ -27,12 +27,49 @@ namespace Recore.Collections.Generic
         }
 
         /// <summary>
-        /// Adds an entry to the dictionary and passes the dictionary through.
+        /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is duplicated from <see cref="ValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
+        /// in order to resolve the compile-time ambiguity between that method and <see cref="IReadOnlyDictionaryExtensions.ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
+        /// for instances of <see cref="Dictionary{TKey, TValue}"/>.
+        /// </remarks>
+        public static TValue ValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
+        {
+            return dict.StaticCast<IDictionary<TKey, TValue>>().ValueOrDefault(key);
+        }
+
+        /// <summary>
+        /// Adds an entry to the <see cref="IDictionary{TKey, TValue}"/> and passes the dictionary through.
         /// </summary>
         public static IDictionary<TKey, TValue> Append<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             dict.Add(key, value);
             return dict;
+        }
+
+        /// <summary>
+        /// Adds a key/value pair to the <see cref="IDictionary{TKey, TValue}"/> if the key does not already exist.
+        /// Returns the new value, or the existing value if the key already exists.
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="key">The key of the element to add.</param>
+        /// <param name="value">The value to be added, if the key does not already exist.</param>
+        /// <returns>
+        /// The value for the key.
+        /// This will be either the existing value for the key if the key is already in the dictionary, or the new value if the key was not in the dictionary.
+        /// </returns>
+        public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+        {
+            if (dict.TryGetValue(key, out TValue result))
+            {
+                return result;
+            }
+            else
+            {
+                dict[key] = value;
+                return value;
+            }
         }
     }
 }
