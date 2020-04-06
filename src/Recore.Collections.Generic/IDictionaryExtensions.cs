@@ -53,7 +53,7 @@ namespace Recore.Collections.Generic
         /// Adds a key/value pair to the <see cref="IDictionary{TKey, TValue}"/> if the key does not already exist.
         /// Returns the new value, or the existing value if the key already exists.
         /// </summary>
-        /// <param name="dict"></param>
+        /// <param name="dict">The dictionary to be operated on.</param>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value to be added, if the key does not already exist.</param>
         /// <returns>
