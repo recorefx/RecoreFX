@@ -122,5 +122,57 @@ namespace Recore.Collections.Generic.Tests
 
             Assert.Equal(-1, dictionary.GetOrAdd("xyz", -1));
         }
+
+        [Fact]
+        public void AddRange_NullDictionary()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+            {
+                IDictionary<string, int> dictionary = null;
+                dictionary.AddRange(new Dictionary<string, int> { ["hello"] = 1 });
+            });
+        }
+
+        [Fact]
+        public void AddRange_EmptyDictionary()
+        {
+            var dictionary = new Dictionary<string, string>();
+            var otherDictionary = new Dictionary<string, string>
+            {
+                ["abc"] = null,
+                ["hello"] = "world"
+            };
+
+            dictionary.AddRange(otherDictionary);
+
+            Assert.Equal(otherDictionary, dictionary);
+        }
+
+        [Fact]
+        public void AddRange_Overwrites()
+        {
+            var dictionary = new Dictionary<string, int>
+            {
+                ["abc"] = 12,
+                ["xyz"] = 0
+            };
+
+            var otherDictionary = new Dictionary<string, int>
+            {
+                ["abc"] = 4,
+                ["hello"] = -1
+            };
+
+            dictionary.AddRange(otherDictionary);
+
+            var expected = new Dictionary<string, int>
+            {
+                ["abc"] = 4,
+                ["xyz"] = 0,
+                ["hello"] = -1
+            };
+
+            Assert.Equal(expected, dictionary);
+        }
     }
 }

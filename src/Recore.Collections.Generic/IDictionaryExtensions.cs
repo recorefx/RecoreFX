@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Recore.Collections.Generic
@@ -69,6 +70,23 @@ namespace Recore.Collections.Generic
             {
                 dict[key] = value;
                 return value;
+            }
+        }
+
+        /// <summary>
+        /// Adds all elements of the specified collection to the <see cref="IDictionary{TKey, TValue}"/>.
+        /// Existing elements are overwritten if there are duplicates.
+        /// </summary>
+        public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> dict, IEnumerable<KeyValuePair<TKey, TValue>> collection)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            foreach (var item in collection)
+            {
+                dict[item.Key] = item.Value;
             }
         }
     }
