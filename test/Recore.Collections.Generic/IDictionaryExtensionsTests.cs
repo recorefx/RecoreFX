@@ -12,7 +12,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                IReadOnlyDictionary<string, int> dictionary = null;
+                IDictionary<string, int> dictionary = null;
                 dictionary.ValueOrDefault("hello");
             });
         }
@@ -89,6 +89,38 @@ namespace Recore.Collections.Generic.Tests
             var appendedDictionary = originalDictionary.Append("hello", 42);
 
             Assert.Equal(originalDictionary, appendedDictionary);
+        }
+
+        [Fact]
+        public void GetOrAdd_NullDictionary()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+            {
+                IDictionary<string, int> dictionary = null;
+                dictionary.GetOrAdd("hello", 1);
+            });
+        }
+
+        [Fact]
+        public void GetOrAdd_Get()
+        {
+            var dictionary = new Dictionary<string, int>
+            {
+                ["abc"] = 12
+            };
+
+            Assert.Equal(12, dictionary.GetOrAdd("abc", -1));
+        }
+
+        [Fact]
+        public void GetOrAdd_Add()
+        {
+            var dictionary = new Dictionary<string, int>
+            {
+                ["abc"] = 12
+            };
+
+            Assert.Equal(-1, dictionary.GetOrAdd("xyz", -1));
         }
     }
 }
