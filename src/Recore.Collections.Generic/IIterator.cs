@@ -30,15 +30,16 @@ namespace Recore.Collections.Generic
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
     ///         statusEnumerator = statuses.GetEnumerator();
-    ///         nextStatus = "Not started";
     ///
     ///         // The assignment to currentStatus is redundant.
     ///         // It is just to appease the compiler when nullable references are enabled.
+    ///         nextStatus = string.Empty;
     ///         currentStatus = UpdateStatus();
     ///     }
     ///
     ///     private string UpdateStatus()
     ///     {
+    ///         // We need to look ahead so we know when we've returned the last element.
     ///         currentStatus = nextStatus;
     ///
     ///         if (statusEnumerator.MoveNext())
