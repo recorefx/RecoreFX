@@ -19,27 +19,26 @@ namespace Recore.Collections.Generic
     ///
     /// For example, consider this type that gets status information on a customer's order from some external source:
     /// <code>
+    /// using System.Collections.Generic;
+    ///
     /// class OrderStatusUpdater
     /// {
     ///     private readonly IEnumerator&lt;string&gt; statusEnumerator;
     ///
-    ///     private string currentStatus;
-    ///     private string nextStatus;
-    ///     private bool isFinished;
+    ///     private string currentStatus = null;
+    ///
+    ///     // We need to look ahead so we know when we've returned the last element
+    ///     private string nextStatus = null;
+    ///     private bool isFinished = false;
     ///
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
     ///         statusEnumerator = statuses.GetEnumerator();
-    ///
-    ///         // The assignment to currentStatus is redundant.
-    ///         // It is just to appease the compiler when nullable references are enabled.
-    ///         nextStatus = string.Empty;
-    ///         currentStatus = UpdateStatus();
+    ///         UpdateStatus();
     ///     }
     ///
-    ///     private string UpdateStatus()
+    ///     private void UpdateStatus()
     ///     {
-    ///         // We need to look ahead so we know when we've returned the last element.
     ///         currentStatus = nextStatus;
     ///
     ///         if (statusEnumerator.MoveNext())
@@ -50,8 +49,6 @@ namespace Recore.Collections.Generic
     ///         {
     ///             isFinished = true;
     ///         }
-    ///
-    ///         return currentStatus;
     ///     }
     ///
     ///     public OrderStatus GetStatusUpdate()
@@ -69,21 +66,27 @@ namespace Recore.Collections.Generic
     ///
     /// Now consider the code with <see cref="IIterator{T}"/>:
     /// <code>
+    /// using System.Collections.Generic;
+    ///
+    /// using Recore.Collections.Generic;
+    ///
     /// class OrderStatusUpdater
     /// {
     ///     private readonly IIterator&lt;string&gt; statusIterator;
     ///
-    ///     private string currentStatus;
+    ///     private string currentStatus = null;
     ///
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
     ///         statusIterator = Iterator.FromEnumerable(statuses);
-    ///         currentStatus = "Not started";
     ///     }
     ///
     ///     public OrderStatus GetStatusUpdate()
     ///     {
-    ///         currentStatus = statusIterator.Next();
+    ///         if (statusIterator.HasNext)
+    ///         {
+    ///             currentStatus = statusIterator.Next();
+    ///         }
     ///
     ///         return new OrderStatus
     ///         {
