@@ -77,7 +77,7 @@ namespace Recore.Collections.Generic
     ///
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
-    ///         statusIterator = statuses.GetIterator();
+    ///         statusIterator = Iterator.FromEnumerable(statuses);
     ///         currentStatus = "Not started";
     ///     }
     ///
@@ -116,7 +116,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Converts an <see cref="IEnumerator{T}"/> to an <see cref="IIterator{T}"/>.
         /// </summary>
-        public static IIterator<T> ToIterator<T>(this IEnumerator<T> enumerator)
+        public static IIterator<T> FromEnumerator<T>(IEnumerator<T> enumerator)
         {
             if (enumerator == null)
             {
@@ -129,9 +129,9 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Retrieves an <see cref="IIterator{T}"/> for the collection.
         /// </summary>
-        public static IIterator<T> GetIterator<T>(this IEnumerable<T> source)
+        public static IIterator<T> FromEnumerable<T>(IEnumerable<T> source)
         {
-            return source.GetEnumerator().ToIterator();
+            return FromEnumerator(source.GetEnumerator());
         }
     }
 
@@ -149,24 +149,35 @@ namespace Recore.Collections.Generic
 
             // The enumerator starts behind the first element
             HasNext = enumerator.MoveNext();
-            current = enumerator.Current; // appease the compiler; will get discarded on the first call to `Next()`
-            lookahead = enumerator.Current;
+
+            if (HasNext)
+            {
+                current = enumerator.Current; // appease the compiler; will get discarded on the first call to `Next()`
+                lookahead = enumerator.Current;
+            }
         }
 
         public T Next()
         {
-            current = lookahead;
-
-            if (enumerator.MoveNext())
+            if (HasNext)
             {
-                lookahead = enumerator.Current;
+                current = lookahead;
+
+                if (enumerator.MoveNext())
+                {
+                    lookahead = enumerator.Current;
+                }
+                else
+                {
+                    HasNext = false;
+                }
+
+                return current;
             }
             else
             {
-                HasNext = false;
+                throw new InvalidOperationException();
             }
-
-            return current;
         }
     }
 }
