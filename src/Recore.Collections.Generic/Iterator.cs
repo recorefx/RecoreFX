@@ -19,25 +19,25 @@ namespace Recore.Collections.Generic
     ///
     /// For example, consider this type that gets status information on a customer's order from some external source:
     /// <code>
+    /// using System.Collections.Generic;
+    ///
     /// class OrderStatusUpdater
     /// {
     ///     private readonly IEnumerator&lt;string&gt; statusEnumerator;
     ///
-    ///     private string currentStatus;
-    ///     private string nextStatus;
-    ///     private bool isFinished;
+    ///     private string currentStatus = null;
+    ///
+    ///     // We need to look ahead so we know when we've returned the last element
+    ///     private string nextStatus = null;
+    ///     private bool isFinished = false;
     ///
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
     ///         statusEnumerator = statuses.GetEnumerator();
-    ///         nextStatus = "Not started";
-    ///
-    ///         // The assignment to currentStatus is redundant.
-    ///         // It is just to appease the compiler when nullable references are enabled.
-    ///         currentStatus = UpdateStatus();
+    ///         UpdateStatus();
     ///     }
     ///
-    ///     private string UpdateStatus()
+    ///     private void UpdateStatus()
     ///     {
     ///         currentStatus = nextStatus;
     ///
@@ -49,8 +49,6 @@ namespace Recore.Collections.Generic
     ///         {
     ///             isFinished = true;
     ///         }
-    ///
-    ///         return currentStatus;
     ///     }
     ///
     ///     public OrderStatus GetStatusUpdate()
@@ -68,21 +66,27 @@ namespace Recore.Collections.Generic
     ///
     /// Now consider the code with <see cref="IIterator{T}"/>:
     /// <code>
+    /// using System.Collections.Generic;
+    ///
+    /// using Recore.Collections.Generic;
+    ///
     /// class OrderStatusUpdater
     /// {
     ///     private readonly IIterator&lt;string&gt; statusIterator;
     ///
-    ///     private string currentStatus;
+    ///     private string currentStatus = null;
     ///
     ///     public OrderStatusUpdater(IEnumerable&lt;string&gt; statuses)
     ///     {
-    ///         statusIterator = statuses.GetIterator();
-    ///         currentStatus = "Not started";
+    ///         statusIterator = Iterator.FromEnumerable(statuses);
     ///     }
     ///
     ///     public OrderStatus GetStatusUpdate()
     ///     {
-    ///         currentStatus = statusIterator.Next();
+    ///         if (statusIterator.HasNext)
+    ///         {
+    ///             currentStatus = statusIterator.Next();
+    ///         }
     ///
     ///         return new OrderStatus
     ///         {
@@ -115,7 +119,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Converts an <see cref="IEnumerator{T}"/> to an <see cref="IIterator{T}"/>.
         /// </summary>
-        public static IIterator<T> ToIterator<T>(this IEnumerator<T> enumerator)
+        public static IIterator<T> FromEnumerator<T>(IEnumerator<T> enumerator)
         {
             if (enumerator == null)
             {
@@ -128,9 +132,9 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Retrieves an <see cref="IIterator{T}"/> for the collection.
         /// </summary>
-        public static IIterator<T> GetIterator<T>(this IEnumerable<T> source)
+        public static IIterator<T> FromEnumerable<T>(IEnumerable<T> source)
         {
-            return source.GetEnumerator().ToIterator();
+            return FromEnumerator(source.GetEnumerator());
         }
     }
 
@@ -148,24 +152,35 @@ namespace Recore.Collections.Generic
 
             // The enumerator starts behind the first element
             HasNext = enumerator.MoveNext();
-            current = enumerator.Current; // appease the compiler; will get discarded on the first call to `Next()`
-            lookahead = enumerator.Current;
+
+            if (HasNext)
+            {
+                current = enumerator.Current; // appease the compiler; will get discarded on the first call to `Next()`
+                lookahead = enumerator.Current;
+            }
         }
 
         public T Next()
         {
-            current = lookahead;
-
-            if (enumerator.MoveNext())
+            if (HasNext)
             {
-                lookahead = enumerator.Current;
+                current = lookahead;
+
+                if (enumerator.MoveNext())
+                {
+                    lookahead = enumerator.Current;
+                }
+                else
+                {
+                    HasNext = false;
+                }
+
+                return current;
             }
             else
             {
-                HasNext = false;
+                throw new InvalidOperationException();
             }
-
-            return current;
         }
     }
 }
