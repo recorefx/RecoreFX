@@ -153,7 +153,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether two instances of <see cref="Result{TValue, TError}"/>
-        /// have the same value.
+        /// have different values.
         /// </summary>
         public static bool operator !=(Result<TValue, TError> lhs, Result<TValue, TError> rhs) => !Equals(lhs, rhs);
 
