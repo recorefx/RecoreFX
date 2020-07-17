@@ -30,6 +30,11 @@ namespace Recore.Security.Cryptography
         public override string ToString() => Value;
 
         /// <summary>
+        /// Returns the hash code of the underlying value.
+        /// </summary>
+        public override int GetHashCode() => Value.GetHashCode();
+
+        /// <summary>
         /// Compares this <see cref="Ciphertext{THash}"/>
         /// to another object for equality.
         /// </summary>
@@ -48,11 +53,6 @@ namespace Recore.Security.Cryptography
             return other != null
                 && Value == other.Value;
         }
-
-        /// <summary>
-        /// Returns the hash code of the underlying value.
-        /// </summary>
-        public override int GetHashCode() => Value.GetHashCode();
 
         /// <summary>
         /// Hashes a plaintext string to create an instance of <see cref="Ciphertext{THash}"/>.
@@ -89,7 +89,7 @@ namespace Recore.Security.Cryptography
                 throw new ArgumentNullException(nameof(hash));
             }
 
-            var plaintextBytes = Encoding.Unicode.GetBytes(plaintext);
+            var plaintextBytes = Encoding.UTF8.GetBytes(plaintext);
             var saltedPlaintextBytes = plaintextBytes.Concat(salt).ToArray();
             var hashBytes = hash.ComputeHash(saltedPlaintextBytes);
             return new Ciphertext<THash>(Convert.ToBase64String(hashBytes));
@@ -119,6 +119,18 @@ namespace Recore.Security.Cryptography
     /// </remarks>
     public static class Ciphertext
     {
+        /// <summary>
+        /// Hashes a plaintext string to create an instance of <see cref="Ciphertext{THash}"/>.
+        /// </summary>
+        /// <remarks>
+        /// This helper method provides type inference for <see cref="Ciphertext{THash}.Encrypt(string, byte[], THash)"/>.
+        /// Use it when you want to use a hashing algorithm that isn't provided by one of the other helpers.
+        /// </remarks>
+        public static Ciphertext<THash> Encrypt<THash>(string plaintext, byte[] salt, THash hash) where THash : HashAlgorithm
+        {
+            return Ciphertext<THash>.Encrypt(plaintext, salt, hash);
+        }
+
         /// <summary>
         /// Encrypts the plaintext with the MD5 hashing algorithm.
         /// </summary>
