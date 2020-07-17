@@ -11,6 +11,8 @@ namespace Recore.Security.Cryptography
     /// <remarks>
     /// Use this type on fields that you want to be sure get encrypted.
     /// The .NET type system will make it impossible for a plaintext string to be assigned to that field.
+    /// For example, if your application is storing users' passwords in a database,
+    /// you could use this type for the .NET representation of the stored passwords.
     /// </remarks>
     public sealed class Ciphertext<THash> : IEquatable<Ciphertext<THash>> where THash : HashAlgorithm
     {
