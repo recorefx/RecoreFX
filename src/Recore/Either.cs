@@ -216,7 +216,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>
-        /// have the same value.
+        /// have different values.
         /// </summary>
         public static bool operator !=(Either<TLeft, TRight> lhs, Either<TLeft, TRight> rhs) => !Equals(lhs, rhs);
 

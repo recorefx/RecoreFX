@@ -164,7 +164,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether this instance and another <see cref="Optional{T}"/>
-        /// have the same value.
+        /// have different values.
         /// </summary>
         public bool Equals(Optional<T> other)
         {
