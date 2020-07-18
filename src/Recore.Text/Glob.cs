@@ -9,17 +9,17 @@ namespace Recore.Text
     /// In evaluating matches for the pattern, <c>*</c> will match zero or more characters
     /// while <c>?</c> will match a single character.
     /// </remarks>
-    public sealed class Wildcard
+    public sealed class Glob
     {
         /// <summary>
-        /// Gets the pattern that was passed to the <c cref="Wildcard">Wildcard</c> constructor.
+        /// Gets the pattern that was passed to the <c cref="Glob">Glob</c> constructor.
         /// </summary>
         public string Pattern { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <c cref="Wildcard">Wildcard</c> type with the specified pattern.
+        /// Initializes a new instance of the <c cref="Glob">Glob</c> type with the specified pattern.
         /// </summary>
-        public Wildcard(string pattern)
+        public Glob(string pattern)
         {
             Pattern = pattern;
         }
@@ -38,7 +38,7 @@ namespace Recore.Text
                 if (expandingStar)
                 {
                     // Skip ahead to all possible positions and start matching again
-                    var subpattern = new Wildcard(Pattern.Substring(i));
+                    var subpattern = new Glob(Pattern.Substring(i));
                     return Enumerable.Range(j, text.Length - 1)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
