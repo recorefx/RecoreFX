@@ -12,12 +12,12 @@ namespace Recore.Text
     public sealed class Glob
     {
         /// <summary>
-        /// Gets the pattern that was passed to the <c cref="Glob">Glob</c> constructor.
+        /// Gets the pattern that was passed to the <c cref="Glob"/> constructor.
         /// </summary>
         public string Pattern { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <c cref="Glob">Glob</c> type with the specified pattern.
+        /// Initializes a new instance of the <c cref="Glob"/> type with the specified pattern.
         /// </summary>
         public Glob(string pattern)
         {
