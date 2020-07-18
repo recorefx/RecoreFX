@@ -50,22 +50,21 @@ namespace Recore.Text
                     char patternChar = Pattern[patternIndex];
 
                     bool isEscape = false;
-                    // bool isEscape = false;
-                    // if (patternChar == '\\')
-                    // {
-                    //     // If the next pattern character is a wildcard, skip to it and escape it.
-                    //     // Otherwise, fall through to see if it matches the current text character.
-                    //     if (patternIndex + 1 < Pattern.Length)
-                    //     {
-                    //         char nextPatternChar = Pattern[patternIndex + 1];
-                    //         if (nextPatternChar == '*' || nextPatternChar == '?')
-                    //         {
-                    //             patternIndex++;
-                    //             patternChar = nextPatternChar;
-                    //             isEscape = true;
-                    //         }
-                    //     }
-                    // }
+                    if (patternChar == '\\')
+                    {
+                        // If the next pattern character is a wildcard, skip to it and escape it.
+                        // Otherwise, fall through to see if it matches the current text character.
+                        if (patternIndex + 1 < Pattern.Length)
+                        {
+                            char nextPatternChar = Pattern[patternIndex + 1];
+                            if (nextPatternChar == '*' || nextPatternChar == '?')
+                            {
+                                patternIndex++;
+                                patternChar = nextPatternChar;
+                                isEscape = true;
+                            }
+                        }
+                    }
 
                     if (patternChar == '*' && !isEscape)
                     {
