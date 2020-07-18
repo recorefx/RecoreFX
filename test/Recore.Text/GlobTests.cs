@@ -28,26 +28,11 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void JustQuestionMark()
+        public void AsteriskAtBeginning()
         {
-            Assert.False(new Glob("?").IsMatch(""));
-            Assert.True(new Glob("?").IsMatch("x"));
-        }
-
-        [Fact]
-        public void SingleWildcard()
-        {
-            Assert.True(new Glob("a?c").IsMatch("abc"));
-            Assert.True(new Glob("a?c").IsMatch("axc"));
-            Assert.True(new Glob("a?c").IsMatch("a?c"));
-        }
-
-        [Fact]
-        public void AsteriskAtEnd()
-        {
-            Assert.True(new Glob("a*").IsMatch("abc"));
-            Assert.True(new Glob("a*").IsMatch("a*"));
-            Assert.False(new Glob("a*").IsMatch("bc"));
+            Assert.True(new Glob("*a").IsMatch("a"));
+            Assert.True(new Glob("*a").IsMatch("bba"));
+            Assert.False(new Glob("*a").IsMatch("abc"));
         }
 
         [Fact]
@@ -62,6 +47,14 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
+        public void AsteriskAtEnd()
+        {
+            Assert.True(new Glob("a*").IsMatch("abc"));
+            Assert.True(new Glob("a*").IsMatch("a*"));
+            Assert.False(new Glob("a*").IsMatch("bc"));
+        }
+
+        [Fact]
         public void MultipleAsterisks()
         {
             Assert.True(new Glob("*ab*").IsMatch("ab"));
@@ -71,6 +64,21 @@ namespace Recore.Text.Tests
             Assert.True(new Glob("*/*/*").IsMatch("foo/bar/baz/bash"));
             Assert.True(new Glob("*/*/*").IsMatch("foo/bar/"));
             Assert.False(new Glob("*/*/*").IsMatch("foo/bar"));
+        }
+
+        [Fact]
+        public void JustQuestionMark()
+        {
+            Assert.False(new Glob("?").IsMatch(""));
+            Assert.True(new Glob("?").IsMatch("x"));
+        }
+
+        [Fact]
+        public void QuestionMarkInMiddle()
+        {
+            Assert.True(new Glob("a?c").IsMatch("abc"));
+            Assert.True(new Glob("a?c").IsMatch("axc"));
+            Assert.True(new Glob("a?c").IsMatch("a?c"));
         }
 
         [Fact]
@@ -92,8 +100,10 @@ namespace Recore.Text.Tests
         [Fact]
         public void EscapedWildcardCharacters()
         {
+            Assert.True(new Glob("\\").IsMatch("\\"));
             Assert.True(new Glob("\\*").IsMatch("*"));
             Assert.True(new Glob("\\?").IsMatch("?"));
+            Assert.True(new Glob("\\\\*").IsMatch("\\*"));
             Assert.False(new Glob("\\*").IsMatch(""));
             Assert.False(new Glob("\\*").IsMatch("a"));
             Assert.False(new Glob("\\*").IsMatch("\\*"));
@@ -101,7 +111,7 @@ namespace Recore.Text.Tests
             Assert.False(new Glob("\\?").IsMatch("\\?"));
 
             Assert.True(new Glob("a\\*").IsMatch("a*"));
-            Assert.True(new Glob("a\\?").IsMatch("ab"));
+            Assert.True(new Glob("a\\?").IsMatch("a?"));
             Assert.False(new Glob("a\\*").IsMatch("a"));
             Assert.False(new Glob("a\\*").IsMatch("ab"));
             Assert.False(new Glob("a\\?").IsMatch("ab"));
