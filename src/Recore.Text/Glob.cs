@@ -31,35 +31,58 @@ namespace Recore.Text
         {
             bool expandingStar = false;
 
-            int i = 0;
-            int j = 0;
-            while (i < Pattern.Length)
+            int patternIndex = 0;
+            int textIndex = 0;
+            while (patternIndex < Pattern.Length)
             {
                 if (expandingStar)
                 {
-                    // Skip ahead to all possible positions and start matching again
-                    var subpattern = new Glob(Pattern.Substring(i));
-                    return Enumerable.Range(j, text.Length - 1)
+                    // Skip ahead to all possible positions and start matching again.
+                    // TODO false positives with escapes:
+                    // don't split an escape character
+                    var subpattern = new Glob(Pattern.Substring(patternIndex));
+                    return Enumerable.Range(textIndex, text.Length - 1)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
                 }
                 else
                 {
-                    char patternChar = Pattern[i];
+                    char patternChar = Pattern[patternIndex];
 
-                    if (patternChar == '*')
+                    bool isEscape = false;
+                    // bool isEscape = false;
+                    // if (patternChar == '\\')
+                    // {
+                    //     // If the next pattern character is a wildcard, skip to it and escape it.
+                    //     // Otherwise, fall through to see if it matches the current text character.
+                    //     if (patternIndex + 1 < Pattern.Length)
+                    //     {
+                    //         char nextPatternChar = Pattern[patternIndex + 1];
+                    //         if (nextPatternChar == '*' || nextPatternChar == '?')
+                    //         {
+                    //             patternIndex++;
+                    //             patternChar = nextPatternChar;
+                    //             isEscape = true;
+                    //         }
+                    //     }
+                    // }
+
+                    if (patternChar == '*' && !isEscape)
                     {
+                        // Enter into the `expandingStar` state.
                         expandingStar = true;
-                        i++;
+                        patternIndex++;
                     }
-                    else if (j < text.Length && (patternChar == '?' || patternChar == text[j]))
+                    else if (textIndex < text.Length && (patternChar == text[textIndex] || patternChar == '?' && !isEscape))
                     {
-                        i++;
-                        j++;
+                        // The current pattern character and current text character match.
+                        patternIndex++;
+                        textIndex++;
+                        isEscape = false;
                     }
                     else
                     {
-                        // Pattern did not match
+                        // The pattern did not match.
                         return false;
                     }
                 }
@@ -68,7 +91,7 @@ namespace Recore.Text
             // Reached the end of the pattern
             // Match iff we have evaluated all of the input text
             // or the last character in the pattern is '*'
-            return j == text.Length || expandingStar;
+            return textIndex == text.Length || expandingStar;
         }
     }
 }
