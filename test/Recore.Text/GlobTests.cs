@@ -2,7 +2,7 @@ using Xunit;
 
 namespace Recore.Text.Tests
 {
-    public class WildcardTests
+    public class GlobTests
     {
         [Fact]
         public void EmptyPattern()
