@@ -121,6 +121,7 @@ namespace Recore.Text.Tests
             Assert.True(new Glob("*\\*").IsMatch("*"));
             Assert.True(new Glob("a*\\*a").IsMatch("a*a"));
             Assert.True(new Glob("a*\\*a").IsMatch("abc*a"));
+            Assert.False(new Glob("*\\*a").IsMatch("aaa"));
         }
 
         [Fact]

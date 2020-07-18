@@ -37,9 +37,7 @@ namespace Recore.Text
             {
                 if (expandingStar)
                 {
-                    // Skip ahead to all possible positions and start matching again.
-                    // TODO false positives with escapes:
-                    // don't split an escape character
+                    // Skip ahead to all possible positions in `text` and start matching again.
                     var subpattern = new Glob(Pattern.Substring(patternIndex));
                     return Enumerable.Range(textIndex, count: text.Length - textIndex)
                         .Select(x => text.Substring(x))
