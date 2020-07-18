@@ -12,12 +12,12 @@ namespace Recore.Text
     public sealed class Glob
     {
         /// <summary>
-        /// Gets the pattern that was passed to the <c cref="Glob">Glob</c> constructor.
+        /// Gets the pattern that was passed to the <see cref="Glob"/> constructor.
         /// </summary>
         public string Pattern { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <c cref="Glob">Glob</c> type with the specified pattern.
+        /// Initializes a new instance of the <see cref="Glob"/> type with the specified pattern.
         /// </summary>
         public Glob(string pattern)
         {
@@ -31,35 +31,55 @@ namespace Recore.Text
         {
             bool expandingStar = false;
 
-            int i = 0;
-            int j = 0;
-            while (i < Pattern.Length)
+            int patternIndex = 0;
+            int textIndex = 0;
+            while (patternIndex < Pattern.Length)
             {
                 if (expandingStar)
                 {
-                    // Skip ahead to all possible positions and start matching again
-                    var subpattern = new Glob(Pattern.Substring(i));
-                    return Enumerable.Range(j, text.Length - 1)
+                    // Skip ahead to all possible positions in `text` and start matching again.
+                    var subpattern = new Glob(Pattern.Substring(patternIndex));
+                    return Enumerable.Range(textIndex, count: text.Length - textIndex)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
                 }
                 else
                 {
-                    char patternChar = Pattern[i];
+                    char patternChar = Pattern[patternIndex];
 
-                    if (patternChar == '*')
+                    bool isEscape = false;
+                    if (patternChar == '\\')
                     {
-                        expandingStar = true;
-                        i++;
+                        // If the next pattern character is a wildcard, skip to it and escape it.
+                        // Otherwise, fall through to see if it matches the current text character.
+                        if (patternIndex + 1 < Pattern.Length)
+                        {
+                            char nextPatternChar = Pattern[patternIndex + 1];
+                            if (nextPatternChar == '*' || nextPatternChar == '?')
+                            {
+                                patternIndex++;
+                                patternChar = nextPatternChar;
+                                isEscape = true;
+                            }
+                        }
                     }
-                    else if (j < text.Length && (patternChar == '?' || patternChar == text[j]))
+
+                    if (patternChar == '*' && !isEscape)
                     {
-                        i++;
-                        j++;
+                        // Enter into the `expandingStar` state.
+                        expandingStar = true;
+                        patternIndex++;
+                    }
+                    else if (textIndex < text.Length && (patternChar == text[textIndex] || patternChar == '?' && !isEscape))
+                    {
+                        // The current pattern character and current text character match.
+                        patternIndex++;
+                        textIndex++;
+                        isEscape = false;
                     }
                     else
                     {
-                        // Pattern did not match
+                        // The pattern did not match.
                         return false;
                     }
                 }
@@ -68,7 +88,7 @@ namespace Recore.Text
             // Reached the end of the pattern
             // Match iff we have evaluated all of the input text
             // or the last character in the pattern is '*'
-            return j == text.Length || expandingStar;
+            return textIndex == text.Length || expandingStar;
         }
     }
 }

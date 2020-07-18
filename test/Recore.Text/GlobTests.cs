@@ -2,7 +2,7 @@ using Xunit;
 
 namespace Recore.Text.Tests
 {
-    public class WildcardTests
+    public class GlobTests
     {
         [Fact]
         public void EmptyPattern()
@@ -12,18 +12,60 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void NoSpecialCharacters()
+        public void NoWildcardCharacters()
         {
+            Assert.True(new Glob("a").IsMatch("a"));
             Assert.True(new Glob("abc").IsMatch("abc"));
+            Assert.False(new Glob("a").IsMatch(""));
             Assert.False(new Glob("abc").IsMatch("ab"));
             Assert.False(new Glob("abc").IsMatch("abcd"));
         }
 
         [Fact]
-        public void JustAsterisk()
+        public void JustStar()
         {
             Assert.True(new Glob("*").IsMatch(""));
             Assert.True(new Glob("*").IsMatch("abc"));
+            Assert.True(new Glob("*").IsMatch("hello world"));
+        }
+
+        [Fact]
+        public void StarAtBeginning()
+        {
+            Assert.True(new Glob("*a").IsMatch("a"));
+            Assert.True(new Glob("*a").IsMatch("bba"));
+            Assert.False(new Glob("*a").IsMatch("abc"));
+        }
+
+        [Fact]
+        public void StarInMiddle()
+        {
+            Assert.False(new Glob("a*b").IsMatch("a"));
+            Assert.False(new Glob("a*b").IsMatch("aa"));
+            Assert.True(new Glob("a*b").IsMatch("ab"));
+            Assert.True(new Glob("a*b").IsMatch("abbbb"));
+            Assert.False(new Glob("a*b").IsMatch("abbbbc"));
+            Assert.True(new Glob("*ll*").IsMatch("hello world"));
+        }
+
+        [Fact]
+        public void StarAtEnd()
+        {
+            Assert.True(new Glob("a*").IsMatch("abc"));
+            Assert.True(new Glob("a*").IsMatch("a*"));
+            Assert.False(new Glob("a*").IsMatch("bc"));
+        }
+
+        [Fact]
+        public void MultipleStars()
+        {
+            Assert.True(new Glob("*ab*").IsMatch("ab"));
+            Assert.True(new Glob("*ab*").IsMatch("123ab456"));
+
+            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/baz"));
+            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/baz/bash"));
+            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/"));
+            Assert.False(new Glob("*/*/*").IsMatch("foo/bar"));
         }
 
         [Fact]
@@ -34,38 +76,11 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void SingleWildcard()
+        public void QuestionMarkInMiddle()
         {
+            Assert.True(new Glob("a?c").IsMatch("abc"));
             Assert.True(new Glob("a?c").IsMatch("axc"));
-        }
-
-        [Fact]
-        public void AsteriskAtEnd()
-        {
-            Assert.True(new Glob("a*").IsMatch("abc"));
-            Assert.False(new Glob("a*").IsMatch("bc"));
-        }
-
-        [Fact]
-        public void AsteriskInMiddle()
-        {
-            Assert.False(new Glob("a*b").IsMatch("a"));
-            Assert.False(new Glob("a*b").IsMatch("aa"));
-            Assert.True(new Glob("a*b").IsMatch("ab"));
-            Assert.True(new Glob("a*b").IsMatch("abbbb"));
-            Assert.False(new Glob("a*b").IsMatch("abbbbc"));
-        }
-
-        [Fact]
-        public void MultipleAsterisks()
-        {
-            Assert.True(new Glob("*ab*").IsMatch("ab"));
-            Assert.True(new Glob("*ab*").IsMatch("123ab456"));
-
-            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/baz"));
-            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/baz/bash"));
-            Assert.True(new Glob("*/*/*").IsMatch("foo/bar/"));
-            Assert.False(new Glob("*/*/*").IsMatch("foo/bar"));
+            Assert.True(new Glob("a?c").IsMatch("a?c"));
         }
 
         [Fact]
@@ -82,6 +97,39 @@ namespace Recore.Text.Tests
             Assert.True(new Glob("?*/?*/?*").IsMatch("foo/bar/baz/bash"));
             Assert.False(new Glob("?*/?*/?*").IsMatch("foo/bar/"));
             Assert.False(new Glob("?*/?*/?*").IsMatch("foo/bar"));
+        }
+
+        [Fact]
+        public void EscapedWildcardCharacters()
+        {
+            Assert.True(new Glob("\\").IsMatch("\\"));
+            Assert.True(new Glob("\\*").IsMatch("*"));
+            Assert.True(new Glob("\\?").IsMatch("?"));
+            Assert.True(new Glob("\\\\*").IsMatch("\\*"));
+            Assert.False(new Glob("\\*").IsMatch(""));
+            Assert.False(new Glob("\\*").IsMatch("a"));
+            Assert.False(new Glob("\\*").IsMatch("\\*"));
+            Assert.False(new Glob("\\?").IsMatch("a"));
+            Assert.False(new Glob("\\?").IsMatch("\\?"));
+
+            Assert.True(new Glob("a\\*").IsMatch("a*"));
+            Assert.True(new Glob("a\\?").IsMatch("a?"));
+            Assert.False(new Glob("a\\*").IsMatch("a"));
+            Assert.False(new Glob("a\\*").IsMatch("ab"));
+            Assert.False(new Glob("a\\?").IsMatch("ab"));
+
+            Assert.True(new Glob("*\\*").IsMatch("*"));
+            Assert.True(new Glob("a*\\*a").IsMatch("a*a"));
+            Assert.True(new Glob("a*\\*a").IsMatch("abc*a"));
+            Assert.False(new Glob("*\\*a").IsMatch("aaa"));
+        }
+
+        [Fact]
+        public void NonescapingBackslash()
+        {
+            Assert.True(new Glob("\\").IsMatch("\\"));
+            Assert.True(new Glob("\\a").IsMatch("\\a"));
+            Assert.True(new Glob("*\\a?").IsMatch("hello world\\ab"));
         }
     }
 }
