@@ -24,6 +24,7 @@ namespace Recore.Text.Tests
         {
             Assert.True(new Glob("*").IsMatch(""));
             Assert.True(new Glob("*").IsMatch("abc"));
+            Assert.True(new Glob("*").IsMatch("hello world"));
         }
 
         [Fact]
@@ -57,6 +58,7 @@ namespace Recore.Text.Tests
             Assert.True(new Glob("a*b").IsMatch("ab"));
             Assert.True(new Glob("a*b").IsMatch("abbbb"));
             Assert.False(new Glob("a*b").IsMatch("abbbbc"));
+            Assert.True(new Glob("*ll*").IsMatch("hello world"));
         }
 
         [Fact]
@@ -94,13 +96,27 @@ namespace Recore.Text.Tests
             Assert.True(new Glob("\\?").IsMatch("?"));
             Assert.False(new Glob("\\*").IsMatch(""));
             Assert.False(new Glob("\\*").IsMatch("a"));
+            Assert.False(new Glob("\\*").IsMatch("\\*"));
             Assert.False(new Glob("\\?").IsMatch("a"));
+            Assert.False(new Glob("\\?").IsMatch("\\?"));
 
             Assert.True(new Glob("a\\*").IsMatch("a*"));
             Assert.True(new Glob("a\\?").IsMatch("ab"));
             Assert.False(new Glob("a\\*").IsMatch("a"));
             Assert.False(new Glob("a\\*").IsMatch("ab"));
             Assert.False(new Glob("a\\?").IsMatch("ab"));
+
+            Assert.True(new Glob("*\\*").IsMatch("*"));
+            Assert.True(new Glob("a*\\*a").IsMatch("a*a"));
+            Assert.True(new Glob("a*\\*a").IsMatch("abc*a"));
+        }
+
+        [Fact]
+        public void NonescapingBackslash()
+        {
+            Assert.True(new Glob("\\").IsMatch("\\"));
+            Assert.True(new Glob("\\a").IsMatch("\\a"));
+            Assert.True(new Glob("*\\a?").IsMatch("hello world\\ab"));
         }
     }
 }
