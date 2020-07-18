@@ -22,7 +22,7 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void JustAsterisk()
+        public void JustStar()
         {
             Assert.True(new Glob("*").IsMatch(""));
             Assert.True(new Glob("*").IsMatch("abc"));
@@ -30,7 +30,7 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void AsteriskAtBeginning()
+        public void StarAtBeginning()
         {
             Assert.True(new Glob("*a").IsMatch("a"));
             Assert.True(new Glob("*a").IsMatch("bba"));
@@ -38,7 +38,7 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void AsteriskInMiddle()
+        public void StarInMiddle()
         {
             Assert.False(new Glob("a*b").IsMatch("a"));
             Assert.False(new Glob("a*b").IsMatch("aa"));
@@ -49,7 +49,7 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void AsteriskAtEnd()
+        public void StarAtEnd()
         {
             Assert.True(new Glob("a*").IsMatch("abc"));
             Assert.True(new Glob("a*").IsMatch("a*"));
@@ -57,7 +57,7 @@ namespace Recore.Text.Tests
         }
 
         [Fact]
-        public void MultipleAsterisks()
+        public void MultipleStars()
         {
             Assert.True(new Glob("*ab*").IsMatch("ab"));
             Assert.True(new Glob("*ab*").IsMatch("123ab456"));
