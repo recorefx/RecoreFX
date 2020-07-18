@@ -14,7 +14,9 @@ namespace Recore.Text.Tests
         [Fact]
         public void NoWildcardCharacters()
         {
+            Assert.True(new Glob("a").IsMatch("a"));
             Assert.True(new Glob("abc").IsMatch("abc"));
+            Assert.False(new Glob("a").IsMatch(""));
             Assert.False(new Glob("abc").IsMatch("ab"));
             Assert.False(new Glob("abc").IsMatch("abcd"));
         }

@@ -41,7 +41,7 @@ namespace Recore.Text
                     // TODO false positives with escapes:
                     // don't split an escape character
                     var subpattern = new Glob(Pattern.Substring(patternIndex));
-                    return Enumerable.Range(textIndex, text.Length - 1)
+                    return Enumerable.Range(textIndex, count: text.Length - textIndex)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
                 }
