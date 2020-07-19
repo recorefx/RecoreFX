@@ -134,9 +134,9 @@ namespace Recore.Security.Cryptography.Tests
         [Property]
         public Property MD5HelperAlwaysEqualToLongForm()
         {
-            return Prop.ForAll((string plaintext) =>
+            return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null)
+                if (plaintext == null || salt == null)
                 {
                     // Skip
                     return true;
@@ -144,7 +144,6 @@ namespace Recore.Security.Cryptography.Tests
 
                 using (var md5 = MD5.Create())
                 {
-                    var salt = Array.Empty<byte>();
                     var longForm = Ciphertext<MD5>.Encrypt(plaintext, salt, md5);
                     var shortForm = Ciphertext.MD5(plaintext, salt);
                     return longForm == shortForm;
@@ -155,9 +154,9 @@ namespace Recore.Security.Cryptography.Tests
         [Property]
         public Property SHA1HelperAlwaysEqualToLongForm()
         {
-            return Prop.ForAll((string plaintext) =>
+            return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null)
+                if (plaintext == null || salt == null)
                 {
                     // Skip
                     return true;
@@ -165,7 +164,6 @@ namespace Recore.Security.Cryptography.Tests
 
                 using (var sha1 = SHA1.Create())
                 {
-                    var salt = Array.Empty<byte>();
                     var longForm = Ciphertext<SHA1>.Encrypt(plaintext, salt, sha1);
                     var shortForm = Ciphertext.SHA1(plaintext, salt);
                     return longForm == shortForm;
@@ -176,9 +174,9 @@ namespace Recore.Security.Cryptography.Tests
         [Property]
         public Property SHA256HelperAlwaysEqualToLongForm()
         {
-            return Prop.ForAll((string plaintext) =>
+            return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null)
+                if (plaintext == null || salt == null)
                 {
                     // Skip
                     return true;
@@ -186,11 +184,29 @@ namespace Recore.Security.Cryptography.Tests
 
                 using (var sha256 = SHA256.Create())
                 {
-                    var salt = Array.Empty<byte>();
                     var longForm = Ciphertext<SHA256>.Encrypt(plaintext, salt, sha256);
                     var shortForm = Ciphertext.SHA256(plaintext, salt);
                     return longForm == shortForm;
                 }
+            });
+        }
+
+        [Property]
+        public Property SaltedHashNeverEqualToUnsalted()
+        {
+            return Prop.ForAll((string plaintext, byte[] salt) =>
+            {
+                if (plaintext == null
+                    || salt == null
+                    || salt.Length == 0)
+                {
+                    // Skip
+                    return true;
+                }
+
+                var unsalted = Ciphertext.SHA256(plaintext, Array.Empty<byte>());
+                var salted = Ciphertext.SHA256(plaintext, salt);
+                return unsalted != salted;
             });
         }
     }
