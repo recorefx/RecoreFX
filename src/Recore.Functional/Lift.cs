@@ -12,7 +12,7 @@ namespace Recore.Functional
     public static class Lift
     {
         /// <summary>
-        /// Converts a unary function to work with <c cref="Optional{T}">Optional</c>.
+        /// Converts a unary function to work with <see cref="Optional{T}"/>.
         /// </summary>
         public static Func<Optional<T>, Optional<TResult>> OnOptional<T, TResult>(Func<T, TResult> func)
         {
@@ -23,7 +23,7 @@ namespace Recore.Functional
         }
 
         /// <summary>
-        /// Converts a unary action to work with <c cref="Optional{T}">Optional</c>.
+        /// Converts a unary action to work with <see cref="Optional{T}"/>.
         /// </summary>
         public static Action<Optional<T>> OnOptional<T>(Action<T> action)
         {

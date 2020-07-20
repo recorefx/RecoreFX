@@ -101,7 +101,7 @@ namespace Recore
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
-        /// Conceptually, it is the same as passing <paramref name="f"/> to <c cref="OnValue{TResult}(Func{TValue, TResult})">OnValue</c>
+        /// Conceptually, it is the same as passing <paramref name="f"/> to <see cref="OnValue{TResult}(Func{TValue, TResult})"/>
         /// and then "flattening" the result.
         /// </remarks>
         public Result<TResult, TError> Then<TResult>(Func<TValue, Result<TResult, TError>> f)

@@ -135,7 +135,7 @@ namespace Recore
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
-        /// Conceptually, it is the same as passing <paramref name="f"/> to <c cref="OnValue{U}(Func{T, U})">OnValue</c>
+        /// Conceptually, it is the same as passing <paramref name="f"/> to <see cref="OnValue{U}(Func{T, U})"/>
         /// and then "flattening" the <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> into an <c>Optional&lt;<typeparamref name="T"/>&gt;</c>.
         /// (Note that <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> is not a valid <see cref="Optional{T}"/> because of the
         /// type constraint <c>where T : class</c>.)
