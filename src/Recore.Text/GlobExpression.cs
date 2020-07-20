@@ -9,17 +9,17 @@ namespace Recore.Text
     /// In evaluating matches for the pattern, <c>*</c> will match zero or more characters
     /// while <c>?</c> will match a single character.
     /// </remarks>
-    public sealed class Glob
+    public sealed class GlobExpression
     {
         /// <summary>
-        /// Gets the pattern that was passed to the <see cref="Glob"/> constructor.
+        /// Gets the pattern that was passed to the <see cref="GlobExpression"/> constructor.
         /// </summary>
         public string Pattern { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Glob"/> type with the specified pattern.
+        /// Initializes a new instance of the <see cref="GlobExpression"/> type with the specified pattern.
         /// </summary>
-        public Glob(string pattern)
+        public GlobExpression(string pattern)
         {
             Pattern = pattern;
         }
@@ -38,7 +38,7 @@ namespace Recore.Text
                 if (expandingStar)
                 {
                     // Skip ahead to all possible positions in `text` and start matching again.
-                    var subpattern = new Glob(Pattern.Substring(patternIndex));
+                    var subpattern = new GlobExpression(Pattern.Substring(patternIndex));
                     return Enumerable.Range(textIndex, count: text.Length - textIndex)
                         .Select(x => text.Substring(x))
                         .Any(subpattern.IsMatch);
