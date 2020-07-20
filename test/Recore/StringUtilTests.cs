@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Recore.Text.Tests
+namespace Recore.Tests
 {
     public class StringUtilTests
     {
