@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Recore.Text
+namespace Recore
 {
     /// <summary>
     /// Contains helper methods for working with strings.
