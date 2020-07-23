@@ -7,16 +7,8 @@ namespace Recore
     /// <summary>
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
-    public sealed class Token : IEquatable<Token>, IComparable<Token>
+    public sealed class Token : Of<string>, IComparable<Of<string>>
     {
-        /// <summary>
-        /// The value of the token.
-        /// </summary>
-        /// <remarks>
-        /// This is guaranteed to be non-null, have nonzero length, and have no whitespace.
-        /// </remarks>
-        public string Value { get; }
-
         /// <summary>
         /// Constructs an instance of <see cref="Token"/> from a string value.
         /// </summary>
@@ -44,63 +36,18 @@ namespace Recore
         }
 
         /// <summary>
-        /// Returns the underlying string value.
-        /// </summary>
-        public override string ToString() => Value;
-
-        /// <summary>
-        /// Determines whether this instance and another object,
-        /// which must be a <see cref="Token"/> or a <see cref="string"/>,
+        /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
+        /// A parameter specifies the culture, case, and sort rules used in the comparison.
         /// </summary>
-        public override bool Equals(object obj)
-        {
-            if (obj is Token token)
-            {
-                return this.Equals(token);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns the hash code of the underlying value.
-        /// </summary>
-        public override int GetHashCode() => Value.GetHashCode();
+        public bool Equals(Of<string> other, StringComparison comparisonType) => Value.Equals(other.Value, comparisonType);
 
         /// <summary>
         /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
-        public int CompareTo(Token other) => Value.CompareTo(other.Value);
-
-        /// <summary>
-        /// Determines whether this instance and another <see cref="Token"/>
-        /// have the same value.
-        /// </summary>
-        public bool Equals(Token other) => Value.Equals(other.Value);
-
-        /// <summary>
-        /// Determines whether this instance and another <see cref="Token"/>
-        /// have the same value.
-        /// A parameter specifies the culture, case, and sort rules used in the comparison.
-        /// </summary>
-        public bool Equals(Token other, StringComparison comparisonType) => Value.Equals(other.Value, comparisonType);
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Token"/>
-        /// have the same value.
-        /// </summary>
-        public static bool operator ==(Token lhs, Token rhs) => Equals(lhs, rhs);
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Token"/>
-        /// have different values.
-        /// </summary>
-        public static bool operator !=(Token lhs, Token rhs) => !Equals(lhs, rhs);
+        public int CompareTo(Of<string> other) => Value.CompareTo(other.Value);
 
         // For some reason, String implements IComparable but does not have comparison operators.
         // Therefore, I won't add them to Token, either.
