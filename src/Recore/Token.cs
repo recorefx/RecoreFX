@@ -66,10 +66,29 @@ namespace Recore
         }
 
         /// <summary>
+        /// Returns the hash code of the underlying value.
+        /// </summary>
+        public override int GetHashCode() => Value.GetHashCode();
+
+        /// <summary>
+        /// Compares this instance with a specified <see cref="Token"/> object
+        /// and indicates whether this instance precedes, follows, or appears in the same position
+        /// in the sort order as the specified object.
+        /// </summary>
+        public int CompareTo(Token other) => Value.CompareTo(other.Value);
+
+        /// <summary>
         /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
         /// </summary>
-        public bool Equals(Token other) => Value == other.Value;
+        public bool Equals(Token other) => Value.Equals(other.Value);
+
+        /// <summary>
+        /// Determines whether this instance and another <see cref="Token"/>
+        /// have the same value.
+        /// A parameter specifies the culture, case, and sort rules used in the comparison.
+        /// </summary>
+        public bool Equals(Token other, StringComparison comparisonType) => Value.Equals(other.Value, comparisonType);
 
         /// <summary>
         /// Determines whether two instances of <see cref="Token"/>
@@ -82,18 +101,6 @@ namespace Recore
         /// have different values.
         /// </summary>
         public static bool operator !=(Token lhs, Token rhs) => !Equals(lhs, rhs);
-
-        /// <summary>
-        /// Returns the hash code of the underlying value.
-        /// </summary>
-        public override int GetHashCode() => Value.GetHashCode();
-
-        /// <summary>
-        /// Compares this instance with a specified <see cref="Token"/> object
-        /// and indicates whether this instance precedes, follows, or appears in the same position
-        /// in the sort order as the specified object.
-        /// </summary>
-        public int CompareTo(Token other) => Value.CompareTo(other.Value);
 
         // For some reason, String implements IComparable but does not have comparison operators.
         // Therefore, I won't add them to Token, either.

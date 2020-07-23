@@ -79,14 +79,17 @@ namespace Recore.Tests
 
             Assert.True(Equals(helloworld1, helloworld2));
             Assert.False(Equals(helloworld1, "helloworld"));
+        }
 
-            // operator==
-            Assert.True(helloworld1 == helloworld2);
-            Assert.True(helloworld2 == helloworld1);
+        [Fact]
+        public void EqualsWithStringComparison()
+        {
+            var aether = new Token("aether");
+            var æther = new Token("æther");
 
-            var asdf = new Token("asdf");
-            Assert.False(helloworld1 == asdf);
-            Assert.True(helloworld1 != asdf);
+            Assert.False(aether.Equals(æther));
+            Assert.False(aether.Equals(æther, StringComparison.Ordinal));
+            Assert.True(aether.Equals(æther, StringComparison.CurrentCulture));
         }
 
         [Fact]
