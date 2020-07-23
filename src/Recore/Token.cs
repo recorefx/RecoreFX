@@ -7,6 +7,11 @@ namespace Recore
     /// <summary>
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
+    /// <remarks>
+    /// This type implements <see cref="IComparable{T}"/> with <c cref="Of{T}">Of&lt;String&gt;</c>
+    /// instead of <c cref="Of{T}">Of&lt;Token&gt;</c>.
+    /// This is for parity with its inherited implementation of <c cref="IEquatable{T}">IEquatable&lt;Of&lt;String&gt;&gt;</c>.
+    /// </remarks>
     public sealed class Token : Of<string>, IComparable<Of<string>>
     {
         /// <summary>
