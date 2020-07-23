@@ -7,13 +7,15 @@ namespace Recore
     /// <summary>
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
-    /// <remarks>
-    /// This type is meant to feel like a subclass of <see cref="string"/>, which is sealed.
-    /// </remarks>
-    public sealed class Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
+    public sealed class Token : IEquatable<Token>, IComparable<Token>
     {
-        // Guaranteed to be non-null, nonzero length, and no whitespace
-        private readonly string value;
+        /// <summary>
+        /// The value of the token.
+        /// </summary>
+        /// <remarks>
+        /// This is guaranteed to be non-null, have nonzero length, and have no whitespace.
+        /// </remarks>
+        public string Value { get; }
 
         /// <summary>
         /// Constructs an instance of <see cref="Token"/> from a string value.
@@ -38,13 +40,13 @@ namespace Recore
                 }
             }
 
-            this.value = value;
+            Value = value;
         }
 
         /// <summary>
         /// Returns the underlying string value.
         /// </summary>
-        public override string ToString() => value;
+        public override string ToString() => Value;
 
         /// <summary>
         /// Determines whether this instance and another object,
@@ -57,10 +59,6 @@ namespace Recore
             {
                 return this.Equals(token);
             }
-            else if (obj is string str)
-            {
-                return this.Equals(str);
-            }
             else
             {
                 return false;
@@ -71,13 +69,7 @@ namespace Recore
         /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
         /// </summary>
-        public bool Equals(Token other) => value == other.value;
-
-        /// <summary>
-        /// Determines whether this instance and a <see cref="string"/>
-        /// have the same value.
-        /// </summary>
-        public bool Equals(string other) => value.Equals(other);
+        public bool Equals(Token other) => Value == other.Value;
 
         /// <summary>
         /// Determines whether two instances of <see cref="Token"/>
@@ -94,29 +86,17 @@ namespace Recore
         /// <summary>
         /// Returns the hash code of the underlying value.
         /// </summary>
-        public override int GetHashCode() => value.GetHashCode();
+        public override int GetHashCode() => Value.GetHashCode();
 
         /// <summary>
         /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
-        public int CompareTo(Token other) => value.CompareTo(other.value);
+        public int CompareTo(Token other) => Value.CompareTo(other.Value);
 
-        /// <summary>
-        /// Compares this instance with a specified <see cref="string"/> object
-        /// and indicates whether this instance precedes, follows, or appears in the same position
-        /// in the sort order as the specified object.
-        /// </summary>
-        public int CompareTo(string other) => value.CompareTo(other);
-
-        /// <summary>
-        /// Converts this instance to its underlying value.
-        /// </summary>
-        public static implicit operator string(Token t) => t.ToString();
-
-        // Implicit conversion to string gives us the string == and != operators for free
-        // For some reason, String implements IComparable but does not have comparison operators
+        // For some reason, String implements IComparable but does not have comparison operators.
+        // Therefore, I won't add them to Token, either.
     }
 
     /// <summary>

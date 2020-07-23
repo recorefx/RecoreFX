@@ -31,7 +31,14 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void ConvertToString()
+        public void Value()
+        {
+            Assert.Equal("hello", new Token("hello").Value);
+            Assert.NotEqual("asdf", new Token("hello").Value);
+        }
+
+        [Fact]
+        public void ToString_()
         {
             Assert.Equal("hello", new Token("hello").ToString());
             Assert.NotEqual("asdf", new Token("hello").ToString());
@@ -67,43 +74,19 @@ namespace Recore.Tests
             var helloworld2 = new Token("hello" + "world");
             Assert.True(helloworld1.Equals((object)helloworld2));
 
-            Assert.True(helloworld1.Equals("helloworld"));
-            Assert.Equal("helloworld", helloworld1);
+            Assert.False(helloworld1.Equals("helloworld"));
             Assert.False(helloworld1.Equals(new Exception()));
 
             Assert.True(Equals(helloworld1, helloworld2));
-            Assert.True(Equals(helloworld1, "helloworld"));
-
-            // string.Equals
-            Assert.True(string.Equals("hello", new Token("HELLO"), StringComparison.InvariantCultureIgnoreCase));
+            Assert.False(Equals(helloworld1, "helloworld"));
 
             // operator==
             Assert.True(helloworld1 == helloworld2);
             Assert.True(helloworld2 == helloworld1);
 
-            Assert.True(helloworld1 == "helloworld");
-            Assert.True("helloworld" == helloworld1);
-
             var asdf = new Token("asdf");
             Assert.False(helloworld1 == asdf);
             Assert.True(helloworld1 != asdf);
-        }
-
-        [Fact]
-        public void ImplicitConversionToString()
-        {
-            var world = new Token("world");
-            var message = "hello " + world;
-            Assert.Equal("hello world", message);
-
-            var dictionary = new Dictionary<string, int>
-            {
-                ["burrito"] = 1,
-                ["enchilada"] = 2,
-                ["chalupa"] = 3
-            };
-
-            Assert.Equal(1, dictionary[new Token("burrito")]);
         }
 
         [Fact]
@@ -126,10 +109,6 @@ namespace Recore.Tests
             Assert.Equal(-1, new Token("abc").CompareTo(new Token("def")));
             Assert.Equal(0, new Token("abc").CompareTo(new Token("abc")));
             Assert.Equal(1, new Token("def").CompareTo(new Token("abc")));
-
-            Assert.Equal(-1, "abc".CompareTo(new Token("def")));
-            Assert.Equal(0, "abc".CompareTo(new Token("abc")));
-            Assert.Equal(1, "def".CompareTo(new Token("abc")));
         }
 
         [Fact]
