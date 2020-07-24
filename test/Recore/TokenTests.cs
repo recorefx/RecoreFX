@@ -85,11 +85,11 @@ namespace Recore.Tests
         public void EqualsWithStringComparison()
         {
             var aether = new Token("aether");
-            var æther = new Token("æther");
+            var Ã¦ther = new Token("Ã¦ther");
 
-            Assert.False(aether.Equals(æther));
-            Assert.False(aether.Equals(æther, StringComparison.Ordinal));
-            Assert.True(aether.Equals(æther, StringComparison.CurrentCulture));
+            Assert.False(aether.Equals(Ã¦ther));
+            Assert.False(aether.Equals(Ã¦ther, StringComparison.Ordinal));
+            Assert.True(aether.Equals(Ã¦ther, StringComparison.CurrentCulture));
         }
 
         [Fact]
