@@ -8,13 +8,12 @@ namespace Recore
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
     /// <remarks>
-    /// This type is meant to feel like a subclass of <see cref="string"/>, which is sealed.
+    /// This type implements <see cref="IComparable{T}"/> with <c cref="Of{T}">Of&lt;String&gt;</c>
+    /// instead of <c cref="Of{T}">Of&lt;Token&gt;</c>.
+    /// This is for parity with its inherited implementation of <c cref="IEquatable{T}">IEquatable&lt;Of&lt;String&gt;&gt;</c>.
     /// </remarks>
-    public sealed class Token : IEquatable<Token>, IComparable<Token>, IEquatable<string>, IComparable<string>
+    public sealed class Token : Of<string>, IComparable<Of<string>>
     {
-        // Guaranteed to be non-null, nonzero length, and no whitespace
-        private readonly string value;
-
         /// <summary>
         /// Constructs an instance of <see cref="Token"/> from a string value.
         /// </summary>
@@ -38,85 +37,25 @@ namespace Recore
                 }
             }
 
-            this.value = value;
-        }
-
-        /// <summary>
-        /// Returns the underlying string value.
-        /// </summary>
-        public override string ToString() => value;
-
-        /// <summary>
-        /// Determines whether this instance and another object,
-        /// which must be a <see cref="Token"/> or a <see cref="string"/>,
-        /// have the same value.
-        /// </summary>
-        public override bool Equals(object obj)
-        {
-            if (obj is Token token)
-            {
-                return this.Equals(token);
-            }
-            else if (obj is string str)
-            {
-                return this.Equals(str);
-            }
-            else
-            {
-                return false;
-            }
+            Value = value;
         }
 
         /// <summary>
         /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
+        /// A parameter specifies the culture, case, and sort rules used in the comparison.
         /// </summary>
-        public bool Equals(Token other) => value == other.value;
-
-        /// <summary>
-        /// Determines whether this instance and a <see cref="string"/>
-        /// have the same value.
-        /// </summary>
-        public bool Equals(string other) => value.Equals(other);
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Token"/>
-        /// have the same value.
-        /// </summary>
-        public static bool operator ==(Token lhs, Token rhs) => Equals(lhs, rhs);
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Token"/>
-        /// have different values.
-        /// </summary>
-        public static bool operator !=(Token lhs, Token rhs) => !Equals(lhs, rhs);
-
-        /// <summary>
-        /// Returns the hash code of the underlying value.
-        /// </summary>
-        public override int GetHashCode() => value.GetHashCode();
+        public bool Equals(Of<string> other, StringComparison comparisonType) => Value.Equals(other.Value, comparisonType);
 
         /// <summary>
         /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
-        public int CompareTo(Token other) => value.CompareTo(other.value);
+        public int CompareTo(Of<string> other) => Value.CompareTo(other.Value);
 
-        /// <summary>
-        /// Compares this instance with a specified <see cref="string"/> object
-        /// and indicates whether this instance precedes, follows, or appears in the same position
-        /// in the sort order as the specified object.
-        /// </summary>
-        public int CompareTo(string other) => value.CompareTo(other);
-
-        /// <summary>
-        /// Converts this instance to its underlying value.
-        /// </summary>
-        public static implicit operator string(Token t) => t.ToString();
-
-        // Implicit conversion to string gives us the string == and != operators for free
-        // For some reason, String implements IComparable but does not have comparison operators
+        // For some reason, String implements IComparable but does not have comparison operators.
+        // Therefore, I won't add them to Token, either.
     }
 
     /// <summary>

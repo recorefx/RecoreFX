@@ -8,7 +8,8 @@ namespace Recore
     /// <remarks>
     /// Use <see cref="Of{T}"/> to create a strongly-typed "alias" of another type.
     ///
-    /// You can use a <c>using</c> directive to create an alias for a type, but the scope of that alias is limited to that file.
+    /// You can use a <c>using</c> directive to create an alias for a type,
+    /// but the scope of that alias is limited to that file.
     /// Furthermore, the alias is just that -- an alias -- not a separate type.
     /// So, an alias won't prevent errors like this:
     /// <code>
@@ -52,6 +53,10 @@ namespace Recore
         /// <summary>
         /// Determines whether two instances of the type are equal.
         /// </summary>
+        /// <remarks>
+        /// Note that instances of two separate subtypes of <see cref="Of{T}"/>
+        /// will compare equal to each other if their values are the same type and are equal.
+        /// </remarks>
         public bool Equals(Of<T> other)
             => other != null
             && Equals(Value, other.Value);
