@@ -81,7 +81,7 @@ namespace Recore.Tests
             Assert.False(Equals(helloworld1, "helloworld"));
         }
 
-        [Fact]
+        [Fact(Skip="https://github.com/recorefx/RecoreFX/issues/94")]
         public void EqualsWithStringComparison()
         {
             var aether = new Token("aether");
@@ -89,7 +89,7 @@ namespace Recore.Tests
 
             Assert.False(aether.Equals(æther));
             Assert.False(aether.Equals(æther, StringComparison.Ordinal));
-            Assert.True(aether.Equals(æther, StringComparison.CurrentCulture));
+            Assert.True(aether.Equals(æther, StringComparison.InvariantCulture));
         }
 
         [Fact]
