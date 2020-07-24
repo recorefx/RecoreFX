@@ -81,15 +81,17 @@ namespace Recore.Tests
             Assert.False(Equals(helloworld1, "helloworld"));
         }
 
-        [Fact(Skip="https://github.com/recorefx/RecoreFX/issues/94")]
+        [Fact]
         public void EqualsWithStringComparison()
         {
-            var aether = new Token("aether");
-            var æther = new Token("æther");
+            // Localized string comparison actually depends on the underlying OS
+            // to do the collation, but case sensitivity should be pretty standard.
+            var lowercase = new Token("abc");
+            var uppercase = new Token("ABC");
 
-            Assert.False(aether.Equals(æther));
-            Assert.False(aether.Equals(æther, StringComparison.Ordinal));
-            Assert.True(aether.Equals(æther, StringComparison.InvariantCulture));
+            Assert.False(lowercase.Equals(uppercase));
+            Assert.False(lowercase.Equals(uppercase, StringComparison.Ordinal));
+            Assert.True(lowercase.Equals(uppercase, StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact]
