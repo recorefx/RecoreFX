@@ -69,7 +69,7 @@ namespace Recore
         /// <remarks>
         /// While a particular string may consist of tokens delimited by some other character or string,
         /// this method does not provide an option for this by design.
-        /// This is consistent with the <see cref="Token"/> type itself,
+        /// This is consistent with the <seealso cref="Token"/> type itself,
         /// which does not check for any characters besides whitespace.
         /// </remarks>
         public static Token[] Tokenize(this string str)

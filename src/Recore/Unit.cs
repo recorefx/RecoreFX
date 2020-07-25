@@ -16,7 +16,7 @@ namespace Recore
     public readonly struct Unit : IEquatable<Unit>
     {
         /// <summary>
-        /// A singleton <see cref="Unit"/> value.
+        /// The singleton <see cref="Unit"/> value.
         /// </summary>
         public static Unit Value { get; } = new Unit();
 
@@ -55,7 +55,7 @@ namespace Recore
         /// <summary>
         /// Returns a string representation of the unit value.
         /// </summary>
-        public override string ToString() => "()";
+        public override string ToString() => nameof(Unit);
 
         /// <summary>
         /// Two unit instances are always equal.
