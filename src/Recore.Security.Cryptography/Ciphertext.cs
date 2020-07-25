@@ -14,46 +14,11 @@ namespace Recore.Security.Cryptography
     /// For example, if your application is storing users' passwords in a database,
     /// you could use this type for the .NET representation of the stored passwords.
     /// </remarks>
-    public sealed class Ciphertext<THash> : IEquatable<Ciphertext<THash>> where THash : HashAlgorithm
+    public sealed class Ciphertext<THash> : Of<string> where THash : HashAlgorithm
     {
-        /// <summary>
-        /// The ciphertext as a string.
-        /// </summary>
-        public string Value { get; }
-
         private Ciphertext(string value)
         {
             Value = value;
-        }
-
-        /// <summary>
-        /// The ciphertext as a string.
-        /// </summary>
-        public override string ToString() => Value;
-
-        /// <summary>
-        /// Returns the hash code of the underlying value.
-        /// </summary>
-        public override int GetHashCode() => Value.GetHashCode();
-
-        /// <summary>
-        /// Compares this <see cref="Ciphertext{THash}"/>
-        /// to another object for equality.
-        /// </summary>
-        public override bool Equals(object obj)
-        {
-            return obj is Ciphertext<THash> cipherText
-                && Equals(cipherText);
-        }
-
-        /// <summary>
-        /// Compares two instances of <see cref="Ciphertext{THash}"/>
-        /// for equality.
-        /// </summary>
-        public bool Equals(Ciphertext<THash> other)
-        {
-            return other != null
-                && Value == other.Value;
         }
 
         /// <summary>
@@ -96,18 +61,6 @@ namespace Recore.Security.Cryptography
             var hashBytes = hash.ComputeHash(saltedPlaintextBytes);
             return new Ciphertext<THash>(Convert.ToBase64String(hashBytes));
         }
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Ciphertext{THash}"/>
-        /// have the same value.
-        /// </summary>
-        public static bool operator ==(Ciphertext<THash> lhs, Ciphertext<THash> rhs) => Equals(lhs, rhs);
-
-        /// <summary>
-        /// Determines whether two instances of <see cref="Ciphertext{THash}"/>
-        /// have different values.
-        /// </summary>
-        public static bool operator !=(Ciphertext<THash> lhs, Ciphertext<THash> rhs) => !Equals(lhs, rhs);
     }
 
     /// <summary>
