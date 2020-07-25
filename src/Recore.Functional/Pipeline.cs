@@ -55,60 +55,6 @@ namespace Recore.Functional
     }
 
     /// <summary>
-    /// Composes many functions or actions into a single function.
-    /// </summary>
-    /// <example>
-    /// Without <see cref="Pipeline{T}"/>:
-    /// <code>
-    /// var result = Baz(Bar(Foo(value)));
-    /// </code>
-    ///
-    /// With <see cref="Pipeline{T}"/>:
-    /// <code>
-    /// var result = new Pipeline&lt;string, int&gt;(Foo)
-    ///     .Then(Bar)
-    ///     .Then(Baz)
-    ///     .Func();
-    /// </code>
-    /// </example>
-    public sealed class Pipeline<TValue, TResult>
-    {
-        /// <summary>
-        /// Gets the composed function.
-        /// </summary>
-        public Func<TValue, TResult> Func { get; }
-
-        /// <summary>
-        /// Initializes the <see cref="Pipeline{TValue, TResult}"/> from a function.
-        /// </summary>
-        public Pipeline(Func<TValue, TResult> func)
-        {
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
-
-            Func = func;
-        }
-
-        /// <summary>
-        /// Adds another function to the composed result.
-        /// </summary>
-        public Pipeline<TValue, TNextResult> Then<TNextResult>(Func<TResult, TNextResult> func)
-            => new Pipeline<TValue, TNextResult>(x => func(Func(x)));
-
-        /// <summary>
-        /// Adds an action to be performed when evaluating the composed function.
-        /// </summary>
-        /// <remarks>
-        /// Note that the action will be called lazily.
-        /// It will not be called until the composed function is called.
-        /// </remarks>
-        public Pipeline<TValue, TResult> Then(Action<TResult> action)
-            => Then(action.Fluent());
-    }
-
-    /// <summary>
     /// Provides additional methods for <see cref="Pipeline{T}"/>.
     /// </summary>
     public static class Pipeline
