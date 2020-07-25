@@ -59,7 +59,7 @@ namespace Recore.Functional
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Pipeline{T}"/>.
+    /// Provides additional methods for <seealso cref="Pipeline{T}"/>.
     /// </summary>
     public static class Pipeline
     {

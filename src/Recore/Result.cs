@@ -169,7 +169,7 @@ namespace Recore
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Result{TValue, TError}"/>.
+    /// Provides additional methods for <seealso cref="Result{TValue, TError}"/>.
     /// </summary>
     public static class Result
     {

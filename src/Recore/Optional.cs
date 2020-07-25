@@ -260,7 +260,7 @@ namespace Recore
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Optional{T}"/>.
+    /// Provides additional methods for <seealso cref="Optional{T}"/>.
     /// </summary>
     public static class Optional
     {

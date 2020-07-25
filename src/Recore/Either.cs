@@ -232,7 +232,7 @@ namespace Recore
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Either{TLeft, TRight}"/>.
+    /// Provides additional methods for <seealso cref="Either{TLeft, TRight}"/>.
     /// </summary>
     public static class Either
     {
