@@ -50,4 +50,7 @@ I didn't choose it for two reasons:
 * Elsewhere in the code (`Optional`, for example), `Then` is used for a monad bind operation. In purely functional programming, function composition -- rather than the order of statements (as there are no statements) -- is the way to represent a sequence of operations. In other words, `g(f(x))` means *first* do `f`, *then* do `g`.
 * Moreover, the monad bind operation is closely related to function composition -- hence the name `then` being used for the monad bind operation in JavaScript's `Promise` type.
 
-## Why doesn't `Composer` have a `Composer.Of` helper method?
+## Why doesn't `Composer` have a `Composer.Of` helper method like `Pipeline` does?
+
+Currently, C#'s generic type inference won't pick up the type arguments of a `Func<>` argument.
+So, this pattern won't work for `Composer`.

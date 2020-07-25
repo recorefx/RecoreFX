@@ -7,7 +7,11 @@ namespace Recore.Functional
     /// with postfix syntax.
     /// </summary>
     /// <remarks>
-    /// Functions are called on the value eagerly.
+    /// <see cref="Pipeline{T}"/> and <seealso cref="Composer{TValue, TResult}"/> differ
+    /// in that <see cref="Pipeline{T}"/> invokes its functions eagerly,
+    /// while <seealso cref="Composer{TValue, TResult}"/> invokes its functions lazily.
+    /// <see cref="Pipeline{T}"/> produces a value as its final result, whereas
+    /// <seealso cref="Composer{TValue, TResult}"/> produces a function.
     /// </remarks>
     /// <example>
     /// Without <see cref="Pipeline{T}"/>:

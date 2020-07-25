@@ -5,6 +5,13 @@ namespace Recore.Functional
     /// <summary>
     /// Composes many functions or actions into a single function.
     /// </summary>
+    /// <remarks>
+    /// <see cref="Composer{TValue, TResult}"/> and <seealso cref="Pipeline{T}"/> differ
+    /// in that <see cref="Composer{TValue, TResult}"/> invokes its functions lazily,
+    /// while <seealso cref="Pipeline{T}"/> invokes its functions eagerly.
+    /// <see cref="Composer{TValue, TResult}"/> produces a function as its final result, whereas
+    /// <seealso cref="Pipeline{T}"/> produces a value.
+    /// </remarks>
     /// <example>
     /// Without <see cref="Composer{TValue, TResult}"/>:
     /// <code>
