@@ -2,46 +2,7 @@ using Xunit;
 
 namespace Recore.Functional.Tests
 {
-    public class ValueComposerTests
-    {
-        [Fact]
-        public void TrivialComposer()
-        {
-            var result = Composer.Of(1 + 1)
-                .Result;
-
-            Assert.Equal(2, result);
-        }
-
-        [Fact]
-        public void ThenAllFuncs()
-        {
-            var result = Composer.Of<string>(null)
-                .Then(string.IsNullOrEmpty)
-                .Then(x => x.ToString())
-                .Result;
-
-            Assert.Equal("True", result);
-        }
-
-        [Fact]
-        public void ThenWithAction()
-        {
-            bool calledPrint = false;
-            void Print(string value) => calledPrint = true;
-
-            var composer = Composer.Of("hello world")
-                .Then(Print)
-                .Then(x => x.Split())
-                .Then(x => string.Join(":", x));
-
-            // Action should be called eagerly, before calling .Result
-            Assert.True(calledPrint);
-            Assert.Equal("hello:world", composer.Result);
-        }
-    }
-
-    public class FunctionComposerTests
+    public class ComposerTests
     {
         [Fact]
         public void TrivialComposer()

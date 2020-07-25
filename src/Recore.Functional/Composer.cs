@@ -3,72 +3,27 @@ using System;
 namespace Recore.Functional
 {
     /// <summary>
-    /// Creates a function pipeline, calling each function or action on the value
-    /// with postfix syntax.
-    /// </summary>
-    /// <remarks>
-    /// Functions are called on the value eagerly.
-    /// </remarks>
-    /// <example>
-    /// Without <see cref="Composer{T}"/>:
-    /// <code>
-    /// var result = Baz(Bar(Foo(value)));
-    /// </code>
-    ///
-    /// With <see cref="Composer{T}"/>:
-    /// <code>
-    /// var result = Composer.Of(value)
-    ///     .Then(Foo)
-    ///     .Then(Bar)
-    ///     .Then(Baz)
-    ///     .Result;
-    /// </code>
-    /// </example>
-    public sealed class Composer<T>
-    {
-        /// <summary>
-        /// Gets the result of the <see cref="Composer{T}"/>.
-        /// </summary>
-        public T Result { get; }
-
-        /// <summary>
-        /// Initializes the <see cref="Composer{T}"/> from a value.
-        /// </summary>
-        public Composer(T value)
-        {
-            Result = value;
-        }
-
-        /// <summary>
-        /// Invokes a function on the <see cref="Composer{T}"/>'s current value
-        /// and passes the result through the <see cref="Composer{T}"/>.
-        /// </summary>
-        public Composer<U> Then<U>(Func<T, U> func)
-            => new Composer<U>(func(Result));
-
-        /// <summary>
-        /// Invokes an action on the <see cref="Composer{T}"/>'s current value
-        /// and passes the value through the <see cref="Composer{T}"/>.
-        /// </summary>
-        public Composer<T> Then(Action<T> action)
-            => Then(action.Fluent());
-    }
-
-    /// <summary>
     /// Composes many functions or actions into a single function.
     /// </summary>
+    /// <remarks>
+    /// <see cref="Composer{TValue, TResult}"/> and <seealso cref="Pipeline{T}"/> differ
+    /// in that <see cref="Composer{TValue, TResult}"/> invokes its functions lazily,
+    /// while <seealso cref="Pipeline{T}"/> invokes its functions eagerly.
+    /// <see cref="Composer{TValue, TResult}"/> produces a function as its final result, whereas
+    /// <seealso cref="Pipeline{T}"/> produces a value.
+    /// </remarks>
     /// <example>
-    /// Without <see cref="Composer{T}"/>:
+    /// Without <see cref="Composer{TValue, TResult}"/>:
     /// <code>
     /// var result = Baz(Bar(Foo(value)));
     /// </code>
     ///
-    /// With <see cref="Composer{T}"/>:
+    /// With <see cref="Composer{TValue, TResult}"/>:
     /// <code>
     /// var result = new Composer&lt;string, int&gt;(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
-    ///     .Func();
+    ///     .Func(value);
     /// </code>
     /// </example>
     public sealed class Composer<TValue, TResult>
@@ -106,19 +61,5 @@ namespace Recore.Functional
         /// </remarks>
         public Composer<TValue, TResult> Then(Action<TResult> action)
             => Then(action.Fluent());
-    }
-
-    /// <summary>
-    /// Provides additional methods for <see cref="Composer{T}"/>.
-    /// </summary>
-    public static class Composer
-    {
-        /// <summary>
-        /// Creates a <see cref="Composer{T}"/> from a value.
-        /// </summary>
-        /// <remarks>
-        /// This method works the the same as the constructor, but it is useful for type inference.
-        /// </remarks>
-        public static Composer<T> Of<T>(T value) => new Composer<T>(value);
     }
 }
