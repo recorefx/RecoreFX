@@ -6,17 +6,17 @@ namespace Recore.Functional
     /// Composes many functions or actions into a single function.
     /// </summary>
     /// <example>
-    /// Without <see cref="Composer{T}"/>:
+    /// Without <see cref="Composer{TValue, TResult}"/>:
     /// <code>
     /// var result = Baz(Bar(Foo(value)));
     /// </code>
     ///
-    /// With <see cref="Composer{T}"/>:
+    /// With <see cref="Composer{TValue, TResult}"/>:
     /// <code>
     /// var result = new Composer&lt;string, int&gt;(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
-    ///     .Func();
+    ///     .Func(value);
     /// </code>
     /// </example>
     public sealed class Composer<TValue, TResult>
