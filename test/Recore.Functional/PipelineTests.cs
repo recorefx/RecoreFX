@@ -2,12 +2,12 @@ using Xunit;
 
 namespace Recore.Functional.Tests
 {
-    public class ValueComposerTests
+    public class PipelineTests
     {
         [Fact]
-        public void TrivialComposer()
+        public void TrivialPipeline()
         {
-            var result = Composer.Of(1 + 1)
+            var result = Pipeline.Of(1 + 1)
                 .Result;
 
             Assert.Equal(2, result);
@@ -16,7 +16,7 @@ namespace Recore.Functional.Tests
         [Fact]
         public void ThenAllFuncs()
         {
-            var result = Composer.Of<string>(null)
+            var result = Pipeline.Of<string>(null)
                 .Then(string.IsNullOrEmpty)
                 .Then(x => x.ToString())
                 .Result;
@@ -30,25 +30,25 @@ namespace Recore.Functional.Tests
             bool calledPrint = false;
             void Print(string value) => calledPrint = true;
 
-            var composer = Composer.Of("hello world")
+            var pipeline = Pipeline.Of("hello world")
                 .Then(Print)
                 .Then(x => x.Split())
                 .Then(x => string.Join(":", x));
 
             // Action should be called eagerly, before calling .Result
             Assert.True(calledPrint);
-            Assert.Equal("hello:world", composer.Result);
+            Assert.Equal("hello:world", pipeline.Result);
         }
     }
 
-    public class FunctionComposerTests
+    public class FunctionPipelineTests
     {
         [Fact]
-        public void TrivialComposer()
+        public void TrivialPipeline()
         {
             // TODO .NET Core 3
             /*static*/ bool IsEven(int x) => x % 2 == 0;
-            var func = new Composer<int, bool>(IsEven)
+            var func = new Pipeline<int, bool>(IsEven)
                 .Func;
 
             Assert.True(func(0));
@@ -58,7 +58,7 @@ namespace Recore.Functional.Tests
         [Fact]
         public void ThenAllFuncs()
         {
-            var func = new Composer<string, bool>(string.IsNullOrEmpty)
+            var func = new Pipeline<string, bool>(string.IsNullOrEmpty)
                 .Then(x => x.ToString())
                 .Then(x => x.Length)
                 .Func;
@@ -74,7 +74,7 @@ namespace Recore.Functional.Tests
             bool calledPrint = false;
             void Print(string value) => calledPrint = true;
 
-            var func = new Composer<Unit, string>(_ => "hello world")
+            var func = new Pipeline<Unit, string>(_ => "hello world")
                 .Then(Print)
                 .Then(x => x.Split())
                 .Then(x => string.Join(":", x))

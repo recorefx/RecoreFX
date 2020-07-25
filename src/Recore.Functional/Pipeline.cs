@@ -10,47 +10,47 @@ namespace Recore.Functional
     /// Functions are called on the value eagerly.
     /// </remarks>
     /// <example>
-    /// Without <see cref="Composer{T}"/>:
+    /// Without <see cref="Pipeline{T}"/>:
     /// <code>
     /// var result = Baz(Bar(Foo(value)));
     /// </code>
     ///
-    /// With <see cref="Composer{T}"/>:
+    /// With <see cref="Pipeline{T}"/>:
     /// <code>
-    /// var result = Composer.Of(value)
+    /// var result = Pipeline.Of(value)
     ///     .Then(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
     ///     .Result;
     /// </code>
     /// </example>
-    public sealed class Composer<T>
+    public sealed class Pipeline<T>
     {
         /// <summary>
-        /// Gets the result of the <see cref="Composer{T}"/>.
+        /// Gets the result of the <see cref="Pipeline{T}"/>.
         /// </summary>
         public T Result { get; }
 
         /// <summary>
-        /// Initializes the <see cref="Composer{T}"/> from a value.
+        /// Initializes the <see cref="Pipeline{T}"/> from a value.
         /// </summary>
-        public Composer(T value)
+        public Pipeline(T value)
         {
             Result = value;
         }
 
         /// <summary>
-        /// Invokes a function on the <see cref="Composer{T}"/>'s current value
-        /// and passes the result through the <see cref="Composer{T}"/>.
+        /// Invokes a function on the <see cref="Pipeline{T}"/>'s current value
+        /// and passes the result through the <see cref="Pipeline{T}"/>.
         /// </summary>
-        public Composer<U> Then<U>(Func<T, U> func)
-            => new Composer<U>(func(Result));
+        public Pipeline<U> Then<U>(Func<T, U> func)
+            => new Pipeline<U>(func(Result));
 
         /// <summary>
-        /// Invokes an action on the <see cref="Composer{T}"/>'s current value
-        /// and passes the value through the <see cref="Composer{T}"/>.
+        /// Invokes an action on the <see cref="Pipeline{T}"/>'s current value
+        /// and passes the value through the <see cref="Pipeline{T}"/>.
         /// </summary>
-        public Composer<T> Then(Action<T> action)
+        public Pipeline<T> Then(Action<T> action)
             => Then(action.Fluent());
     }
 
@@ -58,20 +58,20 @@ namespace Recore.Functional
     /// Composes many functions or actions into a single function.
     /// </summary>
     /// <example>
-    /// Without <see cref="Composer{T}"/>:
+    /// Without <see cref="Pipeline{T}"/>:
     /// <code>
     /// var result = Baz(Bar(Foo(value)));
     /// </code>
     ///
-    /// With <see cref="Composer{T}"/>:
+    /// With <see cref="Pipeline{T}"/>:
     /// <code>
-    /// var result = new Composer&lt;string, int&gt;(Foo)
+    /// var result = new Pipeline&lt;string, int&gt;(Foo)
     ///     .Then(Bar)
     ///     .Then(Baz)
     ///     .Func();
     /// </code>
     /// </example>
-    public sealed class Composer<TValue, TResult>
+    public sealed class Pipeline<TValue, TResult>
     {
         /// <summary>
         /// Gets the composed function.
@@ -79,9 +79,9 @@ namespace Recore.Functional
         public Func<TValue, TResult> Func { get; }
 
         /// <summary>
-        /// Initializes the <see cref="Composer{TValue, TResult}"/> from a function.
+        /// Initializes the <see cref="Pipeline{TValue, TResult}"/> from a function.
         /// </summary>
-        public Composer(Func<TValue, TResult> func)
+        public Pipeline(Func<TValue, TResult> func)
         {
             if (func == null)
             {
@@ -94,8 +94,8 @@ namespace Recore.Functional
         /// <summary>
         /// Adds another function to the composed result.
         /// </summary>
-        public Composer<TValue, TNextResult> Then<TNextResult>(Func<TResult, TNextResult> func)
-            => new Composer<TValue, TNextResult>(x => func(Func(x)));
+        public Pipeline<TValue, TNextResult> Then<TNextResult>(Func<TResult, TNextResult> func)
+            => new Pipeline<TValue, TNextResult>(x => func(Func(x)));
 
         /// <summary>
         /// Adds an action to be performed when evaluating the composed function.
@@ -104,21 +104,21 @@ namespace Recore.Functional
         /// Note that the action will be called lazily.
         /// It will not be called until the composed function is called.
         /// </remarks>
-        public Composer<TValue, TResult> Then(Action<TResult> action)
+        public Pipeline<TValue, TResult> Then(Action<TResult> action)
             => Then(action.Fluent());
     }
 
     /// <summary>
-    /// Provides additional methods for <see cref="Composer{T}"/>.
+    /// Provides additional methods for <see cref="Pipeline{T}"/>.
     /// </summary>
-    public static class Composer
+    public static class Pipeline
     {
         /// <summary>
-        /// Creates a <see cref="Composer{T}"/> from a value.
+        /// Creates a <see cref="Pipeline{T}"/> from a value.
         /// </summary>
         /// <remarks>
         /// This method works the the same as the constructor, but it is useful for type inference.
         /// </remarks>
-        public static Composer<T> Of<T>(T value) => new Composer<T>(value);
+        public static Pipeline<T> Of<T>(T value) => new Pipeline<T>(value);
     }
 }
