@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Recore.Collections.Generic
 {
     /// <summary>
-    /// Compares instances of a type using the given comparison function.
+    /// Compares instances of a type based on the output of a mapping function.
     /// </summary>
     public sealed class MappedComparer<T, U> : IComparer<T>
     {
