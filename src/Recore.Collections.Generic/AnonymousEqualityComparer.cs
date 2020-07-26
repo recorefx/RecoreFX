@@ -20,7 +20,6 @@ namespace Recore.Collections.Generic
             this.getHashCode = getHashCode ?? throw new ArgumentNullException(nameof(getHashCode));
         }
 
-
         /// <summary>
         /// Invokes the given comparison function on two objects.
         /// </summary>
