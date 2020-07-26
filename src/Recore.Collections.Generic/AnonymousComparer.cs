@@ -15,7 +15,7 @@ namespace Recore.Collections.Generic
         /// </summary>
         public AnonymousComparer(Func<T, T, int> compare)
         {
-            this.compare = compare;
+            this.compare = compare ?? throw new ArgumentNullException(nameof(compare));
         }
 
         /// <summary>

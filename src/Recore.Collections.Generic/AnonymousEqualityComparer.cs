@@ -16,8 +16,8 @@ namespace Recore.Collections.Generic
         /// </summary>
         public AnonymousEqualityComparer(Func<T, T, bool> equals, Func<T, int> getHashCode)
         {
-            this.equals = equals;
-            this.getHashCode = getHashCode;
+            this.equals = equals ?? throw new ArgumentNullException(nameof(equals));
+            this.getHashCode = getHashCode ?? throw new ArgumentNullException(nameof(getHashCode));
         }
 
 
