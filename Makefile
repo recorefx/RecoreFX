@@ -1,7 +1,7 @@
 DOCFX_INSTALL_DIR := bin/docfx
 
 .PHONY: all
-all: build
+all: build install-docfx docs
 
 .PHONY: build
 build:
