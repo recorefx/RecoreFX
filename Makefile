@@ -1,11 +1,15 @@
 DOCFX_INSTALL_DIR := bin/docfx
 
 .PHONY: all
-all: build install-docfx docs
+all: build check docs
 
 .PHONY: build
 build:
 	dotnet build
+
+.PHONY: check
+check:
+	dotnet test
 
 $(DOCFX_INSTALL_DIR):
 	mkdir -p $@
@@ -20,5 +24,8 @@ $(DOCFX_INSTALL_DIR)/docfx.exe: | $(DOCFX_INSTALL_DIR)
 	chmod +x $(DOCFX_INSTALL_DIR)/docfx.exe
 
 .PHONY: docs
-docs:
-	$(DOCFX_INSTALL_DIR)/docfx docs/docfx/docfx.json
+docs: install-docfx
+	$(DOCFX_INSTALL_DIR)/docfx.exe docs/docfx/docfx.json
+
+.PHONY: clean
+	dotnet clean
