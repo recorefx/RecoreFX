@@ -7,21 +7,6 @@ using System.Text.Json.Serialization;
 namespace Recore.Text.Json.Serialization.Converters
 {
     /// <summary>
-    /// Place on an subtype of <seealso cref="Of{T}"/> to serialize it to JSON as its underlying type.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class OfJsonAttribute : JsonConverterAttribute
-    {
-        /// <summary>
-        /// Initializes a new instance of <see cref="OfJsonAttribute"/>.
-        /// </summary>
-        public OfJsonAttribute(Type thisType, Type innerType)
-            : base(typeof(OfConverter<,>).MakeGenericType(new[] { thisType, innerType }))
-        {
-        }
-    }
-
-    /// <summary>
     /// JSON converter factory for the open generic type <seealso cref="Of{T}"/>.
     /// </summary>
     internal sealed class OfConverter : JsonConverterFactory
