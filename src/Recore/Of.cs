@@ -58,6 +58,13 @@ namespace Recore
         public T Value { get; set; }
 
         /// <summary>
+        /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
+        /// with the same value of <typeparamref name="T"/>.
+        /// </summary>
+        public TOf To<TOf>() where TOf : Of<T>, new()
+            => new TOf { Value = Value };
+
+        /// <summary>
         /// Returns the string representation for the underlying object.
         /// </summary>
         public override string ToString() => Value.ToString();
@@ -95,5 +102,14 @@ namespace Recore
         /// </summary>
         public static bool operator !=(Of<T> lhs, Of<T> rhs)
             => !Equals(lhs, rhs);
+
+        /// <summary>
+        /// Converts an instance of <see cref="Of{T}"/> to its inner type <typeparamref name="T"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Of{T}"/> is conceptually (though not in fact) a subtype of <typeparamref name="T"/>.
+        /// This conversion allows instances of <see cref="Of{T}"/> to work with methods out of the caller's control.
+        /// </remarks>
+        public static implicit operator T(Of<T> of) => of.Value;
     }
 }
