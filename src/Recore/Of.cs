@@ -35,7 +35,7 @@ namespace Recore
     /// Console.WriteLine(address); // prints "1 Microsoft Way"
     /// </code>
     /// </example>
-    [JsonConverter(typeof(OfConverterFactory))]
+    [JsonConverter(typeof(OfConverter))]
     public abstract class Of<T> : IEquatable<Of<T>>
     {
         /// <summary>

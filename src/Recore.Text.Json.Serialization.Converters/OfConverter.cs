@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Recore.Text.Json.Serialization.Converters
 {
-    internal class OfConverterFactory : JsonConverterFactory
+    internal class OfConverter : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
             => IsOfType(typeToConvert) || IsOfSubtype(typeToConvert);

@@ -15,7 +15,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         [Fact]
         public void CanConvert()
         {
-            var factory = new OfConverterFactory();
+            var factory = new OfConverter();
 
             Assert.True(factory.CanConvert(typeof(Of<>)));
             Assert.True(factory.CanConvert(typeof(Of<string>)));
@@ -34,7 +34,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         [Fact]
         public void CreateConverter()
         {
-            var factory = new OfConverterFactory();
+            var factory = new OfConverter();
             var options = new JsonSerializerOptions();
 
             Assert.IsType<OfConverter<string>>(factory.CreateConverter(typeof(Of<string>), options));

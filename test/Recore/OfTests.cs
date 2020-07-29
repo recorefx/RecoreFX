@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Xunit;
 
 using Recore.Text.Json.Serialization.Converters;
@@ -7,6 +8,7 @@ namespace Recore.Tests
 {
     public class OfTests
     {
+        [JsonConverter(typeof(OfConverter))]
         class Address : Of<string>
         {
             public Address(string value) => Value = value;
@@ -36,10 +38,7 @@ namespace Recore.Tests
         public void ToJson()
         {
             var address = new Address("1 Microsoft Way");
-
-            var options = new JsonSerializerOptions();
-            options.Converters.Add(new OfConverterFactory());
-            Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(address, options));
+            Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(address));
         }
     }
 }
