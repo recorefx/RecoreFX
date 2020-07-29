@@ -45,7 +45,7 @@ namespace Recore
     /// class JsonAddress : Of&lt;string&gt; {}
     ///
     /// var jsonAddress = new JsonAddress { Value = "1 Microsoft Way" };
-    /// Console.WriteLine(JsonSerializer.Serialize(address)); // { value: "1 Microsoft Way" }
+    /// Console.WriteLine(JsonSerializer.Serialize(address)); // {"value":"1 Microsoft Way"}
     /// Console.WriteLine(JsonSerializer.Serialize(jsonAddress)); // "1 Microsoft Way"
     /// </code>
     /// </example>

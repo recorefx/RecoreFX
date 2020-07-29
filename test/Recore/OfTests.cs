@@ -7,16 +7,22 @@ namespace Recore.Tests
 {
     public class OfTests
     {
-        [OfJson(typeof(Address), typeof(string))]
         class Address : Of<string>
         {
             public Address() { }
             public Address(string value) => Value = value;
         }
 
+        [OfJson(typeof(JsonAddress), typeof(string))]
+        class JsonAddress : Of<string>
+        {
+            public JsonAddress() { }
+            public JsonAddress(string value) => Value = value;
+        }
+
         class House
         {
-            public Address Street { get; set; }
+            public JsonAddress Street { get; set; }
         }
 
         [Fact]
@@ -43,11 +49,14 @@ namespace Recore.Tests
         public void ToJson()
         {
             var address = new Address("1 Microsoft Way");
-            Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(address));
+            Assert.Equal("{\"Value\":\"1 Microsoft Way\"}", JsonSerializer.Serialize(address));
+
+            var jsonAddress = new JsonAddress("1 Microsoft Way");
+            Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(jsonAddress));
 
             var house = new House
             {
-                Street = new Address("123 Main St")
+                Street = new JsonAddress("123 Main St")
             };
 
             Assert.Equal("{\"Street\":\"123 Main St\"}", JsonSerializer.Serialize(house));
@@ -56,14 +65,23 @@ namespace Recore.Tests
         [Fact]
         public void FromJson()
         {
-            var address = JsonSerializer.Deserialize<Of<string>>("\"1 Microsoft Way\"").To<Address>();
+            // This throws because `Address` does not have `[OfJson(...)]`
+            Assert.Throws<JsonException>(
+                () => JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\""));
+
+            var address = JsonSerializer.Deserialize<Address>("{\"Value\":\"1 Microsoft Way\"}");
             Assert.Equal(new Address("1 Microsoft Way"), address);
 
-            address = JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\"");
-            Assert.Equal(new Address("1 Microsoft Way"), address);
+            var jsonAddress = JsonSerializer
+                .Deserialize<Of<string>>("\"1 Microsoft Way\"")
+                .To<JsonAddress>();
+            Assert.Equal(new JsonAddress("1 Microsoft Way"), jsonAddress);
+
+            jsonAddress = JsonSerializer.Deserialize<JsonAddress>("\"1 Microsoft Way\"");
+            Assert.Equal(new JsonAddress("1 Microsoft Way"), jsonAddress);
 
             var house = JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}");
-            Assert.Equal(new Address("123 Main St"), house.Street);
+            Assert.Equal(new JsonAddress("123 Main St"), house.Street);
         }
     }
 }

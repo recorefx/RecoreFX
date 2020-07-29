@@ -9,6 +9,7 @@ namespace Recore.Text.Json.Serialization.Converters
     /// <summary>
     /// Place on an subtype of <seealso cref="Of{T}"/> to serialize it to JSON as its underlying type.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class OfJsonAttribute : JsonConverterAttribute
     {
         /// <summary>
@@ -96,6 +97,9 @@ namespace Recore.Text.Json.Serialization.Converters
     /// <remarks>
     /// Subtypes can use this instead of calling <seealso cref="OfConverter"/> directly
     /// to get a statically-typed return value from <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>.
+    ///
+    /// Note that <c>System.Text.Json</c> requires reference types to have a parameterless constructor
+    /// to be deserializable.
     /// </remarks>
     internal sealed class OfConverter<TOf, TInner> : JsonConverter<TOf> where TOf : Of<TInner>, new()
     {
