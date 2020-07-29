@@ -41,7 +41,7 @@ namespace Recore
     /// <code>
     /// using System.Text.Json;
     ///
-    /// [OfJson]
+    /// [OfJson(typeof(JsonAddress), typeof(string))]
     /// class JsonAddress : Of&lt;string&gt; {}
     ///
     /// var jsonAddress = new JsonAddress { Value = "1 Microsoft Way" };

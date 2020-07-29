@@ -14,12 +14,15 @@ namespace Recore.Text.Json.Serialization.Converters
         /// <summary>
         /// Initializes a new instance of <see cref="OfJsonAttribute"/>.
         /// </summary>
-        public OfJsonAttribute()
-            : base(typeof(OfConverter))
+        public OfJsonAttribute(Type thisType, Type innerType)
+            : base(typeof(OfConverter<,>).MakeGenericType(new[] { thisType, innerType }))
         {
         }
     }
 
+    /// <summary>
+    /// JSON converter factory for the open generic type <seealso cref="Of{T}"/>.
+    /// </summary>
     internal sealed class OfConverter : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
@@ -62,6 +65,10 @@ namespace Recore.Text.Json.Serialization.Converters
         }
     }
 
+    /// <summary>
+    /// JSON converter for the generic type <seealso cref="Of{T}"/>
+    /// for a given <typeparamref name="T"/>.
+    /// </summary>
     internal sealed class OfConverter<T> : JsonConverter<Of<T>>
     {
         private class JsonOf : Of<T> { }
@@ -81,5 +88,32 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override void Write(Utf8JsonWriter writer, Of<T> value, JsonSerializerOptions options)
             => innerConverter.Write(writer, value.Value, options);
+    }
+
+    /// <summary>
+    /// JSON converter for subtypes of <seealso cref="Of{T}"/>.
+    /// </summary>
+    /// <remarks>
+    /// Subtypes can use this instead of calling <seealso cref="OfConverter"/> directly
+    /// to get a statically-typed return value from <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>.
+    /// </remarks>
+    internal sealed class OfConverter<TOf, TInner> : JsonConverter<TOf> where TOf : Of<TInner>, new()
+    {
+        private readonly OfConverter converterFactory = new OfConverter();
+
+        public override bool CanConvert(Type typeToConvert) => converterFactory.CanConvert(typeToConvert);
+
+        public override TOf Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var converter = (OfConverter<TInner>)converterFactory.CreateConverter(typeToConvert, options);
+            var result = converter.Read(ref reader, typeToConvert, options);
+            return result.To<TOf>();
+        }
+
+        public override void Write(Utf8JsonWriter writer, TOf value, JsonSerializerOptions options)
+        {
+            var converter = (OfConverter<TInner>)converterFactory.CreateConverter(typeof(TOf), options);
+            converter.Write(writer, value, options);
+        }
     }
 }

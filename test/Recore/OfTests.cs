@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using Xunit;
 
@@ -8,11 +7,16 @@ namespace Recore.Tests
 {
     public class OfTests
     {
-        [OfJson]
+        [OfJson(typeof(Address), typeof(string))]
         class Address : Of<string>
         {
             public Address() { }
             public Address(string value) => Value = value;
+        }
+
+        class House
+        {
+            public Address Street { get; set; }
         }
 
         [Fact]
@@ -40,18 +44,26 @@ namespace Recore.Tests
         {
             var address = new Address("1 Microsoft Way");
             Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(address));
+
+            var house = new House
+            {
+                Street = new Address("123 Main St")
+            };
+
+            Assert.Equal("{\"Street\":\"123 Main St\"}", JsonSerializer.Serialize(house));
         }
 
         [Fact]
         public void FromJson()
         {
-            // This is a known limitation.
-            // Wrap it in a test anyway so we notice if it ever changes.
-            Assert.Throws<InvalidCastException>(
-                () => JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\""));
-
             var address = JsonSerializer.Deserialize<Of<string>>("\"1 Microsoft Way\"").To<Address>();
             Assert.Equal(new Address("1 Microsoft Way"), address);
+
+            address = JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\"");
+            Assert.Equal(new Address("1 Microsoft Way"), address);
+
+            var house = JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}");
+            Assert.Equal(new Address("123 Main St"), house.Street);
         }
     }
 }
