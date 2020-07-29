@@ -76,21 +76,20 @@ It makes it feel like `Of<T>` is a little more like a subtype of `T`, which is c
 
 I think implicit conversions are kind of spooky, though, and it wouldn't be a breaking change to add that in the future.
 
-**Update from the future:** when deserializing JSON, there's this limitation:
+**Update from the future:** when adding JSON support for `Of<T>` types,
+I hit upon the need to convert from instances of `Of<T>` to `Of<U>`.
+I realized that in real-life software, it's not uncommon to hit upon duplicated interfaces and types.
+Dependency structure and code ownership limit the ease with which code can be shared.
+
+Since you can't make a generic cast operator, so the next best thing is to add a method:
 
 ```cs
-// throws InvalidCastException
-JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\"")
+class Address : Of<string> {}
+class StreetAddress : Of<string> {}
+
+var address = new Address("1 Microsoft Way");
+var streetAddress = address.To<StreetAddress>();
 ```
-
-The workaround is to do something like this:
-
-```cs
-(Address)JsonSerializer.Deserialize<Of<string>>("\"1 Microsoft Way\"")
-```
-
-This requires an explicit operator to cast `Of<T>` to `Of<U>`.
-
 
 (Of course, you could still construct the values normally, but that would be really clunky.)
 
