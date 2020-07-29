@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Xunit;
 
 using Recore.Text.Json.Serialization.Converters;
@@ -8,7 +7,7 @@ namespace Recore.Tests
 {
     public class OfTests
     {
-        [JsonConverter(typeof(OfConverter))]
+        [OfJson]
         class Address : Of<string>
         {
             public Address(string value) => Value = value;

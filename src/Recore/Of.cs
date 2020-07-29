@@ -31,8 +31,22 @@ namespace Recore
     /// <example>
     /// <code>
     /// class Address : Of&lt;string&gt; {}
+    ///
     /// var address = new Address { Value = "1 Microsoft Way" };
     /// Console.WriteLine(address); // prints "1 Microsoft Way"
+    /// </code>
+    ///
+    /// You can add <seealso cref="OfJsonAttribute"/> so that the type is serialized
+    /// in the same was as the <typeparamref name="T"/> type:
+    /// <code>
+    /// using System.Text.Json;
+    ///
+    /// [OfJson]
+    /// class JsonAddress : Of&lt;string&gt; {}
+    ///
+    /// var jsonAddress = new JsonAddress { Value = "1 Microsoft Way" };
+    /// Console.WriteLine(JsonSerializer.Serialize(address)); // { value: "1 Microsoft Way" }
+    /// Console.WriteLine(JsonSerializer.Serialize(jsonAddress)); // "1 Microsoft Way"
     /// </code>
     /// </example>
     [JsonConverter(typeof(OfConverter))]

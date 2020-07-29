@@ -6,7 +6,21 @@ using System.Text.Json.Serialization;
 
 namespace Recore.Text.Json.Serialization.Converters
 {
-    internal class OfConverter : JsonConverterFactory
+    /// <summary>
+    /// Place on an subtype of <seealso cref="Of{T}"/> to serialize it to JSON as its underlying type.
+    /// </summary>
+    public sealed class OfJsonAttribute : JsonConverterAttribute
+    {
+        /// <summary>
+        /// Initializes a new instance of <see cref="OfJsonAttribute"/>.
+        /// </summary>
+        public OfJsonAttribute()
+            : base(typeof(OfConverter))
+        {
+        }
+    }
+
+    internal sealed class OfConverter : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
             => IsOfType(typeToConvert) || IsOfSubtype(typeToConvert);
@@ -48,7 +62,7 @@ namespace Recore.Text.Json.Serialization.Converters
         }
     }
 
-    internal class OfConverter<T> : JsonConverter<Of<T>>
+    internal sealed class OfConverter<T> : JsonConverter<Of<T>>
     {
         private class JsonOf : Of<T> { }
 
