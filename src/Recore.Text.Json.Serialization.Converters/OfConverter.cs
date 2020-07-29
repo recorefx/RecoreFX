@@ -13,13 +13,21 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
-            var innerType = typeToConvert.GetGenericArguments()[0];
-            var innerConverter = options.GetConverter(innerType);
-            var ofConverter = Activator.CreateInstance(
-                type: typeof(OfConverter<>).MakeGenericType(new[] { innerType }),
-                args: new[] { innerConverter });
+            if (IsOfType(typeToConvert))
+            {
+                var innerType = typeToConvert.GetGenericArguments()[0];
+                var innerConverter = options.GetConverter(innerType);
+                var ofConverter = Activator.CreateInstance(
+                    type: typeof(OfConverter<>).MakeGenericType(new[] { innerType }),
+                    args: new[] { innerConverter });
 
-            return (JsonConverter)ofConverter;
+                return (JsonConverter)ofConverter;
+            }
+            else
+            {
+                var ofType = GetTypeHierarchy(typeToConvert).First(IsOfType);
+                return CreateConverter(ofType, options);
+            }
         }
 
         private static bool IsOfType(Type type)

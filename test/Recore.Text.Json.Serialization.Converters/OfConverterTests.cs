@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using System.Text.Json;
 using Xunit;
 
 using Recore.Security.Cryptography;
@@ -28,6 +29,16 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
             Assert.False(factory.CanConvert(typeof(string)));
             Assert.False(factory.CanConvert(typeof(object)));
+        }
+
+        [Fact]
+        public void CreateConverter()
+        {
+            var factory = new OfConverterFactory();
+            var options = new JsonSerializerOptions();
+
+            Assert.IsType<OfConverter<string>>(factory.CreateConverter(typeof(Of<string>), options));
+            Assert.IsType<OfConverter<string>>(factory.CreateConverter(typeof(DerivedOfString), options));
         }
     }
 }

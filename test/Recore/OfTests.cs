@@ -1,4 +1,7 @@
+using System.Text.Json;
 using Xunit;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore.Tests
 {
@@ -27,6 +30,16 @@ namespace Recore.Tests
             Address address2 = null;
 
             Assert.NotEqual(address1, address2);
+        }
+
+        [Fact]
+        public void ToJson()
+        {
+            var address = new Address("1 Microsoft Way");
+
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new OfConverterFactory());
+            Assert.Equal("\"1 Microsoft Way\"", JsonSerializer.Serialize(address, options));
         }
     }
 }
