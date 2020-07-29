@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -7,8 +9,7 @@ namespace Recore.Text.Json.Serialization.Converters
     internal class OfConverterFactory : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
-           => typeToConvert.IsGenericType
-            && typeToConvert.GetGenericTypeDefinition() == typeof(Of<>);
+            => IsOfType(typeToConvert) || IsOfSubtype(typeToConvert);
 
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
@@ -19,6 +20,23 @@ namespace Recore.Text.Json.Serialization.Converters
                 args: new[] { innerConverter });
 
             return (JsonConverter)ofConverter;
+        }
+
+        private static bool IsOfType(Type type)
+            => type.IsGenericType
+            && type.GetGenericTypeDefinition() == typeof(Of<>);
+
+        private static bool IsOfSubtype(Type type)
+            => GetTypeHierarchy(type).Any(IsOfType);
+
+        private static IEnumerable<Type> GetTypeHierarchy(Type type)
+        {
+            var baseType = type.BaseType;
+            while (baseType != null)
+            {
+                yield return baseType;
+                baseType = baseType.BaseType;
+            }
         }
     }
 

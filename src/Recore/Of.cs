@@ -1,4 +1,7 @@
 using System;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
@@ -32,6 +35,7 @@ namespace Recore
     /// Console.WriteLine(address); // prints "1 Microsoft Way"
     /// </code>
     /// </example>
+    [JsonConverter(typeof(OfConverterFactory))]
     public abstract class Of<T> : IEquatable<Of<T>>
     {
         /// <summary>
