@@ -81,7 +81,7 @@ I hit upon the need to convert from instances of `Of<T>` to `Of<U>`.
 I realized that in real-life software, it's not uncommon to hit upon duplicated interfaces and types.
 Dependency structure and code ownership limit the ease with which code can be shared.
 
-Since you can't make a generic cast operator, so the next best thing is to add a method:
+You can't make a generic cast operator, so the next best thing is to add a method:
 
 ```cs
 class Address : Of<string> {}
