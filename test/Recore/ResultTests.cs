@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.Json;
 
 using Xunit;
 
@@ -292,7 +293,7 @@ namespace Recore.Tests
             Assert.Equal(1, success);
 
             var failure = Result
-                .Try<int>(() =>
+                .Try(() =>
                 {
                     var array = new int[0];
                     return array[1]; // throws IndexOutOfRangeException
@@ -341,7 +342,7 @@ namespace Recore.Tests
             Assert.Equal(values, collection.Values().ToArray());
         }
 
-    [   Fact]
+        [Fact]
         public void Errors()
         {
             var collection = new Result<string, int>[]
@@ -361,6 +362,42 @@ namespace Recore.Tests
             };
 
             Assert.Equal(errors, collection.Errors().ToArray());
+        }
+
+        [Fact]
+        public void ToJson()
+        {
+            Result<int, string> result;
+
+            result = 12;
+            Assert.Equal(
+                expected: "12",
+                actual: JsonSerializer.Serialize(result));
+
+            result = "hello";
+            Assert.Equal(
+                expected: "\"hello\"",
+                actual: JsonSerializer.Serialize(result));
+        }
+
+        [Fact]
+        public void FromJson()
+        {
+            Assert.Equal(
+                expected: new Result<int, string>(12),
+                actual: JsonSerializer.Deserialize<Result<int, string>>("12"));
+
+            Assert.Equal(
+                expected: new Result<int, string>("hello"),
+                actual: JsonSerializer.Deserialize<Result<int, string>>("\"hello\""));
+
+            Assert.Equal(
+                expected: new Result<string, int>(12),
+                actual: JsonSerializer.Deserialize<Result<string, int>>("12"));
+
+            Assert.Equal(
+                expected: new Result<string, int>("hello"),
+                actual: JsonSerializer.Deserialize<Result<string, int>>("\"hello\""));
         }
     }
 }
