@@ -513,6 +513,12 @@ namespace Recore.Tests
             Assert.Equal(
                 expected: Optional<string>.Empty,
                 actual: JsonSerializer.Deserialize<Optional<string>>("null"));
+
+            Assert.Throws<JsonException>(
+                () => JsonSerializer.Deserialize<Optional<int>>("hello"));
+
+            Assert.Throws<JsonException>(
+                () => JsonSerializer.Deserialize<Optional<string>>("12"));
         }
     }
 }
