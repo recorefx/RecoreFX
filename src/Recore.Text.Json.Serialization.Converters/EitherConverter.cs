@@ -71,7 +71,7 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options)
             => value.Switch(
-                left => leftConverter.Write(writer, left, options),
-                right => rightConverter.Write(writer, right, options));
+                l => leftConverter.Write(writer, l, options),
+                r => rightConverter.Write(writer, r, options));
     }
 }

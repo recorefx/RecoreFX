@@ -112,14 +112,14 @@ namespace Recore
         public Optional<TLeft> GetLeft()
             => Switch(
                 Optional.Of,
-                right => Optional<TLeft>.Empty);
+                r => Optional<TLeft>.Empty);
 
         /// <summary>
         /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
         /// </summary>
         public Optional<TRight> GetRight()
             => Switch(
-                left => Optional<TRight>.Empty,
+                l => Optional<TRight>.Empty,
                 Optional.Of);
 
         /// <summary>
@@ -127,16 +127,16 @@ namespace Recore
         /// </summary>
         public Either<TResult, TRight> OnLeft<TResult>(Func<TLeft, TResult> onLeft)
             => Switch(
-                left => new Either<TResult, TRight>(onLeft(left)),
-                right => new Either<TResult, TRight>(right));
+                l => new Either<TResult, TRight>(onLeft(l)),
+                r => new Either<TResult, TRight>(r));
 
         /// <summary>
         /// Maps a function over the <see cref="Either{TLeft, TRight}"/> only if the value is an instance of <typeparamref name="TRight"/>.
         /// </summary>
         public Either<TLeft, TResult> OnRight<TResult>(Func<TRight, TResult> onRight)
             => Switch(
-                left => new Either<TLeft, TResult>(left),
-                right => new Either<TLeft, TResult>(onRight(right)));
+                l => new Either<TLeft, TResult>(l),
+                r => new Either<TLeft, TResult>(onRight(r)));
 
         /// <summary>
         /// Takes an action only if the value is an instance of <typeparamref name="TLeft"/>.
@@ -144,32 +144,32 @@ namespace Recore
         public void IfLeft(Action<TLeft> onLeft)
             => Switch(
                 onLeft,
-                right => { });
+                r => { });
 
         /// <summary>
         /// Takes an action only if the value is an instance of <typeparamref name="TRight"/>.
         /// </summary>
         public void IfRight(Action<TRight> onRight)
             => Switch(
-                left => { },
+                l => { },
                 onRight);
 
         /// <summary>
         /// Converts this <see cref="Either{TLeft, TRight}"/>
-        /// to an <see cref="Either{TRight, TLeft}"/>
+        /// to an <c>Either&lt;TRight, TLeft&gt;</c>
         /// </summary>
         public Either<TRight, TLeft> Swap()
             => Switch(
-                left => new Either<TRight, TLeft>(left),
-                right => new Either<TRight, TLeft>(right));
+                l => new Either<TRight, TLeft>(l),
+                r => new Either<TRight, TLeft>(r));
 
         /// <summary>
         /// Returns the string representation of the underlying value.
         /// </summary>
         public override string ToString()
             => Switch(
-                left => left.ToString(),
-                right => right.ToString());
+                l => l.ToString(),
+                r => r.ToString());
 
         /// <summary>
         /// Compares this <see cref="Either{TLeft, TRight}"/>
@@ -181,8 +181,8 @@ namespace Recore
         /// will always be nonequal.
         /// </remarks>
         public override bool Equals(object obj)
-            => obj is Either<TLeft, TRight>
-            && this.Equals((Either<TLeft, TRight>)obj);
+            => obj is Either<TLeft, TRight> either
+            && this.Equals(either);
 
         /// <summary>
         /// Compares two instances of <see cref="Either{TLeft, TRight}"/>
@@ -197,20 +197,20 @@ namespace Recore
         public bool Equals(Either<TLeft, TRight> other)
             => other != null
             && Switch(
-                left => other.Switch(
-                    otherLeft => Equals(left, otherLeft),
+                l => other.Switch(
+                    otherLeft => Equals(l, otherLeft),
                     otherRight => false),
-                right => other.Switch(
+                r => other.Switch(
                     otherLeft => false,
-                    otherRight => Equals(right, otherRight)));
+                    otherRight => Equals(r, otherRight)));
 
         /// <summary>
         /// Returns the hash code of the underlying value.
         /// </summary>
         public override int GetHashCode()
             => Switch(
-                left => left.GetHashCode(),
-                right => right.GetHashCode());
+                l => l.GetHashCode(),
+                r => r.GetHashCode());
 
         /// <summary>
         /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>

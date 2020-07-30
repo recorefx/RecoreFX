@@ -28,25 +28,25 @@ namespace Recore.Tests
 
             either = "hello";
             result = either.Switch(
-                left => 1,
-                right => throw new Exception("Should not be called"));
+                l => 1,
+                r => throw new Exception("Should not be called"));
             Assert.Equal(1, result);
 
             either = 12;
             result = either.Switch(
-                left => throw new Exception("Should not be called"),
-                right => right * 2);
+                l => throw new Exception("Should not be called"),
+                r => r * 2);
             Assert.Equal(24, result);
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
-                    left => throw new Exception("Should not be called"),
+                    l => throw new Exception("Should not be called"),
                     null));
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
                     null,
-                    right => throw new Exception("Should not be called")));
+                    r => throw new Exception("Should not be called")));
         }
 
         [Fact]
@@ -58,26 +58,26 @@ namespace Recore.Tests
             either = "hello";
             called = false;
             either.Switch(
-                left => { called = true; },
-                right => throw new Exception("Should not be called"));
+                l => { called = true; },
+                r => throw new Exception("Should not be called"));
             Assert.True(called);
 
             either = 12;
             called = false;
             either.Switch(
-                left => throw new Exception("Should not be called"),
-                right => { called = true; });
+                l => throw new Exception("Should not be called"),
+                r => { called = true; });
             Assert.True(called);
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
-                    left => throw new Exception("Should not be called"),
+                    l => throw new Exception("Should not be called"),
                     null));
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
                     null,
-                    right => throw new Exception("Should not be called")));
+                    r => throw new Exception("Should not be called")));
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace Recore.Tests
         public void EqualsWithNull()
         {
             Assert.False(
-                new Either<int, string>("abc").Equals((Either<int, string>)null));
+                new Either<int, string>("abc").Equals(null));
         }
 
         [Theory]
