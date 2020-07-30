@@ -17,11 +17,11 @@ namespace Recore.Text.Json.Serialization.Converters
         {
             var innerType = typeToConvert.GetGenericArguments()[0];
             var innerConverter = options.GetConverter(innerType);
-            var ofConverter = Activator.CreateInstance(
+            var optionalConverter = Activator.CreateInstance(
                 type: typeof(OptionalConverter<>).MakeGenericType(new[] { innerType }),
                 args: new[] { innerConverter });
 
-            return (JsonConverter)ofConverter;
+            return (JsonConverter)optionalConverter;
         }
     }
 
@@ -35,13 +35,25 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public OptionalConverter(JsonConverter innerConverter)
         {
+            if (innerConverter is null)
+            {
+                throw new ArgumentNullException(nameof(innerConverter));
+            }
+
             this.innerConverter = (JsonConverter<T>)innerConverter;
         }
 
         public override Optional<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var value = innerConverter.Read(ref reader, typeof(T), options);
-            return Optional.Of(value);
+            if (reader.TokenType == JsonTokenType.Null)
+            {
+                return Optional<T>.Empty;
+            }
+            else
+            {
+                var value = innerConverter.Read(ref reader, typeof(T), options);
+                return Optional.Of(value);
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, Optional<T> value, JsonSerializerOptions options)
