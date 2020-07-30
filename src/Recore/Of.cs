@@ -1,4 +1,7 @@
 using System;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
@@ -28,16 +31,38 @@ namespace Recore
     /// <example>
     /// <code>
     /// class Address : Of&lt;string&gt; {}
+    ///
     /// var address = new Address { Value = "1 Microsoft Way" };
     /// Console.WriteLine(address); // prints "1 Microsoft Way"
     /// </code>
+    ///
+    /// You can add <seealso cref="OfJsonAttribute"/> so that the type is serialized
+    /// in the same was as the <typeparamref name="T"/> type:
+    /// <code>
+    /// using System.Text.Json;
+    ///
+    /// [OfJson(typeof(JsonAddress), typeof(string))]
+    /// class JsonAddress : Of&lt;string&gt; {}
+    ///
+    /// var jsonAddress = new JsonAddress { Value = "1 Microsoft Way" };
+    /// Console.WriteLine(JsonSerializer.Serialize(address)); // {"value":"1 Microsoft Way"}
+    /// Console.WriteLine(JsonSerializer.Serialize(jsonAddress)); // "1 Microsoft Way"
+    /// </code>
     /// </example>
+    [JsonConverter(typeof(OfConverter))]
     public abstract class Of<T> : IEquatable<Of<T>>
     {
         /// <summary>
         /// The underlying instance of the wrapped type.
         /// </summary>
         public T Value { get; set; }
+
+        /// <summary>
+        /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
+        /// with the same value of <typeparamref name="T"/>.
+        /// </summary>
+        public TOf To<TOf>() where TOf : Of<T>, new()
+            => new TOf { Value = Value };
 
         /// <summary>
         /// Returns the string representation for the underlying object.
@@ -77,5 +102,14 @@ namespace Recore
         /// </summary>
         public static bool operator !=(Of<T> lhs, Of<T> rhs)
             => !Equals(lhs, rhs);
+
+        /// <summary>
+        /// Converts an instance of <see cref="Of{T}"/> to its inner type <typeparamref name="T"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="Of{T}"/> is conceptually (though not in fact) a subtype of <typeparamref name="T"/>.
+        /// This conversion allows instances of <see cref="Of{T}"/> to work with methods out of the caller's control.
+        /// </remarks>
+        public static implicit operator T(Of<T> of) => of.Value;
     }
 }
