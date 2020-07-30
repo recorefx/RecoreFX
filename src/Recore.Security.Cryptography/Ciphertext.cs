@@ -41,17 +41,17 @@ namespace Recore.Security.Cryptography
         /// </remarks>
         public static Ciphertext<THash> Encrypt(string plaintext, byte[] salt, THash hash)
         {
-            if (plaintext == null)
+            if (plaintext is null)
             {
                 throw new ArgumentNullException(nameof(plaintext));
             }
 
-            if (salt == null)
+            if (salt is null)
             {
                 throw new ArgumentNullException(nameof(salt));
             }
 
-            if (hash == null)
+            if (hash is null)
             {
                 throw new ArgumentNullException(nameof(hash));
             }

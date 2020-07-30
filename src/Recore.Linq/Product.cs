@@ -12,12 +12,12 @@ namespace Recore.Linq
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second)
         {
-            if (first == null)
+            if (first is null)
             {
                 throw new ArgumentNullException(nameof(first));
             }
 
-            if (second == null)
+            if (second is null)
             {
                 throw new ArgumentNullException(nameof(second));
             }

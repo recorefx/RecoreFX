@@ -54,12 +54,12 @@ namespace Recore
         /// <returns>Result of the function that was called.</returns>
         public U Switch<U>(Func<T, U> onValue, Func<U> onEmpty)
         {
-            if (onValue == null)
+            if (onValue is null)
             {
                 throw new ArgumentNullException(nameof(onValue));
             }
 
-            if (onEmpty == null)
+            if (onEmpty is null)
             {
                 throw new ArgumentNullException(nameof(onEmpty));
             }
@@ -81,12 +81,12 @@ namespace Recore
         /// <param name="onEmpty">Called when the <see cref="Optional{T}"/> does not have a value.</param>
         public void Switch(Action<T> onValue, Action onEmpty)
         {
-            if (onValue == null)
+            if (onValue is null)
             {
                 throw new ArgumentNullException(nameof(onValue));
             }
 
-            if (onEmpty == null)
+            if (onEmpty is null)
             {
                 throw new ArgumentNullException(nameof(onEmpty));
             }

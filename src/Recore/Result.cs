@@ -233,7 +233,7 @@ namespace Recore
         /// </summary>
         public static Catcher<TValue> Try<TValue>(Func<TValue> func)
         {
-            if (func == null)
+            if (func is null)
             {
                 throw new ArgumentNullException(nameof(func));
             }

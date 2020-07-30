@@ -16,7 +16,7 @@ namespace Recore.Functional
         /// </summary>
         public static Func<Optional<T>, Optional<TResult>> OnOptional<T, TResult>(Func<T, TResult> func)
         {
-            if (func == null)
+            if (func is null)
                 throw new ArgumentNullException(nameof(func));
 
             return optional => optional.OnValue(func);
@@ -27,7 +27,7 @@ namespace Recore.Functional
         /// </summary>
         public static Action<Optional<T>> OnOptional<T>(Action<T> action)
         {
-            if (action == null)
+            if (action is null)
                 throw new ArgumentNullException(nameof(action));
 
             return optional => optional.IfValue(action);
@@ -41,9 +41,9 @@ namespace Recore.Functional
             Func<TLeft, TResult> leftFunc,
             Func<TRight, TResult> rightFunc)
         {
-            if (leftFunc == null)
+            if (leftFunc is null)
                 throw new ArgumentNullException(nameof(leftFunc));
-            if (rightFunc == null)
+            if (rightFunc is null)
                 throw new ArgumentNullException(nameof(rightFunc));
 
             return either => either.Switch(leftFunc, rightFunc);
@@ -56,9 +56,9 @@ namespace Recore.Functional
             Action<TLeft> leftAction,
             Action<TRight> rightAction)
         {
-            if (leftAction == null)
+            if (leftAction is null)
                 throw new ArgumentNullException(nameof(leftAction));
-            if (rightAction == null)
+            if (rightAction is null)
                 throw new ArgumentNullException(nameof(rightAction));
 
             return either => either.Switch(leftAction, rightAction);
@@ -69,7 +69,7 @@ namespace Recore.Functional
         /// </summary>
         public static Func<IEnumerable<T>, IEnumerable<TResult>> OnEnumerable<T, TResult>(Func<T, TResult> func)
         {
-            if (func == null)
+            if (func is null)
                 throw new ArgumentNullException(nameof(func));
 
             return enumerable => enumerable.Select(func);
@@ -80,7 +80,7 @@ namespace Recore.Functional
         /// </summary>
         public static Action<IEnumerable<T>> OnEnumerable<T>(Action<T> action)
         {
-            if (action == null)
+            if (action is null)
                 throw new ArgumentNullException(nameof(action));
 
             return enumerable => enumerable.ForEach(action);

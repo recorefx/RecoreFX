@@ -38,7 +38,7 @@ namespace Recore.Functional
         /// </summary>
         public Composer(Func<TValue, TResult> func)
         {
-            if (func == null)
+            if (func is null)
             {
                 throw new ArgumentNullException(nameof(func));
             }

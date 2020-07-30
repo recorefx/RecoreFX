@@ -121,7 +121,7 @@ namespace Recore.Collections.Generic
         /// </summary>
         public static IIterator<T> FromEnumerator<T>(IEnumerator<T> enumerator)
         {
-            if (enumerator == null)
+            if (enumerator is null)
             {
                 throw new ArgumentNullException(nameof(enumerator));
             }

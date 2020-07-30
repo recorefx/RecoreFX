@@ -61,12 +61,12 @@ namespace Recore
         /// </summary>
         public T Switch<T>(Func<TLeft, T> onLeft, Func<TRight, T> onRight)
         {
-            if (onLeft == null)
+            if (onLeft is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }
 
-            if (onRight == null)
+            if (onRight is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }
@@ -86,12 +86,12 @@ namespace Recore
         /// </summary>
         public void Switch(Action<TLeft> onLeft, Action<TRight> onRight)
         {
-            if (onLeft == null)
+            if (onLeft is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }
 
-            if (onRight == null)
+            if (onRight is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }

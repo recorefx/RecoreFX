@@ -25,7 +25,7 @@ namespace Recore
         /// </summary>
         public static Func<Unit> Close(Action action)
         {
-            if (action == null)
+            if (action is null)
             {
                 throw new ArgumentNullException(nameof(action));
             }

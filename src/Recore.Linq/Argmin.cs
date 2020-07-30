@@ -60,12 +60,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TResult Min, TSource Argmin) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
