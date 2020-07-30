@@ -14,7 +14,7 @@ namespace Recore
         /// </summary>
         public static string JoinLines(IEnumerable<string> lines)
         {
-            if (lines == null)
+            if (lines is null)
             {
                 throw new ArgumentNullException(nameof(lines));
             }

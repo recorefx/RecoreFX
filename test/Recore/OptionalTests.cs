@@ -246,7 +246,7 @@ namespace Recore.Tests
             // Associativity
             Optional<int> NullsafeLength(string str)
             {
-                if (str == null)
+                if (str is null)
                 {
                     return Optional<int>.Empty;
                 }

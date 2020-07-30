@@ -23,7 +23,7 @@ namespace Recore
         /// </summary>
         public Defer(Action action)
         {
-            if (action == null)
+            if (action is null)
             {
                 throw new ArgumentNullException(nameof(action));
             }

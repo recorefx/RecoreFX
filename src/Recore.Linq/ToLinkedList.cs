@@ -20,7 +20,7 @@ namespace Recore.Linq
         /// </remarks>
         public static LinkedList<TSource> ToLinkedList<TSource>(this IEnumerable<TSource> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }

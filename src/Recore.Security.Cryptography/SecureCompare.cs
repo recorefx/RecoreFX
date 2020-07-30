@@ -32,12 +32,12 @@ namespace Recore.Security.Cryptography
         /// </remarks>
         public static bool TimeInvariantEquals(byte[] lhs, byte[] rhs)
         {
-            if (lhs == null)
+            if (lhs is null)
             {
                 throw new ArgumentNullException(nameof(lhs));
             }
 
-            if (rhs == null)
+            if (rhs is null)
             {
                 throw new ArgumentNullException(nameof(rhs));
             }

@@ -15,12 +15,12 @@ namespace Recore.Linq
             this IEnumerable<TSource> source,
             Action<TSource> action)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (action == null)
+            if (action is null)
             {
                 throw new ArgumentNullException(nameof(action));
             }
