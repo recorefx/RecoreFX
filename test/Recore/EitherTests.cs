@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.Json;
 
 using Xunit;
 
@@ -274,6 +275,57 @@ namespace Recore.Tests
             };
 
             Assert.Equal(rights, collection.Rights().ToArray());
+        }
+
+        [Fact]
+        public void ToJson()
+        {
+            {
+                Either<int, string> either;
+
+                either = 12;
+                Assert.Equal(
+                    expected: "12",
+                    actual: JsonSerializer.Serialize(either));
+
+                either = "hello";
+                Assert.Equal(
+                    expected: "\"hello\"",
+                    actual: JsonSerializer.Serialize(either));
+            }
+            {
+                Either<string, int> either;
+
+                either = 12;
+                Assert.Equal(
+                    expected: "12",
+                    actual: JsonSerializer.Serialize(either));
+
+                either = "hello";
+                Assert.Equal(
+                    expected: "\"hello\"",
+                    actual: JsonSerializer.Serialize(either));
+            }
+        }
+
+        [Fact]
+        public void FromJson()
+        {
+            Assert.Equal(
+                expected: new Either<int, string>(12),
+                actual: JsonSerializer.Deserialize<Either<int, string>>("12"));
+
+            Assert.Equal(
+                expected: new Either<int, string>("hello"),
+                actual: JsonSerializer.Deserialize<Either<int, string>>("\"hello\""));
+
+            Assert.Equal(
+                expected: new Either<string, int>(12),
+                actual: JsonSerializer.Deserialize<Either<string, int>>("12"));
+
+            Assert.Equal(
+                expected: new Either<string, int>("hello"),
+                actual: JsonSerializer.Deserialize<Either<string, int>>("\"hello\""));
         }
     }
 }

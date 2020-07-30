@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Represents a value that can be one of two types.
     /// </summary>
+    [JsonConverter(typeof(EitherConverter))]
     public sealed class Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {
         private readonly TLeft left;
