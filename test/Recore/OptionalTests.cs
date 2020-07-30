@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -472,6 +473,46 @@ namespace Recore.Tests
 
             optional = await Optional<Task<int>>.Empty.AwaitAsync();
             Assert.Empty(optional);
+        }
+
+        [Fact]
+        public void ToJson()
+        {
+            Assert.Equal(
+                expected: "12",
+                actual: JsonSerializer.Serialize(Optional.Of(12)));
+
+            Assert.Equal(
+               expected: "null",
+               actual: JsonSerializer.Serialize(Optional<int>.Empty));
+
+            Assert.Equal(
+                expected: "\"hello\"",
+                actual: JsonSerializer.Serialize(Optional.Of("hello")));
+
+            Assert.Equal(
+               expected: "null",
+               actual: JsonSerializer.Serialize(Optional<string>.Empty));
+        }
+
+        [Fact]
+        public void FromJson()
+        {
+            Assert.Equal(
+                expected: Optional.Of(12),
+                actual: JsonSerializer.Deserialize<Optional<int>>("12"));
+
+            Assert.Equal(
+                expected: Optional<int>.Empty,
+                actual: JsonSerializer.Deserialize<Optional<int>>("null"));
+
+            Assert.Equal(
+                expected: Optional.Of("hello"),
+                actual: JsonSerializer.Deserialize<Optional<string>>("\"hello\""));
+
+            Assert.Equal(
+                expected: Optional<string>.Empty,
+                actual: JsonSerializer.Deserialize<Optional<string>>("null"));
         }
     }
 }

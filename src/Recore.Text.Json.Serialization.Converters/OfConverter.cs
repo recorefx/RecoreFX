@@ -63,6 +63,11 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public OfConverter(JsonConverter innerConverter)
         {
+            if (innerConverter is null)
+            {
+                throw new ArgumentNullException(nameof(innerConverter));
+            }
+
             this.innerConverter = (JsonConverter<T>)innerConverter;
         }
 

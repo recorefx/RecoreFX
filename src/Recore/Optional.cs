@@ -2,15 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 using Recore.Properties;
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Provides type-safe access to a nullable value.
     /// </summary>
+    [JsonConverter(typeof(OptionalConverter))]
     public readonly struct Optional<T> : IEquatable<Optional<T>>, IEnumerable<T>
     {
         private readonly T value;
@@ -159,8 +162,8 @@ namespace Recore
         /// have the same value.
         /// </summary>
         public override bool Equals(object obj)
-            => obj is Optional<T>
-            && this.Equals((Optional<T>)obj);
+            => obj is Optional<T> optional
+            && this.Equals(optional);
 
         /// <summary>
         /// Determines whether this instance and another <see cref="Optional{T}"/>
@@ -285,7 +288,7 @@ namespace Recore
         {
             if (condition)
             {
-                return Optional.Of(value);
+                return Of(value);
             }
             else
             {
