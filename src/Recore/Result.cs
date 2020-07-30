@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Represents the result of an operation that can be successful or failed.
     /// </summary>
+    [JsonConverter(typeof(ResultConverter))]
     public sealed class Result<TValue, TError> : IEquatable<Result<TValue, TError>>
     {
         private readonly Either<TValue, TError> either;
@@ -125,8 +129,8 @@ namespace Recore
         /// will always be nonequal.
         /// </remarks>
         public override bool Equals(object obj)
-            => obj is Result<TValue, TError>
-            && this.Equals((Result<TValue, TError>)obj);
+            => obj is Result<TValue, TError> result
+            && this.Equals(result);
 
         /// <summary>
         /// Compares two instances of <see cref="Result{TValue, TError}"/>
