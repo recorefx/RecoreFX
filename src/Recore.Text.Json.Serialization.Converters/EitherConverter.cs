@@ -46,49 +46,30 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override Either<TLeft, TRight> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            // The the thing that makes this tricky is that `JsonSerializer.Deserialize<TLeft>()`'s
-            // default behavior (when no converter is defined)
-            // is that it will just leave any fields null that it can't find on the object.
-            // So, if you have
-            //   class A { string Foo; }
-            //   class B { string Bar; }
-            // then
-            //   JsonSerializer.Deserialize<Either<A, B>>()
-            // will always return an instance of `A`, assuming we try to deserialize `A` first.
-            if (leftConverter != null)
-            {
-                try
-                {
-                    return leftConverter.Read(ref reader, typeof(TLeft), options);
-                }
-                catch (InvalidOperationException)
-                {
-                }
-            }
-            else if (rightConverter != null)
-            {
-                try
-                {
-                    return rightConverter.Read(ref reader, typeof(TRight), options);
-                }
-                catch (InvalidOperationException)
-                {
-                }
-            }
-
-            // Neither the left nor the right type has defined a converter.
+            // Using try-catch for control flow is an antipattern,
+            // but it seems to be the only way in this case.
             try
             {
-                return JsonSerializer.Deserialize<TLeft>(ref reader, options);
+                if (leftConverter != null)
+                {
+                    return leftConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TLeft>(ref reader, options);
+                }
             }
             catch (InvalidOperationException)
             {
+                if (rightConverter != null)
+                {
+                    return rightConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TRight>(ref reader, options);
+                }
             }
-            catch (JsonException)
-            {
-            }
-
-            return JsonSerializer.Deserialize<TRight>(ref reader, options);
         }
 
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options)
