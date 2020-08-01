@@ -57,28 +57,41 @@ namespace Recore.Text.Json.Serialization.Converters
     /// </summary>
     internal sealed class OfConverter<T> : JsonConverter<Of<T>>
     {
+        // Use OfJsonAttribute to convert this to the desired type.
         private class JsonOf : Of<T> { }
 
         private readonly JsonConverter<T> innerConverter;
 
         public OfConverter(JsonConverter innerConverter)
         {
-            if (innerConverter is null)
-            {
-                throw new ArgumentNullException(nameof(innerConverter));
-            }
-
             this.innerConverter = (JsonConverter<T>)innerConverter;
         }
 
         public override Of<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var value = innerConverter.Read(ref reader, typeof(T), options);
-            return new JsonOf { Value = value };
+            if (innerConverter != null)
+            {
+                var value = innerConverter.Read(ref reader, typeof(T), options);
+                return new JsonOf { Value = value };
+            }
+            else
+            {
+                var value = JsonSerializer.Deserialize<T>(ref reader, options);
+                return new JsonOf { Value = value };
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, Of<T> value, JsonSerializerOptions options)
-            => innerConverter.Write(writer, value.Value, options);
+        {
+            if (innerConverter != null)
+            {
+                innerConverter.Write(writer, value.Value, options);
+            }
+            else
+            {
+                JsonSerializer.Serialize(writer, value.Value, options);
+            }
+        }
     }
 
     /// <summary>

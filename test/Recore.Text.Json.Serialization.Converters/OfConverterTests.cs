@@ -36,6 +36,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             public int Age { get; set; }
         }
 
+        [OfJson(typeof(User), typeof(Person))]
         class User : Of<Person> { }
 
         [Fact]
