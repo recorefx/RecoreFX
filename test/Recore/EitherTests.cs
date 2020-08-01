@@ -368,6 +368,34 @@ namespace Recore.Tests
                     actual: deserializedPerson.GetLeft().First().Age);
             }
             {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetRight().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetRight().First().Zip);
+            }
+            {
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetLeft().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetLeft().First().Zip);
+
                 var deserializedPerson = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
