@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Xunit;
 
@@ -283,6 +284,13 @@ namespace Recore.Tests
             public int Age { get; set; }
         }
 
+        class Address
+        {
+            public string Street { get; set; }
+            public string Zip { get; set; }
+        }
+
+
         [Fact]
         public void ToJson()
         {
@@ -349,14 +357,26 @@ namespace Recore.Tests
                 expected: new Either<string, int>("hello"),
                 actual: JsonSerializer.Deserialize<Either<string, int>>("\"hello\""));
 
-            var deserializedPerson = JsonSerializer.Deserialize<Either<Person, string>>("{\"Name\":\"Mario\",\"Age\":42}");
-            Assert.Equal(
-                expected: "Mario",
-                actual: deserializedPerson.GetLeft().First().Name);
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, string>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
 
-            Assert.Equal(
-                expected: 42,
-                actual: deserializedPerson.GetLeft().First().Age);
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+            }
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetRight().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetRight().First().Age);
+            }
         }
     }
 }

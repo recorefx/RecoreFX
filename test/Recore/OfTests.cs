@@ -23,6 +23,14 @@ namespace Recore.Tests
             public JsonAddress Street { get; set; }
         }
 
+        class Person
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
+
+        class User : Of<Person> { }
+
         [Fact]
         public void Equals_()
         {
@@ -60,6 +68,13 @@ namespace Recore.Tests
                 {
                     Street = new JsonAddress("123 Main St")
                 }));
+
+            Assert.Equal(
+                expected: "{\"Name\":\"Mario\",\"Age\":42}",
+                actual: JsonSerializer.Serialize(new User
+                {
+                    Value = new Person { Name = "Mario", Age = 42 }
+                }));
         }
 
         [Fact]
@@ -86,6 +101,15 @@ namespace Recore.Tests
             Assert.Equal(
                 expected: new JsonAddress("123 Main St"),
                 actual: JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}").Street);
+
+            var deserializedUser = JsonSerializer.Deserialize<User>("{\"Name\":\"Mario\",\"Age\":42}");
+            Assert.Equal(
+                expected: "Mario",
+                actual: deserializedUser.Value.Name);
+
+            Assert.Equal(
+                expected: 42,
+                actual: deserializedUser.Value.Age);
         }
     }
 }
