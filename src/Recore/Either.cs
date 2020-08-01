@@ -65,7 +65,6 @@ namespace Recore
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }
-
             if (onRight is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
@@ -90,7 +89,6 @@ namespace Recore
             {
                 throw new ArgumentNullException(nameof(onLeft));
             }
-
             if (onRight is null)
             {
                 throw new ArgumentNullException(nameof(onLeft));
@@ -240,6 +238,45 @@ namespace Recore
     /// </summary>
     public static class Either
     {
+        /// <summary>
+        /// Combines two unary actions into a single action taking either of their parameters.
+        /// </summary>
+        public static Action<Either<TLeft, TRight>> Lift<TLeft, TRight>(
+            Action<TLeft> leftAction,
+            Action<TRight> rightAction)
+        {
+            if (leftAction is null)
+            {
+                throw new ArgumentNullException(nameof(leftAction));
+            }
+            if (rightAction is null)
+            {
+                throw new ArgumentNullException(nameof(rightAction));
+            }
+
+            return either => either.Switch(leftAction, rightAction);
+        }
+
+        /// <summary>
+        /// Combines two unary functions with the same return type
+        /// into a single function taking either of their parameters.
+        /// </summary>
+        public static Func<Either<TLeft, TRight>, TResult> Lift<TLeft, TRight, TResult>(
+            Func<TLeft, TResult> leftFunc,
+            Func<TRight, TResult> rightFunc)
+        {
+            if (leftFunc is null)
+            {
+                throw new ArgumentNullException(nameof(leftFunc));
+            }
+            if (rightFunc is null)
+            {
+                throw new ArgumentNullException(nameof(rightFunc));
+            }
+
+            return either => either.Switch(leftFunc, rightFunc);
+        }
+
         /// <summary>
         /// Collects all the left-side values from the sequence.
         /// </summary>
