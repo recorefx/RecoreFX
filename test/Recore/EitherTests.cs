@@ -278,6 +278,7 @@ namespace Recore.Tests
             Assert.Equal(rights, collection.Rights().ToArray());
         }
 
+        [JsonConverter(typeof(PersonConverter))]
         class Person
         {
             public string Name { get; set; }
@@ -290,6 +291,30 @@ namespace Recore.Tests
             public string Zip { get; set; }
         }
 
+        class PersonConverter : JsonConverter<Person>
+        {
+            public override Person Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                reader.Read();
+                reader.Read();
+                var name = reader.GetString();
+
+                reader.Read();
+                reader.Read();
+                var age = reader.GetInt32();
+                reader.Read();
+
+                return new Person { Name = name, Age = age };
+            }
+
+            public override void Write(Utf8JsonWriter writer, Person value, JsonSerializerOptions options)
+            {
+                writer.WriteStartObject();
+                writer.WriteString(nameof(Person.Name), value.Name);
+                writer.WriteNumber(nameof(Person.Age), value.Age);
+                writer.WriteEndObject();
+            }
+        }
 
         [Fact]
         public void ToJson()
@@ -368,6 +393,34 @@ namespace Recore.Tests
                     actual: deserializedPerson.GetLeft().First().Age);
             }
             {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetRight().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetRight().First().Zip);
+            }
+            {
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetLeft().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetLeft().First().Zip);
+
                 var deserializedPerson = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
