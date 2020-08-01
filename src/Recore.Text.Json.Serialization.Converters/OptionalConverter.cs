@@ -35,11 +35,6 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public OptionalConverter(JsonConverter innerConverter)
         {
-            if (innerConverter is null)
-            {
-                throw new ArgumentNullException(nameof(innerConverter));
-            }
-
             this.innerConverter = (JsonConverter<T>)innerConverter;
         }
 
@@ -51,14 +46,32 @@ namespace Recore.Text.Json.Serialization.Converters
             }
             else
             {
-                var value = innerConverter.Read(ref reader, typeof(T), options);
-                return Optional.Of(value);
+                if (innerConverter != null)
+                {
+                    var innerValue = innerConverter.Read(ref reader, typeof(T), options);
+                    return Optional.Of(innerValue);
+                }
+                else
+                {
+                    var innerValue = JsonSerializer.Deserialize<T>(ref reader, options);
+                    return Optional.Of(innerValue);
+                }
             }
         }
 
         public override void Write(Utf8JsonWriter writer, Optional<T> value, JsonSerializerOptions options)
             => value.Switch(
-                x => innerConverter.Write(writer, x, options),
+                innerValue =>
+                {
+                    if (innerConverter != null)
+                    {
+                        innerConverter.Write(writer, innerValue, options);
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, innerValue, options);
+                    }
+                },
                 () => writer.WriteNullValue());
     }
 }

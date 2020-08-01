@@ -40,16 +40,6 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public EitherConverter(JsonConverter leftConverter, JsonConverter rightConverter)
         {
-            if (leftConverter is null)
-            {
-                throw new ArgumentNullException(nameof(leftConverter));
-            }
-
-            if (rightConverter is null)
-            {
-                throw new ArgumentNullException(nameof(rightConverter));
-            }
-
             this.leftConverter = (JsonConverter<TLeft>)leftConverter;
             this.rightConverter = (JsonConverter<TRight>)rightConverter;
         }
@@ -60,18 +50,51 @@ namespace Recore.Text.Json.Serialization.Converters
             // but it seems to be the only way in this case.
             try
             {
-                return leftConverter.Read(ref reader, typeToConvert, options);
+                if (leftConverter != null)
+                {
+                    return leftConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TLeft>(ref reader, options);
+                }
             }
             catch (InvalidOperationException)
             {
+                if (rightConverter != null)
+                {
+                    return rightConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TRight>(ref reader, options);
+                }
             }
-
-            return rightConverter.Read(ref reader, typeToConvert, options);
         }
 
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options)
             => value.Switch(
-                l => leftConverter.Write(writer, l, options),
-                r => rightConverter.Write(writer, r, options));
+                left =>
+                {
+                    if (leftConverter != null)
+                    {
+                        leftConverter.Write(writer, left, options);
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, left, options);
+                    }
+                },
+                right =>
+                {
+                    if (rightConverter != null)
+                    {
+                        rightConverter.Write(writer, right, options);
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, right, options);
+                    }
+                });
     }
 }

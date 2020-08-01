@@ -364,20 +364,36 @@ namespace Recore.Tests
             Assert.Equal(errors, collection.Errors().ToArray());
         }
 
+        class Person
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
+
         [Fact]
         public void ToJson()
         {
-            Result<int, string> result;
+            {
+                Result<int, string> result;
 
-            result = 12;
-            Assert.Equal(
-                expected: "12",
-                actual: JsonSerializer.Serialize(result));
+                result = 12;
+                Assert.Equal(
+                    expected: "12",
+                    actual: JsonSerializer.Serialize(result));
 
-            result = "hello";
-            Assert.Equal(
-                expected: "\"hello\"",
-                actual: JsonSerializer.Serialize(result));
+                result = "hello";
+                Assert.Equal(
+                    expected: "\"hello\"",
+                    actual: JsonSerializer.Serialize(result));
+            }
+            {
+                Result<Person, Exception> result;
+
+                result = new Person { Name = "Mario", Age = 42 };
+                Assert.Equal(
+                    expected: "{\"Name\":\"Mario\",\"Age\":42}",
+                    actual: JsonSerializer.Serialize(result));
+            }
         }
 
         [Fact]
@@ -398,6 +414,15 @@ namespace Recore.Tests
             Assert.Equal(
                 expected: new Result<string, int>("hello"),
                 actual: JsonSerializer.Deserialize<Result<string, int>>("\"hello\""));
+
+            var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Exception>>("{\"Name\":\"Mario\",\"Age\":42}");
+            Assert.Equal(
+                expected: "Mario",
+                actual: deserializedPerson.GetValue().First().Name);
+
+            Assert.Equal(
+                expected: 42,
+                actual: deserializedPerson.GetValue().First().Age);
         }
     }
 }

@@ -40,16 +40,6 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public ResultConverter(JsonConverter valueConverter, JsonConverter errorConverter)
         {
-            if (valueConverter is null)
-            {
-                throw new ArgumentNullException(nameof(valueConverter));
-            }
-
-            if (errorConverter is null)
-            {
-                throw new ArgumentNullException(nameof(errorConverter));
-            }
-
             this.valueConverter = (JsonConverter<TValue>)valueConverter;
             this.errorConverter = (JsonConverter<TError>)errorConverter;
         }
@@ -60,18 +50,51 @@ namespace Recore.Text.Json.Serialization.Converters
             // but it seems to be the only way in this case.
             try
             {
-                return valueConverter.Read(ref reader, typeToConvert, options);
+                if (valueConverter != null)
+                {
+                    return valueConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TValue>(ref reader, options);
+                }
             }
             catch (InvalidOperationException)
             {
+                if (errorConverter != null)
+                {
+                    return errorConverter.Read(ref reader, typeToConvert, options);
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<TError>(ref reader, options);
+                }
             }
-
-            return errorConverter.Read(ref reader, typeToConvert, options);
         }
 
         public override void Write(Utf8JsonWriter writer, Result<TValue, TError> value, JsonSerializerOptions options)
             => value.Switch(
-                v => valueConverter.Write(writer, v, options),
-                e => errorConverter.Write(writer, e, options));
+                left =>
+                {
+                    if (valueConverter != null)
+                    {
+                        valueConverter.Write(writer, left, options);
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, left, options);
+                    }
+                },
+                right =>
+                {
+                    if (errorConverter != null)
+                    {
+                        errorConverter.Write(writer, right, options);
+                    }
+                    else
+                    {
+                        JsonSerializer.Serialize(writer, right, options);
+                    }
+                });
     }
 }

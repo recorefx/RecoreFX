@@ -277,6 +277,12 @@ namespace Recore.Tests
             Assert.Equal(rights, collection.Rights().ToArray());
         }
 
+        class Person
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
+
         [Fact]
         public void ToJson()
         {
@@ -306,6 +312,22 @@ namespace Recore.Tests
                     expected: "\"hello\"",
                     actual: JsonSerializer.Serialize(either));
             }
+            {
+                Either<string, Person> either;
+
+                either = new Person { Name = "Mario", Age = 42 };
+                Assert.Equal(
+                    expected: "{\"Name\":\"Mario\",\"Age\":42}",
+                    actual: JsonSerializer.Serialize(either));
+            }
+            {
+                Either<Person, string> either;
+
+                either = new Person { Name = "Mario", Age = 42 };
+                Assert.Equal(
+                    expected: "{\"Name\":\"Mario\",\"Age\":42}",
+                    actual: JsonSerializer.Serialize(either));
+            }
         }
 
         [Fact]
@@ -326,6 +348,15 @@ namespace Recore.Tests
             Assert.Equal(
                 expected: new Either<string, int>("hello"),
                 actual: JsonSerializer.Deserialize<Either<string, int>>("\"hello\""));
+
+            var deserializedPerson = JsonSerializer.Deserialize<Either<Person, string>>("{\"Name\":\"Mario\",\"Age\":42}");
+            Assert.Equal(
+                expected: "Mario",
+                actual: deserializedPerson.GetLeft().First().Name);
+
+            Assert.Equal(
+                expected: 42,
+                actual: deserializedPerson.GetLeft().First().Age);
         }
     }
 }
