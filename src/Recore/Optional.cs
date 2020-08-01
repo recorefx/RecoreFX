@@ -297,6 +297,32 @@ namespace Recore
         }
 
         /// <summary>
+        /// Converts a unary action to work with <see cref="Optional{T}"/>.
+        /// </summary>
+        public static Action<Optional<T>> Lift<T>(Action<T> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            return optional => optional.IfValue(action);
+        }
+
+        /// <summary>
+        /// Converts a unary function to work with <see cref="Optional{T}"/>.
+        /// </summary>
+        public static Func<Optional<T>, Optional<TResult>> Lift<T, TResult>(Func<T, TResult> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            return optional => optional.OnValue(func);
+        }
+
+        /// <summary>
         /// Converts an <c>Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <see cref="Optional{T}"/>.
         /// </summary>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Recore.Functional
+namespace Recore
 {
     /// <summary>
     /// Creates a function pipeline, calling each function or action on the value

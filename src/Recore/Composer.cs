@@ -1,6 +1,6 @@
 using System;
 
-namespace Recore.Functional
+namespace Recore
 {
     /// <summary>
     /// Composes many functions or actions into a single function.
