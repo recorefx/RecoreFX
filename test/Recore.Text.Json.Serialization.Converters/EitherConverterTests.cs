@@ -24,6 +24,26 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             public int Age { get; set; }
             public string Street { get; set; }
             public string Zip { get; set; }
+
+            public Either<Person, Address> ToEither()
+            {
+                if (Name != null)
+                {
+                    return new Person
+                    {
+                        Name = Name,
+                        Age = Age
+                    };
+                }
+                else
+                {
+                    return new Address
+                    {
+                        Street = Street,
+                        Zip = Zip
+                    };
+                }
+            }
         }
 
         [Fact]
@@ -102,7 +122,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 actual: deserializedPerson.GetLeft().First().Age);
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/recorefx/RecoreFX/issues/114")]
         public void FromJsonBothRecordTypes()
         {
             {
@@ -135,6 +155,49 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedAddress.GetLeft().First().Zip);
 
                 var deserializedPerson = JsonSerializer.Deserialize<Either<Address, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetRight().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetRight().First().Age);
+            }
+        }
+
+        [Fact]
+        public void FromJsonBothRecordTypesWorkaround()
+        {
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<PersonAddress>("{\"Name\":\"Mario\",\"Age\":42}").ToEither();
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<PersonAddress>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}").ToEither();
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetRight().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetRight().First().Zip);
+            }
+            {
+                var deserializedAddress = JsonSerializer.Deserialize<PersonAddress>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}").ToEither().Swap();
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetLeft().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetLeft().First().Zip);
+
+                var deserializedPerson = JsonSerializer.Deserialize<PersonAddress>("{\"Name\":\"Mario\",\"Age\":42}").ToEither().Swap();
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetRight().First().Name);
