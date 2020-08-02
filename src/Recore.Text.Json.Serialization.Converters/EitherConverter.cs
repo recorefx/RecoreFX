@@ -50,6 +50,9 @@ namespace Recore.Text.Json.Serialization.Converters
             // but it seems to be the only way in this case.
             try
             {
+                // We might not need to do these null checks with the left and right converters.
+                // Will `JsonSerializer.Deserialize<TLeft>()` just do the right thing if we pass `options`?
+                // I haven't tested.
                 if (leftConverter != null)
                 {
                     return leftConverter.Read(ref reader, typeToConvert, options);
@@ -100,24 +103,58 @@ namespace Recore.Text.Json.Serialization.Converters
 
     /// <summary>
     /// Converts <seealso cref="Either{TLeft, TRight}"/> to and from JSON.
+    /// Register this converter to override the default deserialization behavior.
     /// </summary>
     /// <remarks>
-    /// This is made to be used with a closed type and registered through <seealso cref="JsonSerializerOptions.Converters"/>.
+    /// This converter is made to be used with a closed type and registered through <seealso cref="JsonSerializerOptions.Converters"/>.
     /// It is not returned by <seealso cref="EitherConverter.CreateConverter(Type, JsonSerializerOptions)"/>.
     /// </remarks>
-    public sealed class ConcreteEitherConverter<TLeft, TRight> : JsonConverter<Either<TLeft, TRight>>
+    /// <example>
+    /// The default deserialization behavior can get confused, for instance,
+    /// when both <typeparamref name="TLeft"/> and <typeparamref name="TRight"/> are POCOs.
+    /// In that case, it will always deserialize as <typeparamref name="TLeft"/>,
+    /// filling in default values for any missing properties.
+    /// For example:
+    /// 
+    /// <code>
+    /// &lt;code&gt;
+    /// class Person
+    /// {
+    ///     public string Name { get; set; }
+    ///     public int Age { get; set; }
+    /// }
+    /// 
+    /// class Address
+    /// {
+    ///     public string Street { get; set; }
+    ///     public string Zip { get; set; }
+    /// }
+    /// 
+    /// // Deserializes as a `Person`!
+    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}")
+    /// 
+    /// // Look at the JSON to decide which type we have
+    /// options.Converters.Add(new OverrideEitherConverter&lt;Person, Address&gt;(
+    ///     deserializeAsLeft: json =&gt; json.TryGetProperty("Street", out JsonElement _)));
+    /// 
+    /// // Deserializes correctly
+    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
+    /// &lt;/code&gt;
+    /// </code>
+    /// </example>
+    public sealed class OverrideEitherConverter<TLeft, TRight> : JsonConverter<Either<TLeft, TRight>>
     {
         private readonly Func<JsonElement, bool> deserializeAsLeft;
 
         /// <summary>
-        /// Initializes an instance of <see cref="ConcreteEitherConverter{TLeft, TRight}"/>.
+        /// Initializes an instance of <see cref="OverrideEitherConverter{TLeft, TRight}"/>.
         /// </summary>
         /// <param name="deserializeAsLeft">
         /// A delegate that takes a <seealso cref="JsonElement"/> representing some JSON and returns
         /// whether it should be deserialized as <typeparamref name="TLeft"/> or <typeparamref name="TRight"/>.
         /// It should return <c>true</c> for <typeparamref name="TLeft"/> and <c>false</c> for <typeparamref name="TRight"/>.
         /// </param>
-        public ConcreteEitherConverter(
+        public OverrideEitherConverter(
             Func<JsonElement, bool> deserializeAsLeft)
         {
             this.deserializeAsLeft = deserializeAsLeft;

@@ -198,11 +198,11 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         public void FromJsonBothRecordTypesWithCustomDeserializer()
         {
             var options = new JsonSerializerOptions();
-            options.Converters.Add(new ConcreteEitherConverter<Person, Address>(
+            options.Converters.Add(new OverrideEitherConverter<Person, Address>(
                 deserializeAsLeft: json => json.TryGetProperty("Name", out JsonElement _)));
-            options.Converters.Add(new ConcreteEitherConverter<Person, TypeWithConverter>(
+            options.Converters.Add(new OverrideEitherConverter<Person, TypeWithConverter>(
                 deserializeAsLeft: json => json.TryGetProperty("Name", out JsonElement _)));
-            options.Converters.Add(new ConcreteEitherConverter<TypeWithConverter, Person>(
+            options.Converters.Add(new OverrideEitherConverter<TypeWithConverter, Person>(
                 deserializeAsLeft: json => json.TryGetProperty("fullName", out JsonElement _)));
 
             {
