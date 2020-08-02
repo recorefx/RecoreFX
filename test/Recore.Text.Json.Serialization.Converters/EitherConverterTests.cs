@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Xunit;
 
 namespace Recore.Text.Json.Serialization.Converters.Tests
@@ -43,6 +45,62 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                         Zip = Zip
                     };
                 }
+            }
+        }
+
+        [JsonConverter(typeof(TypeWithConverterConverter))]
+        class TypeWithConverter
+        {
+            public int Age { get; set; }
+
+            public string Name { get; set; }
+
+            public string GetFullName() => $"{Name} {Name}son";
+        }
+
+        // Serialize as { "fullName": GetFullName(), "age": Age }
+        class TypeWithConverterConverter : JsonConverter<TypeWithConverter>
+        {
+            public override TypeWithConverter Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                reader.Read();
+                var propertyName = reader.GetString();
+                if (propertyName != "fullName")
+                {
+                    throw new JsonException($"Unexpected JSON token: {propertyName})");
+                }
+
+                reader.Read();
+                var fullName = reader.GetString();
+
+                reader.Read();
+                propertyName = reader.GetString();
+                if (propertyName != "age")
+                {
+                    throw new JsonException($"Unexpected JSON token: {propertyName})");
+                }
+
+                reader.Read();
+                var age = reader.GetInt32();
+
+                // Invert the type's methods to get the original values
+                var name = fullName.Split()[0];
+
+                // Make sure you read to the end, or `JsonSerializer` will throw an exception
+                reader.Read();
+                return new TypeWithConverter
+                {
+                    Name = name,
+                    Age = age
+                };
+            }
+
+            public override void Write(Utf8JsonWriter writer, TypeWithConverter value, JsonSerializerOptions options)
+            {
+                writer.WriteStartObject();
+                writer.WriteString("fullName", value.GetFullName());
+                writer.WriteNumber("age", value.Age);
+                writer.WriteEndObject();
             }
         }
 
@@ -122,29 +180,62 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 actual: deserializedPerson.GetLeft().First().Age);
         }
 
-        [Fact(Skip = "https://github.com/recorefx/RecoreFX/issues/114")]
-        public void FromJsonBothRecordTypes()
+        [Fact]
+        // https://github.com/recorefx/RecoreFX/issues/114
+        // You can't deserialize JSON of type TRight when the JSON is a JSON object { ... }
+        // and the left type has a converter that will partially deserialize JSON for the right type (will throw an exception)
+        // or both types are using the fallback POCO deserialization (will always return TLeft).
+        public void FromJsonBothRecordTypesAlwaysDeserializesLeft()
         {
-            var deserializedPerson = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
-            Assert.Equal(
-                expected: "Mario",
-                actual: deserializedPerson.GetLeft().First().Name);
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
 
-            Assert.Equal(
-                expected: 42,
-                actual: deserializedPerson.GetLeft().First().Age);
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
 
-            var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
-            Assert.Equal(
-                expected: "123 Main St",
-                actual: deserializedAddress.GetRight().First().Street);
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                //Assert.Equal(
+                //    expected: "123 Main St",
+                //    actual: deserializedAddress.GetRight().First().Street);
 
-            Assert.Equal(
-                expected: "12345",
-                actual: deserializedAddress.GetRight().First().Zip);
+                //Assert.Equal(
+                //    expected: "12345",
+                //    actual: deserializedAddress.GetRight().First().Zip);
+
+                // This is the bug. The commented-out code is the expected behavior.
+                Assert.Null(deserializedAddress.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: default,
+                    actual: deserializedAddress.GetLeft().First().Age);
+            }
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"fullName\":\"Brian C\",\"age\":28}");
+                Assert.Equal(
+                    expected: "Brian",
+                    actual: deserializedAddress.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 28,
+                    actual: deserializedAddress.GetLeft().First().Age);
+            }
         }
 
         [Fact]
+        // Here's a workaround you can apply for https://github.com/recorefx/RecoreFX/issues/114
         public void FromJsonBothRecordTypesWorkaround()
         {
             var deserializedPerson = JsonSerializer.Deserialize<PersonAddress>("{\"Name\":\"Mario\",\"Age\":42}").ToEither();
