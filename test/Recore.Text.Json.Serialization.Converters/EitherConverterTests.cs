@@ -20,34 +20,6 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             public string Zip { get; set; }
         }
 
-        class PersonAddress
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public string Street { get; set; }
-            public string Zip { get; set; }
-
-            public Either<Person, Address> ToEither()
-            {
-                if (Name != null)
-                {
-                    return new Person
-                    {
-                        Name = Name,
-                        Age = Age
-                    };
-                }
-                else
-                {
-                    return new Address
-                    {
-                        Street = Street,
-                        Zip = Zip
-                    };
-                }
-            }
-        }
-
         [JsonConverter(typeof(TypeWithConverterConverter))]
         class TypeWithConverter
         {
@@ -197,21 +169,18 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 42,
                     actual: deserializedPerson.GetLeft().First().Age);
 
-                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
-                //Assert.Equal(
-                //    expected: "123 Main St",
-                //    actual: deserializedAddress.GetRight().First().Street);
+                var options = new JsonSerializerOptions();
+                options.Converters.Add(new DeserializingEitherConverter<Person, Address>(
+                    deserializeAsLeft: rootElement => rootElement.TryGetProperty("Name", out JsonElement _)));
 
-                //Assert.Equal(
-                //    expected: "12345",
-                //    actual: deserializedAddress.GetRight().First().Zip);
-
-                // This is the bug. The commented-out code is the expected behavior.
-                Assert.Null(deserializedAddress.GetLeft().First().Name);
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetRight().First().Street);
 
                 Assert.Equal(
-                    expected: default,
-                    actual: deserializedAddress.GetLeft().First().Age);
+                    expected: "12345",
+                    actual: deserializedAddress.GetRight().First().Zip);
             }
             {
                 var deserializedPerson = JsonSerializer.Deserialize<Either<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
@@ -232,29 +201,6 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 28,
                     actual: deserializedAddress.GetLeft().First().Age);
             }
-        }
-
-        [Fact]
-        // Here's a workaround you can apply for https://github.com/recorefx/RecoreFX/issues/114
-        public void FromJsonBothRecordTypesWorkaround()
-        {
-            var deserializedPerson = JsonSerializer.Deserialize<PersonAddress>("{\"Name\":\"Mario\",\"Age\":42}").ToEither();
-            Assert.Equal(
-                expected: "Mario",
-                actual: deserializedPerson.GetLeft().First().Name);
-
-            Assert.Equal(
-                expected: 42,
-                actual: deserializedPerson.GetLeft().First().Age);
-
-            var deserializedAddress = JsonSerializer.Deserialize<PersonAddress>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}").ToEither();
-            Assert.Equal(
-                expected: "123 Main St",
-                actual: deserializedAddress.GetRight().First().Street);
-
-            Assert.Equal(
-                expected: "12345",
-                actual: deserializedAddress.GetRight().First().Zip);
         }
     }
 }
