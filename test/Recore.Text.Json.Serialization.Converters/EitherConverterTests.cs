@@ -153,10 +153,6 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         }
 
         [Fact]
-        // https://github.com/recorefx/RecoreFX/issues/114
-        // You can't deserialize JSON of type TRight when the JSON is a JSON object { ... }
-        // and the left type has a converter that will partially deserialize JSON for the right type (will throw an exception)
-        // or both types are using the fallback POCO deserialization (will always return TLeft).
         public void FromJsonBothRecordTypesAlwaysDeserializesLeft()
         {
             {
@@ -169,18 +165,13 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 42,
                     actual: deserializedPerson.GetLeft().First().Age);
 
-                var options = new JsonSerializerOptions();
-                options.Converters.Add(new DeserializingEitherConverter<Person, Address>(
-                    deserializeAsLeft: rootElement => rootElement.TryGetProperty("Name", out JsonElement _)));
-
-                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
-                Assert.Equal(
-                    expected: "123 Main St",
-                    actual: deserializedAddress.GetRight().First().Street);
+                // This will deserialize as Person instead of Address because TLeft = Person.
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Null(deserializedAddress.GetLeft().First().Name);
 
                 Assert.Equal(
-                    expected: "12345",
-                    actual: deserializedAddress.GetRight().First().Zip);
+                    expected: default,
+                    actual: deserializedAddress.GetLeft().First().Age);
             }
             {
                 var deserializedPerson = JsonSerializer.Deserialize<Either<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
@@ -193,6 +184,57 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedPerson.GetLeft().First().Age);
 
                 var deserializedAddress = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"fullName\":\"Brian C\",\"age\":28}");
+                Assert.Equal(
+                    expected: "Brian",
+                    actual: deserializedAddress.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 28,
+                    actual: deserializedAddress.GetLeft().First().Age);
+            }
+        }
+
+        [Fact]
+        public void FromJsonBothRecordTypesWithCustomDeserializer()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new ConcreteEitherConverter<Person, Address>(
+                deserializeAsLeft: json => json.TryGetProperty("Name", out JsonElement _)));
+            options.Converters.Add(new ConcreteEitherConverter<Person, TypeWithConverter>(
+                deserializeAsLeft: json => json.TryGetProperty("Name", out JsonElement _)));
+            options.Converters.Add(new ConcreteEitherConverter<TypeWithConverter, Person>(
+                deserializeAsLeft: json => json.TryGetProperty("fullName", out JsonElement _)));
+
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetRight().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetRight().First().Zip);
+            }
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Either<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetLeft().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetLeft().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"fullName\":\"Brian C\",\"age\":28}", options);
                 Assert.Equal(
                     expected: "Brian",
                     actual: deserializedAddress.GetLeft().First().Name);
