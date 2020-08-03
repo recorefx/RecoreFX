@@ -10,6 +10,51 @@ namespace Recore
     /// <summary>
     /// Represents the result of an operation that can be successful or failed.
     /// </summary>
+    /// <remarks>
+    /// When working with <c>System.Text.Json</c>, deserializing into <see cref="Result{TValue, TError}"/>
+    /// can be ambiguous.
+    /// The default deserialization behavior will try first to deserialize
+    /// as <typeparamref name="TValue"/>, and then as <typeparamref name="TError"/>.
+    /// But, this may return the unintended type if the value deserializer can successfully deserialize the JSON
+    /// representation of the error.
+    /// 
+    /// A common case is when both <typeparamref name="TValue"/> and <typeparamref name="TError"/> are POCOs.
+    /// In that case, <see cref="Result{TValue, TError}"/> will always deserialize as <typeparamref name="TValue"/>,
+    /// filling in default values for any missing properties.
+    /// For example:
+    /// 
+    /// <code>
+    /// &lt;code&gt;
+    /// class Person
+    /// {
+    ///     public string Name { get; set; }
+    ///     public int Age { get; set; }
+    /// }
+    /// 
+    /// class Address
+    /// {
+    ///     public string Street { get; set; }
+    ///     public string Zip { get; set; }
+    /// }
+    /// 
+    /// // Deserializes as a `Person`!
+    /// JsonSerializer.Deserialize&lt;Result&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}")
+    /// </code>
+    /// 
+    /// You can use <seealso cref="OverrideResultConverter{TValue, TError}"/> to specify
+    /// how to choose between <typeparamref name="TValue"/> and <typeparamref name="TError"/>
+    /// based on the properties in the JSON:
+    /// 
+    /// <code>
+    /// // Look at the JSON to decide which type we have
+    /// options.Converters.Add(new OverrideResultConverter&lt;Person, Address&gt;(
+    ///     deserializeAsLeft: json =&gt; json.TryGetProperty("Street", out JsonElement _)));
+    /// 
+    /// // Deserializes correctly
+    /// JsonSerializer.Deserialize&lt;Result&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
+    /// &lt;/code&gt;
+    /// </code>
+    /// </remarks>
     [JsonConverter(typeof(ResultConverter))]
     public sealed class Result<TValue, TError> : IEquatable<Result<TValue, TError>>
     {

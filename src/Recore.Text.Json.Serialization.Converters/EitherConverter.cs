@@ -109,39 +109,6 @@ namespace Recore.Text.Json.Serialization.Converters
     /// This converter is made to be used with a closed type and registered through <seealso cref="JsonSerializerOptions.Converters"/>.
     /// It is not returned by <seealso cref="EitherConverter.CreateConverter(Type, JsonSerializerOptions)"/>.
     /// </remarks>
-    /// <example>
-    /// The default deserialization behavior can get confused, for instance,
-    /// when both <typeparamref name="TLeft"/> and <typeparamref name="TRight"/> are POCOs.
-    /// In that case, it will always deserialize as <typeparamref name="TLeft"/>,
-    /// filling in default values for any missing properties.
-    /// For example:
-    /// 
-    /// <code>
-    /// &lt;code&gt;
-    /// class Person
-    /// {
-    ///     public string Name { get; set; }
-    ///     public int Age { get; set; }
-    /// }
-    /// 
-    /// class Address
-    /// {
-    ///     public string Street { get; set; }
-    ///     public string Zip { get; set; }
-    /// }
-    /// 
-    /// // Deserializes as a `Person`!
-    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}")
-    /// 
-    /// // Look at the JSON to decide which type we have
-    /// options.Converters.Add(new OverrideEitherConverter&lt;Person, Address&gt;(
-    ///     deserializeAsLeft: json =&gt; json.TryGetProperty("Street", out JsonElement _)));
-    /// 
-    /// // Deserializes correctly
-    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
-    /// &lt;/code&gt;
-    /// </code>
-    /// </example>
     public sealed class OverrideEitherConverter<TLeft, TRight> : JsonConverter<Either<TLeft, TRight>>
     {
         private readonly Func<JsonElement, bool> deserializeAsLeft;
