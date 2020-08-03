@@ -7,12 +7,6 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 {
     public class ResultConverterTests
     {
-        class Person
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-        }
-
         [Fact]
         public void ToJson()
         {
