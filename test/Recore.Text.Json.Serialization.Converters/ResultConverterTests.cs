@@ -61,5 +61,98 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 expected: 42,
                 actual: deserializedPerson.GetValue().First().Age);
         }
+
+        [Fact]
+        public void FromJsonBothRecordTypesAlwaysDeserializesLeft()
+        {
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetValue().First().Age);
+
+                // This will deserialize as Person instead of Address because TValue = Person.
+                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.Null(deserializedAddress.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: default,
+                    actual: deserializedAddress.GetValue().First().Age);
+            }
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetValue().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Brian C\",\"age\":28}");
+                Assert.Equal(
+                    expected: "Brian",
+                    actual: deserializedAddress.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 28,
+                    actual: deserializedAddress.GetValue().First().Age);
+            }
+        }
+
+        [Fact]
+        public void FromJsonBothRecordTypesWithCustomDeserializer()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new OverrideResultConverter<Person, Address>(
+                deserializeAsValue: json => json.TryGetProperty("Name", out JsonElement _)));
+            options.Converters.Add(new OverrideResultConverter<Person, TypeWithConverter>(
+                deserializeAsValue: json => json.TryGetProperty("Name", out JsonElement _)));
+            options.Converters.Add(new OverrideResultConverter<TypeWithConverter, Person>(
+                deserializeAsValue: json => json.TryGetProperty("fullName", out JsonElement _)));
+
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetValue().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
+                Assert.Equal(
+                    expected: "123 Main St",
+                    actual: deserializedAddress.GetError().First().Street);
+
+                Assert.Equal(
+                    expected: "12345",
+                    actual: deserializedAddress.GetError().First().Zip);
+            }
+            {
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetValue().First().Age);
+
+                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Brian C\",\"age\":28}", options);
+                Assert.Equal(
+                    expected: "Brian",
+                    actual: deserializedAddress.GetValue().First().Name);
+
+                Assert.Equal(
+                    expected: 28,
+                    actual: deserializedAddress.GetValue().First().Age);
+            }
+        }
     }
 }
