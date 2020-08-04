@@ -99,7 +99,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 actual: JsonSerializer.Serialize(new JsonStreetAddress("hello"), options));
         }
 
-            [Fact]
+        [Fact]
         public void FromJson()
         {
             // This throws because `Address` does not have `[OfJson(...)]`
