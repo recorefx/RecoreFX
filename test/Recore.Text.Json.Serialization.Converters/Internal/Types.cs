@@ -73,4 +73,46 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             writer.WriteEndObject();
         }
     }
+
+    /// <summary>
+    /// Serializes a string to
+    /// <c>{ "value": "hello, "length": 5 }</c>.
+    /// </summary>
+    /// <remarks>
+    /// Register this through <seealso cref="JsonSerializerOptions"/> to test that options are being checked correctly.
+    /// </remarks>
+    class SpecialStringConverter : JsonConverter<string>
+    {
+        public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            reader.Read();
+            if (reader.GetString() != "value")
+            {
+                throw new JsonException();
+            }
+
+            reader.Read();
+            var value = reader.GetString();
+
+            reader.Read();
+            if (reader.GetString() != "length")
+            {
+                throw new JsonException();
+            }
+
+            reader.Read();
+            //Ignore length value
+            reader.Read();
+
+            return value;
+        }
+
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+        {
+            writer.WriteStartObject();
+            writer.WriteString("value", value);
+            writer.WriteNumber("length", value.Length);
+            writer.WriteEndObject();
+        }
+    }
 }
