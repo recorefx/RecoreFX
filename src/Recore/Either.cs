@@ -10,6 +10,51 @@ namespace Recore
     /// <summary>
     /// Represents a value that can be one of two types.
     /// </summary>
+    /// <remarks>
+    /// When working with <c>System.Text.Json</c>, deserializing into <see cref="Either{TLeft, TRight}"/>
+    /// can be ambiguous.
+    /// The default deserialization behavior will try first to deserialize
+    /// as <typeparamref name="TLeft"/>, and then as <typeparamref name="TRight"/>.
+    /// But, this may return the unintended type if the left deserializer can successfully deserialize the JSON
+    /// representation of the right.
+    /// 
+    /// A common case is when both <typeparamref name="TLeft"/> and <typeparamref name="TRight"/> are POCOs.
+    /// In that case, <see cref="Either{TLeft, TRight}"/> will always deserialize as <typeparamref name="TLeft"/>,
+    /// filling in default values for any missing properties.
+    /// For example:
+    /// 
+    /// <code>
+    /// &lt;code&gt;
+    /// class Person
+    /// {
+    ///     public string Name { get; set; }
+    ///     public int Age { get; set; }
+    /// }
+    /// 
+    /// class Address
+    /// {
+    ///     public string Street { get; set; }
+    ///     public string Zip { get; set; }
+    /// }
+    /// 
+    /// // Deserializes as a `Person`!
+    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}")
+    /// </code>
+    /// 
+    /// You can use <seealso cref="OverrideEitherConverter{TLeft, TRight}"/> to specify
+    /// how to choose between <typeparamref name="TLeft"/> and <typeparamref name="TRight"/>
+    /// based on the properties in the JSON:
+    /// 
+    /// <code>
+    /// // Look at the JSON to decide which type we have
+    /// options.Converters.Add(new OverrideEitherConverter&lt;Person, Address&gt;(
+    ///     deserializeAsLeft: json =&gt; json.TryGetProperty("Street", out JsonElement _)));
+    /// 
+    /// // Deserializes correctly
+    /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
+    /// &lt;/code&gt;
+    /// </code>
+    /// </remarks>
     [JsonConverter(typeof(EitherConverter))]
     public sealed class Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
     {

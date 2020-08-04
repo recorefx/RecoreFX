@@ -12,28 +12,22 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         class DerivedOfString : Of<string> { }
         class DerivedDerivedOfString : Of<string> { }
 
-        class Address : Of<string>
+        class StreetAddress : Of<string>
         {
-            public Address() { }
-            public Address(string value) => Value = value;
+            public StreetAddress() { }
+            public StreetAddress(string value) => Value = value;
         }
 
-        [OfJson(typeof(JsonAddress), typeof(string))]
-        class JsonAddress : Of<string>
+        [OfJson(typeof(JsonStreetAddress), typeof(string))]
+        class JsonStreetAddress : Of<string>
         {
-            public JsonAddress() { }
-            public JsonAddress(string value) => Value = value;
+            public JsonStreetAddress() { }
+            public JsonStreetAddress(string value) => Value = value;
         }
 
         class House
         {
-            public JsonAddress Street { get; set; }
-        }
-
-        class Person
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
+            public JsonStreetAddress Street { get; set; }
         }
 
         [OfJson(typeof(User), typeof(Person))]
@@ -73,17 +67,17 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         {
             Assert.Equal(
                 expected: "{\"Value\":\"1 Microsoft Way\"}",
-                actual: JsonSerializer.Serialize(new Address("1 Microsoft Way")));
+                actual: JsonSerializer.Serialize(new StreetAddress("1 Microsoft Way")));
 
             Assert.Equal(
                 expected: "\"1 Microsoft Way\"",
-                actual: JsonSerializer.Serialize(new JsonAddress("1 Microsoft Way")));
+                actual: JsonSerializer.Serialize(new JsonStreetAddress("1 Microsoft Way")));
 
             Assert.Equal(
                 expected: "{\"Street\":\"123 Main St\"}",
                 actual: JsonSerializer.Serialize(new House
                 {
-                    Street = new JsonAddress("123 Main St")
+                    Street = new JsonStreetAddress("123 Main St")
                 }));
 
             Assert.Equal(
@@ -99,24 +93,24 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         {
             // This throws because `Address` does not have `[OfJson(...)]`
             Assert.Throws<JsonException>(
-                () => JsonSerializer.Deserialize<Address>("\"1 Microsoft Way\""));
+                () => JsonSerializer.Deserialize<StreetAddress>("\"1 Microsoft Way\""));
 
             Assert.Equal(
-                expected: new Address("1 Microsoft Way"),
-                actual: JsonSerializer.Deserialize<Address>("{\"Value\":\"1 Microsoft Way\"}"));
+                expected: new StreetAddress("1 Microsoft Way"),
+                actual: JsonSerializer.Deserialize<StreetAddress>("{\"Value\":\"1 Microsoft Way\"}"));
 
             Assert.Equal(
-                expected: new JsonAddress("1 Microsoft Way"),
+                expected: new JsonStreetAddress("1 Microsoft Way"),
                 actual: JsonSerializer
                     .Deserialize<Of<string>>("\"1 Microsoft Way\"")
-                    .To<JsonAddress>());
+                    .To<JsonStreetAddress>());
 
             Assert.Equal(
-                expected: new JsonAddress("1 Microsoft Way"),
-                actual: JsonSerializer.Deserialize<JsonAddress>("\"1 Microsoft Way\""));
+                expected: new JsonStreetAddress("1 Microsoft Way"),
+                actual: JsonSerializer.Deserialize<JsonStreetAddress>("\"1 Microsoft Way\""));
 
             Assert.Equal(
-                expected: new JsonAddress("123 Main St"),
+                expected: new JsonStreetAddress("123 Main St"),
                 actual: JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}").Street);
 
             var deserializedUser = JsonSerializer.Deserialize<User>("{\"Name\":\"Mario\",\"Age\":42}");

@@ -46,55 +46,118 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override Result<TValue, TError> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
+            // and then the reader is stuck in the middle of the JSON.
+            var jsonDocument = JsonDocument.ParseValue(ref reader);
+            var json = jsonDocument.RootElement.ToString();
+
+            // `ToString()` for a string type will return the string *without* quotes,
+            // which won't deserialize correctly.
+            if (jsonDocument.RootElement.ValueKind == JsonValueKind.String)
+            {
+                json = $"\"{json}\"";
+            }
+
             // Using try-catch for control flow is an antipattern,
             // but it seems to be the only way in this case.
             try
             {
-                if (valueConverter != null)
-                {
-                    return valueConverter.Read(ref reader, typeToConvert, options);
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<TValue>(ref reader, options);
-                }
+                return JsonSerializer.Deserialize<TValue>(json, options);
             }
-            catch (InvalidOperationException)
+            catch (JsonException)
             {
-                if (errorConverter != null)
-                {
-                    return errorConverter.Read(ref reader, typeToConvert, options);
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<TError>(ref reader, options);
-                }
+                return JsonSerializer.Deserialize<TError>(json, options);
             }
         }
 
         public override void Write(Utf8JsonWriter writer, Result<TValue, TError> value, JsonSerializerOptions options)
             => value.Switch(
-                left =>
+                val =>
                 {
                     if (valueConverter != null)
                     {
-                        valueConverter.Write(writer, left, options);
+                        valueConverter.Write(writer, val, options);
                     }
                     else
                     {
-                        JsonSerializer.Serialize(writer, left, options);
+                        JsonSerializer.Serialize(writer, val, options);
                     }
                 },
-                right =>
+                err =>
                 {
                     if (errorConverter != null)
                     {
-                        errorConverter.Write(writer, right, options);
+                        errorConverter.Write(writer, err, options);
                     }
                     else
                     {
-                        JsonSerializer.Serialize(writer, right, options);
+                        JsonSerializer.Serialize(writer, err, options);
                     }
                 });
+    }
+
+    /// <summary>
+    /// Converts <seealso cref="Result{TValue, TError}"/> to and from JSON.
+    /// Register this converter to override the default deserialization behavior.
+    /// </summary>
+    /// <remarks>
+    /// This converter is made to be used with a closed type and registered through <seealso cref="JsonSerializerOptions.Converters"/>.
+    /// It is not returned by <seealso cref="ResultConverter.CreateConverter(Type, JsonSerializerOptions)"/>.
+    /// </remarks>
+    public sealed class OverrideResultConverter<TValue, TError> : JsonConverter<Result<TValue, TError>>
+    {
+        private readonly Func<JsonElement, bool> deserializeAsValue;
+
+        /// <summary>
+        /// Initializes an instance of <see cref="OverrideResultConverter{TValue, TError}"/>.
+        /// </summary>
+        /// <param name="deserializeAsValue">
+        /// A delegate that takes a <seealso cref="JsonElement"/> representing some JSON and returns
+        /// whether it should be deserialized as <typeparamref name="TValue"/> or <typeparamref name="TError"/>.
+        /// It should return <c>true</c> for <typeparamref name="TValue"/> and <c>false</c> for <typeparamref name="TError"/>.
+        /// </param>
+        public OverrideResultConverter(
+            Func<JsonElement, bool> deserializeAsValue)
+        {
+            this.deserializeAsValue = deserializeAsValue;
+        }
+
+        /// <summary>
+        /// Deserializes JSON into <seealso cref="Result{TValue, TError}"/>.
+        /// This method will call the delegate passed to the constructor to determine how to deserialize the JSON.
+        /// </summary>
+        public override Result<TValue, TError> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var jsonDocument = JsonDocument.ParseValue(ref reader);
+            var json = jsonDocument.RootElement.ToString();
+
+            // `ToString()` for a string type will return the string *without* quotes,
+            // which won't deserialize correctly.
+            if (jsonDocument.RootElement.ValueKind == JsonValueKind.String)
+            {
+                json = $"\"{json}\"";
+            }
+
+            if (deserializeAsValue(jsonDocument.RootElement))
+            {
+                return JsonSerializer.Deserialize<TValue>(json, options);
+            }
+            else
+            {
+                return JsonSerializer.Deserialize<TError>(json, options);
+            }
+        }
+
+        /// <summary>
+        /// Serializes <seealso cref="Result{TValue, TError}"/> as JSON.
+        /// </summary>
+        public override void Write(Utf8JsonWriter writer, Result<TValue, TError> value, JsonSerializerOptions options)
+        {
+            var valueConverter = options.GetConverter(typeof(TValue));
+            var errorConverter = options.GetConverter(typeof(TError));
+
+            var eitherConverter = new ResultConverter<TValue, TError>(valueConverter, errorConverter);
+            eitherConverter.Write(writer, value, options);
+        }
     }
 }
