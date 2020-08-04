@@ -89,6 +89,17 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         }
 
         [Fact]
+        public void ToJsonWithSpecialConverter()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new SpecialStringConverter());
+
+            Assert.Equal(
+                expected: "{\"value\":\"hello\",\"length\":5}",
+                actual: JsonSerializer.Serialize(new JsonStreetAddress("hello"), options));
+        }
+
+        [Fact]
         public void FromJson()
         {
             // This throws because `Address` does not have `[OfJson(...)]`
@@ -121,6 +132,17 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             Assert.Equal(
                 expected: 42,
                 actual: deserializedUser.Value.Age);
+        }
+
+        [Fact]
+        public void FromJsonWithSpecialConverter()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new SpecialStringConverter());
+
+            Assert.Equal(
+                expected: new JsonStreetAddress("hello"),
+                actual: JsonSerializer.Deserialize<Of<string>>("{\"value\":\"hello\",\"length\":5}", options));
         }
     }
 }
