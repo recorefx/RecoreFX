@@ -88,7 +88,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         [Fact]
         public void FromJsonObjectTypesWithConverter()
         {
-            {
+            { // This will always deserialize the left type because it is a POCO
                 var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
@@ -105,7 +105,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: default,
                     actual: deserializedTypeWithConverter.GetValue().First().Name);
             }
-            {
+            { // This will try to convert with the left type, and then convert to the right type if it fails
                 var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}");
                 Assert.Equal(
                     expected: "Alice",
@@ -115,6 +115,15 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 28,
                     actual: deserializedAddress.GetValue().First().Age);
 
+                // Bug: this will fail because TypeWithConverter will partially deserialize the result
+                //var deserializedPerson = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
+                //Assert.Equal(
+                //    expected: "Mario",
+                //    actual: deserializedPerson.GetValue().First().Name);
+
+                //Assert.Equal(
+                //    expected: 42,
+                //    actual: deserializedPerson.GetValue().First().Age);
                 Assert.Throws<JsonException>(
                     () => JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}"));
             }

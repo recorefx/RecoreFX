@@ -125,7 +125,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: default,
                     actual: deserializedTypeWithConverter.GetLeft().First().Age);
             }
-            {
+            { // This will try to convert with the left type, and then convert to the right type if it fails
                 var deserializedTypeWithConverter = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}");
                 Assert.Equal(
                     expected: "Alice",
