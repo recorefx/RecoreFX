@@ -159,17 +159,14 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 28,
                     actual: deserializedTypeWithConverter.GetLeft().First().Age);
 
-                // Bug: this will fail because TypeWithConverter will partially deserialize the result
-                //var deserializedPerson = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
-                //Assert.Equal(
-                //    expected: "Mario",
-                //    actual: deserializedPerson.GetLeft().First().Name);
+                var deserializedPerson = JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
+                Assert.Equal(
+                    expected: "Mario",
+                    actual: deserializedPerson.GetRight().First().Name);
 
-                //Assert.Equal(
-                //    expected: 42,
-                //    actual: deserializedPerson.GetLeft().First().Age);
-                Assert.Throws<JsonException>(
-                    () => JsonSerializer.Deserialize<Either<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}"));
+                Assert.Equal(
+                    expected: 42,
+                    actual: deserializedPerson.GetRight().First().Age);
             }
         }
 

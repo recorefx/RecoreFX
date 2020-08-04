@@ -46,29 +46,27 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override Result<TValue, TError> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
+            // and then the reader is stuck in the middle of the JSON.
+            var jsonDocument = JsonDocument.ParseValue(ref reader);
+            var json = jsonDocument.RootElement.ToString();
+
+            // `ToString()` for a string type will return the string *without* quotes,
+            // which won't deserialize correctly.
+            if (jsonDocument.RootElement.ValueKind == JsonValueKind.String)
+            {
+                json = $"\"{json}\"";
+            }
+
             // Using try-catch for control flow is an antipattern,
             // but it seems to be the only way in this case.
             try
             {
-                if (valueConverter != null)
-                {
-                    return valueConverter.Read(ref reader, typeToConvert, options);
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<TValue>(ref reader, options);
-                }
+                return JsonSerializer.Deserialize<TValue>(json, options);
             }
-            catch (InvalidOperationException)
+            catch (JsonException)
             {
-                if (errorConverter != null)
-                {
-                    return errorConverter.Read(ref reader, typeToConvert, options);
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<TError>(ref reader, options);
-                }
+                return JsonSerializer.Deserialize<TError>(json, options);
             }
         }
 
@@ -132,6 +130,13 @@ namespace Recore.Text.Json.Serialization.Converters
         {
             var jsonDocument = JsonDocument.ParseValue(ref reader);
             var json = jsonDocument.RootElement.ToString();
+
+            // `ToString()` for a string type will return the string *without* quotes,
+            // which won't deserialize correctly.
+            if (jsonDocument.RootElement.ValueKind == JsonValueKind.String)
+            {
+                json = $"\"{json}\"";
+            }
 
             if (deserializeAsValue(jsonDocument.RootElement))
             {
