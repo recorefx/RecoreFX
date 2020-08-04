@@ -31,6 +31,17 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         }
 
         [Fact]
+        public void ToJsonWithSpecialConverter()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new SpecialStringConverter());
+
+            Assert.Equal(
+                expected: "{\"value\":\"hello\",\"length\":5}",
+                actual: JsonSerializer.Serialize(Optional.Of("hello"), options));
+        }
+
+        [Fact]
         public void FromJson()
         {
             Assert.Equal(
@@ -63,6 +74,17 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
             Assert.Throws<JsonException>(
                 () => JsonSerializer.Deserialize<Optional<string>>("12"));
+        }
+
+        [Fact]
+        public void FromJsonWithSpecialConverter()
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new SpecialStringConverter());
+
+            Assert.Equal(
+                expected: Optional.Of("hello"),
+                actual: JsonSerializer.Deserialize<Optional<string>>("{\"value\":\"hello\",\"length\":5}", options));
         }
     }
 }
