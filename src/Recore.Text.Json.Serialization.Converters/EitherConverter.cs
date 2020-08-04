@@ -46,6 +46,11 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override Either<TLeft, TRight> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
+            // and then the reader is stuck in the middle of the JSON.
+            //var jsonDocument = JsonDocument.ParseValue(ref reader);
+            //var json = jsonDocument.RootElement.ToString();
+
             // Using try-catch for control flow is an antipattern,
             // but it seems to be the only way in this case.
             try
