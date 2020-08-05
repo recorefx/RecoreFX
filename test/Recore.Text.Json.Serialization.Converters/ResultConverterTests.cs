@@ -101,6 +101,8 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
                 // This will deserialize as Person instead of Address because TValue = Person.
                 var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.True(deserializedAddress.IsSuccessful);
+
                 Assert.False(
                     deserializedAddress.GetValue().OnValue(x => x.Name).HasValue);
 
@@ -124,6 +126,8 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 var deserializedTypeWithConverter = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"fullName\":\"Alice X\",\"age\":28}");
+                Assert.True(deserializedTypeWithConverter.IsSuccessful);
+
                 Assert.False(
                     deserializedTypeWithConverter.GetValue().OnValue(x => x.Name).HasValue);
 

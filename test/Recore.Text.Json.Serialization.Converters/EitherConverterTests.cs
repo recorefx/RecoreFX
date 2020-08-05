@@ -86,7 +86,6 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 actual: JsonSerializer.Deserialize<Either<string, int>>("\"hello\""));
 
             var deserializedPerson = JsonSerializer.Deserialize<Either<Person, string>>("{\"Name\":\"Mario\",\"Age\":42}");
-
             Assert.Equal(
                 expected: "Mario",
                 actual: deserializedPerson.GetLeft().OnValue(x => x.Name));
@@ -122,6 +121,8 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
                 // This will deserialize as Person instead of Address because TLeft = Person.
                 var deserializedAddress = JsonSerializer.Deserialize<Either<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                Assert.True(deserializedAddress.IsLeft);
+
                 Assert.False(
                     deserializedAddress.GetLeft().OnValue(x => x.Name).HasValue);
 
@@ -145,6 +146,8 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedPerson.GetLeft().OnValue(x => x.Age));
 
                 var deserializedTypeWithConverter = JsonSerializer.Deserialize<Either<Person, TypeWithConverter>>("{\"fullName\":\"Alice X\",\"age\":28}");
+                Assert.True(deserializedTypeWithConverter.IsLeft);
+
                 Assert.False(
                     deserializedTypeWithConverter.GetLeft().OnValue(x => x.Name).HasValue);
 
