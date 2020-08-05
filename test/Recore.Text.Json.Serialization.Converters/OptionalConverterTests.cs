@@ -63,11 +63,11 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             var deserializedPerson = JsonSerializer.Deserialize<Optional<Person>>("{\"Name\":\"Mario\",\"Age\":42}");
             Assert.Equal(
                 expected: "Mario",
-                actual: deserializedPerson.First().Name);
+                actual: deserializedPerson.OnValue(x => x.Name));
 
             Assert.Equal(
                 expected: 42,
-                actual: deserializedPerson.First().Age);
+                actual: deserializedPerson.OnValue(x => x.Age));
 
             Assert.Throws<JsonException>(
                 () => JsonSerializer.Deserialize<Optional<int>>("hello"));

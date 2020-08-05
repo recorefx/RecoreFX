@@ -46,3 +46,27 @@ Without this constraint, you have to maintain additional state to know whether t
 - `Then`: also considered `Bind`
     - Again, `Bind` isn't evocative for users unfamiliar with functional programming.
     - `Then` evokes a monad bind that many people are familiar with, that of Promises in JavaScript. .NET's own `ContinueWith` is a little too clumsy and more specific to asynchronous programming.
+
+# Why not make Optional<T> implement IEnumerable<T>?
+- I saw someone explain optional types once as a list that can have either 0 or 1 element. I thought that was an interesting explanation.
+- It was straightforward to implement and I thought it was cool to unify the two concepts, so I went for it in a prelease version of `Optional<T>`.
+- After trying it out, I found it had two big drawbacks:
+  - All of the `IEnumerable<T>` extension methods polluted IntelliSense and made it hard to figure out what you could actually do with `Optional<T>`
+  - Iterating over `Optional<T>`'s "elements" breaks its encapsulation and null safety in the same way that putting a `Value` property on it would.
+
+```cs
+// We might as well add .Value now!
+optional.First()
+```
+
+It's still easy to convert `Optional<T>` to `IEnumerable<T>`:
+
+```cs
+var optional = optional.Of("hello");
+
+optional.Switch(
+    x => new[] { x },
+    () => Enumerable.Empty<string>());
+```
+
+Since this isn't quite as easy as `new[] { x }` for a non-optional value, I'll add a `ToEnumerable()` method.

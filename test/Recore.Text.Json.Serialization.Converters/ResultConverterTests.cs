@@ -68,11 +68,11 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Exception>>("{\"Name\":\"Mario\",\"Age\":42}");
             Assert.Equal(
                 expected: "Mario",
-                actual: deserializedPerson.GetValue().First().Name);
+                actual: deserializedPerson.GetValue().OnValue(x => x.Name));
 
             Assert.Equal(
                 expected: 42,
-                actual: deserializedPerson.GetValue().First().Age);
+                actual: deserializedPerson.GetValue().OnValue(x => x.Age));
         }
 
         [Fact]
@@ -93,19 +93,22 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
-                    actual: deserializedPerson.GetValue().First().Name);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 42,
-                    actual: deserializedPerson.GetValue().First().Age);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 // This will deserialize as Person instead of Address because TValue = Person.
                 var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
-                Assert.Null(deserializedAddress.GetValue().First().Name);
+                Assert.True(deserializedAddress.IsSuccessful);
+
+                Assert.False(
+                    deserializedAddress.GetValue().OnValue(x => x.Name).HasValue);
 
                 Assert.Equal(
-                    expected: default,
-                    actual: deserializedAddress.GetValue().First().Age);
+                    expected: (int)default,
+                    actual: deserializedAddress.GetValue().OnValue(x => x.Age));
             }
         }
 
@@ -116,37 +119,40 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
-                    actual: deserializedPerson.GetValue().First().Name);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 42,
-                    actual: deserializedPerson.GetValue().First().Age);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 var deserializedTypeWithConverter = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"fullName\":\"Alice X\",\"age\":28}");
-                Assert.Null(deserializedTypeWithConverter.GetValue().First().Name);
+                Assert.True(deserializedTypeWithConverter.IsSuccessful);
+
+                Assert.False(
+                    deserializedTypeWithConverter.GetValue().OnValue(x => x.Name).HasValue);
 
                 Assert.Equal(
-                    expected: default,
-                    actual: deserializedTypeWithConverter.GetValue().First().Name);
+                    expected: (int)default,
+                    actual: deserializedTypeWithConverter.GetValue().OnValue(x => x.Age));
             }
             { // This will try to convert with the left type, and then convert to the right type if it fails
                 var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}");
                 Assert.Equal(
                     expected: "Alice",
-                    actual: deserializedAddress.GetValue().First().Name);
+                    actual: deserializedAddress.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 28,
-                    actual: deserializedAddress.GetValue().First().Age);
+                    actual: deserializedAddress.GetValue().OnValue(x => x.Age));
 
                 var deserializedPerson = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
                 Assert.Equal(
                     expected: "Mario",
-                    actual: deserializedPerson.GetError().First().Name);
+                    actual: deserializedPerson.GetError().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 42,
-                    actual: deserializedPerson.GetError().First().Age);
+                    actual: deserializedPerson.GetError().OnValue(x => x.Age));
             }
         }
 
@@ -165,39 +171,39 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}", options);
                 Assert.Equal(
                     expected: "Mario",
-                    actual: deserializedPerson.GetValue().First().Name);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 42,
-                    actual: deserializedPerson.GetValue().First().Age);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
                 Assert.Equal(
                     expected: "123 Main St",
-                    actual: deserializedAddress.GetError().First().Street);
+                    actual: deserializedAddress.GetError().OnValue(x => x.Street));
 
                 Assert.Equal(
                     expected: "12345",
-                    actual: deserializedAddress.GetError().First().Zip);
+                    actual: deserializedAddress.GetError().OnValue(x => x.Zip));
             }
             {
                 var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}", options);
                 Assert.Equal(
                     expected: "Mario",
-                    actual: deserializedPerson.GetValue().First().Name);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 42,
-                    actual: deserializedPerson.GetValue().First().Age);
+                    actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}", options);
                 Assert.Equal(
                     expected: "Alice",
-                    actual: deserializedAddress.GetValue().First().Name);
+                    actual: deserializedAddress.GetValue().OnValue(x => x.Name));
 
                 Assert.Equal(
                     expected: 28,
-                    actual: deserializedAddress.GetValue().First().Age);
+                    actual: deserializedAddress.GetValue().OnValue(x => x.Age));
             }
         }
     }
