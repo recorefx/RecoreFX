@@ -19,10 +19,8 @@ namespace Recore.Text.Json.Serialization.Converters
             if (IsOfType(typeToConvert))
             {
                 var innerType = typeToConvert.GetGenericArguments()[0];
-                var innerConverter = options.GetConverter(innerType);
                 var ofConverter = Activator.CreateInstance(
-                    type: typeof(OfConverter<>).MakeGenericType(new[] { innerType }),
-                    args: new[] { innerConverter });
+                    type: typeof(OfConverter<>).MakeGenericType(new[] { innerType }));
 
                 return (JsonConverter)ofConverter;
             }
@@ -60,37 +58,15 @@ namespace Recore.Text.Json.Serialization.Converters
         // Use OfJsonAttribute to convert this to the desired type.
         private class JsonOf : Of<T> { }
 
-        private readonly JsonConverter<T> innerConverter;
-
-        public OfConverter(JsonConverter innerConverter)
-        {
-            this.innerConverter = (JsonConverter<T>)innerConverter;
-        }
-
         public override Of<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            if (innerConverter != null)
-            {
-                var value = innerConverter.Read(ref reader, typeof(T), options);
-                return new JsonOf { Value = value };
-            }
-            else
-            {
-                var value = JsonSerializer.Deserialize<T>(ref reader, options);
-                return new JsonOf { Value = value };
-            }
+            var value = JsonSerializer.Deserialize<T>(ref reader, options);
+            return new JsonOf { Value = value };
         }
 
         public override void Write(Utf8JsonWriter writer, Of<T> value, JsonSerializerOptions options)
         {
-            if (innerConverter != null)
-            {
-                innerConverter.Write(writer, value.Value, options);
-            }
-            else
-            {
-                JsonSerializer.Serialize(writer, value.Value, options);
-            }
+            JsonSerializer.Serialize(writer, value.Value, options);
         }
     }
 

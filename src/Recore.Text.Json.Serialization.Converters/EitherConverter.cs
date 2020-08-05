@@ -16,14 +16,10 @@ namespace Recore.Text.Json.Serialization.Converters
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var leftType = typeToConvert.GetGenericArguments()[0];
-            var leftConverter = options.GetConverter(leftType);
-
             var rightType = typeToConvert.GetGenericArguments()[1];
-            var rightConverter = options.GetConverter(rightType);
 
             var eitherConverter = Activator.CreateInstance(
-                type: typeof(EitherConverter<,>).MakeGenericType(new[] { leftType, rightType }),
-                args: new[] { leftConverter, rightConverter });
+                type: typeof(EitherConverter<,>).MakeGenericType(new[] { leftType, rightType }));
 
             return (JsonConverter)eitherConverter;
         }
@@ -35,15 +31,6 @@ namespace Recore.Text.Json.Serialization.Converters
     /// </summary>
     internal sealed class EitherConverter<TLeft, TRight> : JsonConverter<Either<TLeft, TRight>>
     {
-        private readonly JsonConverter<TLeft> leftConverter;
-        private readonly JsonConverter<TRight> rightConverter;
-
-        public EitherConverter(JsonConverter leftConverter, JsonConverter rightConverter)
-        {
-            this.leftConverter = (JsonConverter<TLeft>)leftConverter;
-            this.rightConverter = (JsonConverter<TRight>)rightConverter;
-        }
-
         public override Either<TLeft, TRight> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
@@ -72,28 +59,8 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options)
             => value.Switch(
-                left =>
-                {
-                    if (leftConverter != null)
-                    {
-                        leftConverter.Write(writer, left, options);
-                    }
-                    else
-                    {
-                        JsonSerializer.Serialize(writer, left, options);
-                    }
-                },
-                right =>
-                {
-                    if (rightConverter != null)
-                    {
-                        rightConverter.Write(writer, right, options);
-                    }
-                    else
-                    {
-                        JsonSerializer.Serialize(writer, right, options);
-                    }
-                });
+                l => JsonSerializer.Serialize(writer, l, options),
+                r => JsonSerializer.Serialize(writer, r, options));
     }
 
     /// <summary>
@@ -153,10 +120,7 @@ namespace Recore.Text.Json.Serialization.Converters
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Either<TLeft, TRight> value, JsonSerializerOptions options)
         {
-            var leftConverter = options.GetConverter(typeof(TLeft));
-            var rightConverter = options.GetConverter(typeof(TRight));
-
-            var eitherConverter = new EitherConverter<TLeft, TRight>(leftConverter, rightConverter);
+            var eitherConverter = new EitherConverter<TLeft, TRight>();
             eitherConverter.Write(writer, value, options);
         }
     }

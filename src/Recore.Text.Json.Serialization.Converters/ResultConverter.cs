@@ -16,14 +16,10 @@ namespace Recore.Text.Json.Serialization.Converters
         public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var valueType = typeToConvert.GetGenericArguments()[0];
-            var valueConverter = options.GetConverter(valueType);
-
-            var errorConverterType = typeToConvert.GetGenericArguments()[1];
-            var errorConverter = options.GetConverter(errorConverterType);
+            var errorType = typeToConvert.GetGenericArguments()[1];
 
             var resultConverter = Activator.CreateInstance(
-                type: typeof(ResultConverter<,>).MakeGenericType(new[] { valueType, errorConverterType }),
-                args: new[] { valueConverter, errorConverter });
+                type: typeof(ResultConverter<,>).MakeGenericType(new[] { valueType, errorType }));
 
             return (JsonConverter)resultConverter;
         }
@@ -35,15 +31,6 @@ namespace Recore.Text.Json.Serialization.Converters
     /// </summary>
     internal sealed class ResultConverter<TValue, TError> : JsonConverter<Result<TValue, TError>>
     {
-        private readonly JsonConverter<TValue> valueConverter;
-        private readonly JsonConverter<TError> errorConverter;
-
-        public ResultConverter(JsonConverter valueConverter, JsonConverter errorConverter)
-        {
-            this.valueConverter = (JsonConverter<TValue>)valueConverter;
-            this.errorConverter = (JsonConverter<TError>)errorConverter;
-        }
-
         public override Result<TValue, TError> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
@@ -72,28 +59,8 @@ namespace Recore.Text.Json.Serialization.Converters
 
         public override void Write(Utf8JsonWriter writer, Result<TValue, TError> value, JsonSerializerOptions options)
             => value.Switch(
-                val =>
-                {
-                    if (valueConverter != null)
-                    {
-                        valueConverter.Write(writer, val, options);
-                    }
-                    else
-                    {
-                        JsonSerializer.Serialize(writer, val, options);
-                    }
-                },
-                err =>
-                {
-                    if (errorConverter != null)
-                    {
-                        errorConverter.Write(writer, err, options);
-                    }
-                    else
-                    {
-                        JsonSerializer.Serialize(writer, err, options);
-                    }
-                });
+                val => JsonSerializer.Serialize(writer, val, options),
+                err => JsonSerializer.Serialize(writer, err, options));
     }
 
     /// <summary>
@@ -153,10 +120,7 @@ namespace Recore.Text.Json.Serialization.Converters
         /// </summary>
         public override void Write(Utf8JsonWriter writer, Result<TValue, TError> value, JsonSerializerOptions options)
         {
-            var valueConverter = options.GetConverter(typeof(TValue));
-            var errorConverter = options.GetConverter(typeof(TError));
-
-            var eitherConverter = new ResultConverter<TValue, TError>(valueConverter, errorConverter);
+            var eitherConverter = new ResultConverter<TValue, TError>();
             eitherConverter.Write(writer, value, options);
         }
     }
