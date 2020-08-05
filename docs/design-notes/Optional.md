@@ -69,4 +69,4 @@ optional.Switch(
     () => Enumerable.Empty<string>());
 ```
 
-So, I'll settle for them being isomorphic rather than identical 🙂
+Since this isn't quite as easy as `new[] { x }` for a non-optional value, I'll add a `ToEnumerable()` method.

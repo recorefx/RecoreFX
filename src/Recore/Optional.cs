@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -14,7 +13,7 @@ namespace Recore
     /// Provides type-safe access to a nullable value.
     /// </summary>
     [JsonConverter(typeof(OptionalConverter))]
-    public readonly struct Optional<T> : IEquatable<Optional<T>>, IEnumerable<T>
+    public readonly struct Optional<T> : IEquatable<Optional<T>>
     {
         private readonly T value;
 
@@ -149,12 +148,30 @@ namespace Recore
                 () => Optional<U>.Empty);
 
         /// <summary>
+        /// Converts an optional value to an enumerable.
+        /// The enumerable will have either zero or one elements.
+        /// </summary>
+        public IEnumerable<T> ToEnumerable()
+            => Switch(
+                x => new[] { x },
+                () => Enumerable.Empty<T>());
+
+        /// <summary>
         /// Returns the value's string representation, or a localized "none" message.
         /// </summary>
         public override string ToString()
             => Switch(
                 x => x.ToString(),
                 () => Resources.OptionalEmptyToString);
+
+        /// <summary>
+        /// Returns the hash code for the underlying type
+        /// or zero if there is no value.
+        /// </summary>
+        public override int GetHashCode()
+            => Switch(
+                x => x.GetHashCode(),
+                () => 0);
 
         /// <summary>
         /// Determines whether this instance and another object,
@@ -179,64 +196,6 @@ namespace Recore
             {
                 return Equals(this.value, other.value);
             }
-        }
-
-        /// <summary>
-        /// Returns the hash code for the underlying type
-        /// or zero if there is no value.
-        /// </summary>
-        public override int GetHashCode()
-            => Switch(
-                x => x.GetHashCode(),
-                () => 0);
-
-        /// <summary>
-        /// Returns an object that either yields the underlying value once
-        /// or yields nothing if there is no value.
-        /// </summary>
-        public IEnumerator<T> GetEnumerator() => new Enumerator(this);
-
-        /// <summary>
-        /// Returns an object that either yields the underlying value once
-        /// or yields nothing if there is no value.
-        /// </summary>
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        private sealed class Enumerator : IEnumerator<T>
-        {
-            private readonly Optional<T> target;
-            private bool hasNextValue;
-
-            public Enumerator(Optional<T> target)
-            {
-                this.target = target;
-                Reset();
-            }
-
-            public T Current { get; private set; }
-            object IEnumerator.Current => Current;
-
-            public bool MoveNext()
-            {
-                if (hasNextValue)
-                {
-                    Current = target.value;
-                    hasNextValue = false;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            public void Reset()
-            {
-                hasNextValue = target.HasValue;
-                Current = default; // undefined
-            }
-
-            public void Dispose() { }
         }
 
         /// <summary>
@@ -333,7 +292,8 @@ namespace Recore
         /// Collects the non-empty values from the sequence.
         /// </summary>
         public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source)
-            => source.SelectMany(x => x);
+            => source.SelectMany(
+                optional => optional.ToEnumerable());
 
         /// <summary>
         /// Converts an <c>Optional&lt;Task&lt;T&gt;&gt;</c>

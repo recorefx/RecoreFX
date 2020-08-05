@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -13,33 +12,33 @@ namespace Recore.Tests
         public void Constructor()
         {
             var referenceOptional = new Optional<string>("Hello world");
-            Assert.NotEmpty(referenceOptional);
+            Assert.True(referenceOptional.HasValue);
 
             var valueOptional = new Optional<int>(123);
-            Assert.NotEmpty(valueOptional);
+            Assert.True(valueOptional.HasValue);
 
             var nullOptional = new Optional<object>(null);
-            Assert.Empty(nullOptional);
+            Assert.False(nullOptional.HasValue);
         }
 
         [Fact]
         public void DefaultConstructor()
         {
             var referenceOptional = new Optional<object>();
-            Assert.Empty(referenceOptional);
+            Assert.False(referenceOptional.HasValue);
 
             var valueOptional = new Optional<int>();
-            Assert.Empty(valueOptional);
+            Assert.False(valueOptional.HasValue);
         }
 
         [Fact]
         public void Empty()
         {
             var referenceOptional = Optional<object>.Empty;
-            Assert.Empty(referenceOptional);
+            Assert.False(referenceOptional.HasValue);
 
             var valueOptional = Optional<int>.Empty;
-            Assert.Empty(valueOptional);
+            Assert.False(valueOptional.HasValue);
         }
 
         [Fact]
@@ -124,7 +123,7 @@ namespace Recore.Tests
             Assert.Equal(100, optional.OnValue(Square));
 
             optional = Optional<int>.Empty;
-            Assert.Empty(optional.OnValue(Square));
+            Assert.False(optional.OnValue(Square).HasValue);
 
             optional = 100;
             Assert.Equal("100", optional.OnValue(x => x.ToString()));
@@ -205,11 +204,11 @@ namespace Recore.Tests
 
             optionalString = "hello";
             actual = optionalString.Then(FindFirstSpace);
-            Assert.Empty(actual);
+            Assert.False(actual.HasValue);
 
             optionalString = Optional<string>.Empty;
             actual = optionalString.Then(FindFirstSpace);
-            Assert.Empty(actual);
+            Assert.False(actual.HasValue);
         }
 
         [Fact]
@@ -354,39 +353,6 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void GetEnumerator()
-        {
-            {
-                var optional = Optional.Of(123);
-                var enumerator = optional.GetEnumerator();
-
-                Assert.True(enumerator.MoveNext());
-                Assert.Equal(123, enumerator.Current);
-                Assert.False(enumerator.MoveNext());
-
-                var numberOfElements = 0;
-                foreach (var item in optional)
-                {
-                    Assert.Equal(123, item);
-                    numberOfElements++;
-                }
-
-                Assert.Equal(1, numberOfElements);
-            }
-            {
-                var optional = Optional<int>.Empty;
-                var enumerator = optional.GetEnumerator();
-
-                Assert.False(enumerator.MoveNext());
-
-                foreach (var item in optional)
-                {
-                    Assert.True(false);
-                }
-            }
-        }
-
-        [Fact]
         public void Cast()
         {
             int CountChar(string str, char toCount)
@@ -424,7 +390,7 @@ namespace Recore.Tests
             Assert.Equal(123, success);
 
             var failure = Optional.If(int.TryParse("abc", out result), result);
-            Assert.Empty(failure);
+            Assert.False(failure.HasValue);
         }
 
         [Fact]
@@ -434,10 +400,10 @@ namespace Recore.Tests
             Assert.Equal("hello", doubleValue.Flatten());
 
             var doubleNone = new Optional<Optional<string>>();
-            Assert.Empty(doubleNone.Flatten());
+            Assert.False(doubleNone.Flatten().HasValue);
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
-            Assert.Empty(valueNone.Flatten());
+            Assert.False(valueNone.Flatten().HasValue);
         }
 
         [Fact]
@@ -472,7 +438,7 @@ namespace Recore.Tests
             Assert.Equal(1, optional);
 
             optional = await Optional<Task<int>>.Empty.AwaitAsync();
-            Assert.Empty(optional);
+            Assert.False(optional.HasValue);
         }
     }
 }
