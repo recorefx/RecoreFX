@@ -47,6 +47,19 @@ Without this constraint, you have to maintain additional state to know whether t
     - Again, `Bind` isn't evocative for users unfamiliar with functional programming.
     - `Then` evokes a monad bind that many people are familiar with, that of Promises in JavaScript. .NET's own `ContinueWith` is a little too clumsy and more specific to asynchronous programming.
 
+## Why no `OnEmpty()` or `IfEmpty`?
+
+These don't really add any value. You can just do:
+
+```cs
+if (!optional.HasValue)
+{
+    // ...
+}
+```
+
+For `OnValue()` and `IfValue()`, you need a way to get to the underlying value.
+
 # Why not make Optional<T> implement IEnumerable<T>?
 - I saw someone explain optional types once as a list that can have either 0 or 1 element. I thought that was an interesting explanation.
 - It was straightforward to implement and I thought it was cool to unify the two concepts, so I went for it in a prelease version of `Optional<T>`.

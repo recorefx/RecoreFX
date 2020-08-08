@@ -130,7 +130,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void IfValueIfEmpty()
+        public void IfValue()
         {
             Optional<int> optional;
             bool called;
@@ -140,18 +140,10 @@ namespace Recore.Tests
             optional.IfValue(x => { called = true; });
             Assert.True(called);
 
-            called = false;
-            optional.IfEmpty(() => { called = true; });
-            Assert.False(called);
-
             optional = Optional<int>.Empty;
             called = false;
             optional.IfValue(x => { called = true; });
             Assert.False(called);
-
-            called = false;
-            optional.IfEmpty(() => { called = true; });
-            Assert.True(called);
         }
 
         [Fact]
@@ -391,6 +383,31 @@ namespace Recore.Tests
 
             var failure = Optional.If(int.TryParse("abc", out result), result);
             Assert.False(failure.HasValue);
+
+            Optional<int> optional;
+            bool called;
+
+            called = false;
+            optional = Optional.If(true, () =>
+            {
+                called = true;
+                return 123;
+            });
+
+            Assert.True(called);
+            Assert.Equal(123, optional);
+
+            called = false;
+            optional = Optional.If(false, () =>
+            {
+                called = true;
+                return 123;
+            });
+
+            Assert.False(called);
+            Assert.False(optional.HasValue);
+
+            Assert.Throws<ArgumentNullException>(() => Optional.If<int>(true, null));
         }
 
         [Fact]

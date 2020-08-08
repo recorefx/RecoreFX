@@ -125,14 +125,6 @@ namespace Recore
                 () => { });
 
         /// <summary>
-        /// Takes an action only if the <see cref="Optional{T}"/> is empty.
-        /// </summary>
-        public void IfEmpty(Action onEmpty)
-            => Switch(
-                x => { },
-                onEmpty);
-
-        /// <summary>
         /// Chains another <see cref="Optional{T}"/>-producing operation onto the result of another.
         /// </summary>
         /// <remarks>
@@ -248,6 +240,29 @@ namespace Recore
             if (condition)
             {
                 return Of(value);
+            }
+            else
+            {
+                return Optional<T>.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Sets an optional value if a condition is true.
+        /// </summary>
+        /// <remarks>
+        /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}"/> result.
+        /// </remarks>
+        public static Optional<T> If<T>(bool condition, Func<T> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            if (condition)
+            {
+                return Of(func());
             }
             else
             {
