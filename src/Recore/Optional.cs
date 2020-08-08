@@ -125,14 +125,6 @@ namespace Recore
                 () => { });
 
         /// <summary>
-        /// Takes an action only if the <see cref="Optional{T}"/> is empty.
-        /// </summary>
-        public void IfEmpty(Action onEmpty)
-            => Switch(
-                x => { },
-                onEmpty);
-
-        /// <summary>
         /// Chains another <see cref="Optional{T}"/>-producing operation onto the result of another.
         /// </summary>
         /// <remarks>
