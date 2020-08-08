@@ -383,6 +383,31 @@ namespace Recore.Tests
 
             var failure = Optional.If(int.TryParse("abc", out result), result);
             Assert.False(failure.HasValue);
+
+            Optional<int> optional;
+            bool called;
+
+            called = false;
+            optional = Optional.If(true, () =>
+            {
+                called = true;
+                return 123;
+            });
+
+            Assert.True(called);
+            Assert.Equal(123, optional);
+
+            called = false;
+            optional = Optional.If(false, () =>
+            {
+                called = true;
+                return 123;
+            });
+
+            Assert.False(called);
+            Assert.False(optional.HasValue);
+
+            Assert.Throws<ArgumentNullException>(() => Optional.If<int>(true, null));
         }
 
         [Fact]

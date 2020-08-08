@@ -248,6 +248,29 @@ namespace Recore
         }
 
         /// <summary>
+        /// Sets an optional value if a condition is true.
+        /// </summary>
+        /// <remarks>
+        /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}"/> result.
+        /// </remarks>
+        public static Optional<T> If<T>(bool condition, Func<T> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            if (condition)
+            {
+                return Of(func());
+            }
+            else
+            {
+                return Optional<T>.Empty;
+            }
+        }
+
+        /// <summary>
         /// Converts a unary action to work with <see cref="Optional{T}"/>.
         /// </summary>
         public static Action<Optional<T>> Lift<T>(Action<T> action)
