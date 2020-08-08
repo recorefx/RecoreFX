@@ -76,8 +76,9 @@ namespace Recore.Text.Json.Serialization.Converters
     /// <remarks>
     /// Subtypes can use this instead of calling <seealso cref="OfConverter"/> directly
     /// to get a statically-typed return value from <see cref="Read(ref Utf8JsonReader, Type, JsonSerializerOptions)"/>.
+    /// Register this converter on a type by using <seealso cref="OfJsonAttribute"/>.
     ///
-    /// Note that <c>System.Text.Json</c> requires reference types to have a parameterless constructor
+    /// Note that <c>System.Text.Json</c> also requires reference types to have a parameterless constructor
     /// to be deserializable.
     /// </remarks>
     internal sealed class OfConverter<TOf, TInner> : JsonConverter<TOf> where TOf : Of<TInner>, new()

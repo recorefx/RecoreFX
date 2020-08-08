@@ -16,6 +16,11 @@ namespace Recore.Security.Cryptography
     /// </remarks>
     public sealed class Ciphertext<THash> : Of<string> where THash : HashAlgorithm
     {
+        // For deserialization with System.Text.Json
+        private Ciphertext()
+        {
+        }
+
         private Ciphertext(string value)
         {
             Value = value;
