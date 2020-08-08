@@ -31,13 +31,22 @@ History ends up looking like this (omitting untagged commits):
 
 ## How to release
 
+Do this for every release:
+- [ ] Bump the `AssemblyVersion`, `FileVersion`, and `Version` properties in `Recore.csproj`.
+- [ ] Add a changelog under the `docs/changelogs` directory.
+- [ ] Submit a PR with the above two changes.
+- [ ] Once the PR as merged, create a release on GitHub.
+    - [ ] Follow the instructions below for the tagging strategy.
+    - [ ] Paste the changelog in the release description.
+- [ ] Once the release is published, upload the package to NuGet.
+
 ### New major version
 
 To release a new major version, just tag `main` at that point with a tag like `v1.0.0`.
 
 ### New minor version
 
-When releasing a minor version for the first time on a major version, check out a new branch at `v1.0.0` named `releases/v1`.
+When releasing a `.1` minor version (say `v1.1.0`), check out a new branch at `v1.0.0` named `releases/v1`.
 
 ```bash
 git checkout v1.0.0
