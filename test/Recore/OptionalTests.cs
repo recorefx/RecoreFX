@@ -114,6 +114,18 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void AssertValue()
+        {
+            Optional<string> optional;
+
+            optional = "hello world";
+            Assert.Equal("hello world", optional.AssertValue());
+
+            optional = null;
+            Assert.Throws<InvalidOperationException>(() => optional.AssertValue());
+        }
+
+        [Fact]
         public void OnValue()
         {
             Optional<int> optional;

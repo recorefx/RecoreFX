@@ -109,6 +109,14 @@ namespace Recore
                 () => fallback);
 
         /// <summary>
+        /// Extracts the value or throws an <see cref="InvalidOperationException"/> if the <see cref="Optional{T}"/> is empty.
+        /// </summary>
+        public T AssertValue()
+            => Switch(
+                x => x,
+                () => throw new InvalidOperationException(Resources.OptionalEmptyToString));
+
+        /// <summary>
         /// Maps a function over the <see cref="Optional{T}"/>'s value, or propagates <see cref="Optional{T}.Empty"/>.
         /// </summary>
         public Optional<U> OnValue<U>(Func<T, U> f)
