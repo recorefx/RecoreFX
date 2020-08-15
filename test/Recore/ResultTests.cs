@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -283,28 +284,63 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void TryCatchFilter()
+        public void TryCatchMap()
         {
             var success = Result
                 .Try(() => 1)
-                .Catch<Exception>(e => true);
+                .Catch((Exception _) => "failed");
 
             Assert.Equal(1, success);
 
             var failure = Result
-                .Try(() =>
-                {
-                    var array = new int[0];
-                    return array[1]; // throws IndexOutOfRangeException
-                })
-                .Catch<Exception>(e => e is ArgumentNullException || e is IndexOutOfRangeException);
+                .Try<int>(() => throw new Exception("exception message"))
+                .Catch((Exception e) => e.Message);
+
+            Assert.Equal("exception message", failure);
+        }
+
+        [Fact]
+        public async Task TryCatchAsync()
+        {
+            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
+
+            var success = await Result
+                .TryAsync(async () => await GetNumberAsync(1))
+                .CatchAsync<Exception>();
+
+            Assert.Equal(1, success);
+
+            // Avoid "divide by constant zero" compiler error
+            int zero = 0;
+
+            var failure = await Result
+                .TryAsync<double>(async () => await GetNumberAsync(1) / zero) // throws DivideByZeroException
+                .CatchAsync<DivideByZeroException>();
 
             Assert.False(failure.IsSuccessful);
 
-            Assert.Throws<ArgumentException>(
-                () => Result
-                    .Try<int>(() => throw new ArgumentException())
-                    .Catch<Exception>(e => e is ArgumentNullException || e is ArgumentOutOfRangeException));
+            await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Result
+                    .TryAsync<double>(() => throw new ArgumentException())
+                    .CatchAsync<DivideByZeroException>());
+        }
+
+        [Fact]
+        public async Task TryCatchAsyncMap()
+        {
+            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
+
+            var success = await Result
+                .TryAsync(async () => await GetNumberAsync(1))
+                .CatchAsync((Exception _) => Task.FromResult("failed"));
+
+            Assert.Equal(1, success);
+
+            var failure = await Result
+                .TryAsync<int>(() => throw new Exception("exception message"))
+                .CatchAsync((Exception e) => Task.FromResult(e.Message));
+
+            Assert.Equal("exception message", failure);
         }
 
         [Fact]
@@ -318,7 +354,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void Values()
+        public void Successes()
         {
             var collection = new Result<string, int>[]
             {
@@ -338,11 +374,11 @@ namespace Recore.Tests
                 "hello world"
             };
 
-            Assert.Equal(values, collection.Values().ToArray());
+            Assert.Equal(values, collection.Successes().ToArray());
         }
 
         [Fact]
-        public void Errors()
+        public void Failures()
         {
             var collection = new Result<string, int>[]
             {
@@ -360,7 +396,7 @@ namespace Recore.Tests
                 23
             };
 
-            Assert.Equal(errors, collection.Errors().ToArray());
+            Assert.Equal(errors, collection.Failures().ToArray());
         }
     }
 }
