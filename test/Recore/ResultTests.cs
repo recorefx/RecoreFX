@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Xunit;
 
@@ -283,7 +284,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void TryCatchFilter()
+        public void TryCatchMap()
         {
             var success = Result
                 .Try(() => 1)
@@ -292,11 +293,52 @@ namespace Recore.Tests
             Assert.Equal(1, success);
 
             var failure = Result
-                .Try<int>(() =>
-                {
-                    throw new Exception("exception message");
-                })
+                .Try<int>(() => throw new Exception("exception message"))
                 .Catch((Exception e) => e.Message);
+
+            Assert.Equal("exception message", failure);
+        }
+
+        [Fact]
+        public async Task TryCatchAsync()
+        {
+            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
+
+            var success = await Result
+                .TryAsync(async () => await GetNumberAsync(1))
+                .CatchAsync<Exception>();
+
+            Assert.Equal(1, success);
+
+            // Avoid "divide by constant zero" compiler error
+            int zero = 0;
+
+            var failure = await Result
+                .TryAsync<double>(async () => await GetNumberAsync(1) / zero) // throws DivideByZeroException
+                .CatchAsync<DivideByZeroException>();
+
+            Assert.False(failure.IsSuccessful);
+
+            await Assert.ThrowsAsync<ArgumentException>(
+                async () => await Result
+                    .TryAsync<double>(() => throw new ArgumentException())
+                    .CatchAsync<DivideByZeroException>());
+        }
+
+        [Fact]
+        public async Task TryCatchAsyncMap()
+        {
+            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
+
+            var success = await Result
+                .TryAsync(async () => await GetNumberAsync(1))
+                .CatchAsync((Exception _) => Task.FromResult("failed"));
+
+            Assert.Equal(1, success);
+
+            var failure = await Result
+                .TryAsync<int>(() => throw new Exception("exception message"))
+                .CatchAsync((Exception e) => Task.FromResult(e.Message));
 
             Assert.Equal("exception message", failure);
         }
