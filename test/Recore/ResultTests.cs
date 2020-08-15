@@ -287,24 +287,18 @@ namespace Recore.Tests
         {
             var success = Result
                 .Try(() => 1)
-                .Catch<Exception>(e => true);
+                .Catch((Exception _) => "failed");
 
             Assert.Equal(1, success);
 
             var failure = Result
-                .Try(() =>
+                .Try<int>(() =>
                 {
-                    var array = new int[0];
-                    return array[1]; // throws IndexOutOfRangeException
+                    throw new Exception("exception message");
                 })
-                .Catch<Exception>(e => e is ArgumentNullException || e is IndexOutOfRangeException);
+                .Catch((Exception e) => e.Message);
 
-            Assert.False(failure.IsSuccessful);
-
-            Assert.Throws<ArgumentException>(
-                () => Result
-                    .Try<int>(() => throw new ArgumentException())
-                    .Catch<Exception>(e => e is ArgumentNullException || e is ArgumentOutOfRangeException));
+            Assert.Equal("exception message", failure);
         }
 
         [Fact]
@@ -318,7 +312,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void Values()
+        public void Successes()
         {
             var collection = new Result<string, int>[]
             {
@@ -338,11 +332,11 @@ namespace Recore.Tests
                 "hello world"
             };
 
-            Assert.Equal(values, collection.Values().ToArray());
+            Assert.Equal(values, collection.Successes().ToArray());
         }
 
         [Fact]
-        public void Errors()
+        public void Failures()
         {
             var collection = new Result<string, int>[]
             {
@@ -360,7 +354,7 @@ namespace Recore.Tests
                 23
             };
 
-            Assert.Equal(errors, collection.Errors().ToArray());
+            Assert.Equal(errors, collection.Failures().ToArray());
         }
     }
 }
