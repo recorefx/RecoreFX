@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-
+using System.Threading.Tasks;
 using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
@@ -264,15 +264,15 @@ namespace Recore
             /// <summary>
             /// Executes the stored function and catches exceptions of the given type matching the given predicate.
             /// </summary>
-            public Result<TValue, TException> Catch<TException>(Func<TException, bool> predicate = null) where TException : Exception
+            public Result<TValue, TResult> Catch<TException, TResult>(Func<TException, TResult> onException) where TException : Exception
             {
                 try
                 {
                     return func();
                 }
-                catch (TException e) when (predicate(e))
+                catch (TException e)
                 {
-                    return e;
+                    return onException(e);
                 }
             }
         }
@@ -291,6 +291,66 @@ namespace Recore
         }
 
         /// <summary>
+        /// Wraps a function to be executed and converted to <see cref="Result{TValue, TError}"/>.
+        /// </summary>
+        public sealed class AsyncCatcher<TValue>
+        {
+            private readonly AsyncFunc<TValue> func;
+
+            internal AsyncCatcher(AsyncFunc<TValue> func)
+            {
+                this.func = func;
+            }
+
+            /// <summary>
+            /// Executes the stored function and catches exceptions of the given type.
+            /// </summary>
+            public async Task<Result<TValue, TException>> CatchAsync<TException>() where TException : Exception
+            {
+                try
+                {
+                    return await func();
+                }
+                catch (TException e)
+                {
+                    return e;
+                }
+            }
+
+            /// <summary>
+            /// Executes the stored function and catches exceptions of the given type matching the given predicate.
+            /// </summary>
+            public async Task<Result<TValue, TResult>> CatchAsync<TException, TResult>(AsyncFunc<TException, TResult> onException) where TException : Exception
+            {
+                try
+                {
+                    return await func();
+                }
+                catch (TException e)
+                {
+                    return await onException(e);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Suspends a function to be executed by <see cref="AsyncCatcher{TValue}.CatchAsync{TException}()"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="TryAsync{TValue}(AsyncFunc{TValue})"/> must be used instead of <see cref="Try{TValue}(Func{TValue})"/>
+        /// to ensure exceptions are caught properly with async code.
+        /// </remarks>
+        public static AsyncCatcher<TValue> TryAsync<TValue>(AsyncFunc<TValue> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            return new AsyncCatcher<TValue>(func);
+        }
+
+        /// <summary>
         /// Converts a <c cref="Result{TValue, TError}">Result&lt;Result&lt;TValue, TError&gt;, TError&gt;</c>
         /// to a <see cref="Result{TValue, TError}"/>.
         /// </summary>
@@ -300,7 +360,7 @@ namespace Recore
         /// <summary>
         /// Collects all the values of successful results from the sequence.
         /// </summary>
-        public static IEnumerable<TValue> Values<TValue, TError>(this IEnumerable<Result<TValue, TError>> source)
+        public static IEnumerable<TValue> Successes<TValue, TError>(this IEnumerable<Result<TValue, TError>> source)
             => source
             .Select(x => x.GetValue())
             .NonEmpty();
@@ -308,7 +368,7 @@ namespace Recore
         /// <summary>
         /// Collects all the errors from failed results from the sequence.
         /// </summary>
-        public static IEnumerable<TError> Errors<TValue, TError>(this IEnumerable<Result<TValue, TError>> source)
+        public static IEnumerable<TError> Failures<TValue, TError>(this IEnumerable<Result<TValue, TError>> source)
             => source
             .Select(x => x.GetError())
             .NonEmpty();
