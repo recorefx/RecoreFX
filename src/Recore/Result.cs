@@ -264,7 +264,7 @@ namespace Recore
             /// <summary>
             /// Executes the stored function and catches exceptions of the given type matching the given predicate.
             /// </summary>
-            public Result<TValue, TResult> Catch<TException, TResult>(Func<TException, TResult> onException) where TException : Exception
+            public Result<TValue, TMapped> Catch<TException, TMapped>(Func<TException, TMapped> onException) where TException : Exception
             {
                 try
                 {
