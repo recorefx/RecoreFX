@@ -136,7 +136,7 @@ namespace Recore.Security.Cryptography.Tests
         {
             return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null || salt == null)
+                if (plaintext is null || salt is null)
                 {
                     // Skip
                     return true;
@@ -156,7 +156,7 @@ namespace Recore.Security.Cryptography.Tests
         {
             return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null || salt == null)
+                if (plaintext is null || salt is null)
                 {
                     // Skip
                     return true;
@@ -176,7 +176,7 @@ namespace Recore.Security.Cryptography.Tests
         {
             return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null || salt == null)
+                if (plaintext is null || salt is null)
                 {
                     // Skip
                     return true;
@@ -196,8 +196,8 @@ namespace Recore.Security.Cryptography.Tests
         {
             return Prop.ForAll((string plaintext, byte[] salt) =>
             {
-                if (plaintext == null
-                    || salt == null
+                if (plaintext is null
+                    || salt is null
                     || salt.Length == 0)
                 {
                     // Skip
