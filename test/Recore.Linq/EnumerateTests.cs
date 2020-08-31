@@ -63,102 +63,90 @@ namespace Recore.Linq.Tests
         }
 
         [Property]
-        public Property FirstIndexIsAlwaysZero()
+        public bool FirstIndexIsAlwaysZero(List<string> source)
         {
-            return Prop.ForAll((List<string> source) =>
+            if (source is null)
             {
-                if (source is null)
-                {
-                    // Skip
-                    return true;
-                }
-
-                if (source.Count == 0)
-                {
-                    // Skip
-                    return true;
-                }
-
-                var result = source.Enumerate();
-                return result.First().index == 0;
-            });
-        }
-
-        [Property]
-        public Property LastIndexIsAlwaysLength()
-        {
-            return Prop.ForAll((List<string> source) =>
-            {
-                if (source is null)
-                {
-                    // Skip
-                    return true;
-                }
-
-                if (source.Count == 0)
-                {
-                    // Skip
-                    return true;
-                }
-
-                var result = source.Enumerate();
-                return result.Last().index == source.Count - 1;
-            });
-        }
-
-        [Property]
-        public Property IndicesAreAlwaysSequential()
-        {
-            return Prop.ForAll((List<string> source) =>
-            {
-                if (source is null)
-                {
-                    // Skip
-                    return true;
-                }
-
-                var result = source.Enumerate().ToList();
-
-                for (var i = 0; i < result.Count; i++)
-                {
-                    if (result[i].index != i)
-                    {
-                        return false;
-                    }
-                }
-
+                // Skip
                 return true;
-            });
+            }
+
+            if (source.Count == 0)
+            {
+                // Skip
+                return true;
+            }
+
+            var result = source.Enumerate();
+            return result.First().index == 0;
         }
 
         [Property]
-        public Property IsAlwaysOriginalSequence()
+        public bool LastIndexIsAlwaysLength(List<string> source)
         {
-            return Prop.ForAll((List<string> source) =>
+            if (source is null)
             {
-                if (source is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                var result = source.Enumerate().ToList();
+            if (source.Count == 0)
+            {
+                // Skip
+                return true;
+            }
 
-                if (source.Count != result.Count)
+            var result = source.Enumerate();
+            return result.Last().index == source.Count - 1;
+        }
+
+        [Property]
+        public bool IndicesAreAlwaysSequential(List<string> source)
+        {
+            if (source is null)
+            {
+                // Skip
+                return true;
+            }
+
+            var result = source.Enumerate().ToList();
+
+            for (var i = 0; i < result.Count; i++)
+            {
+                if (result[i].index != i)
                 {
                     return false;
                 }
+            }
 
-                for (var i = 0; i < source.Count; i++)
-                {
-                    if (source[i] != result[i].item)
-                    {
-                        return false;
-                    }
-                }
+            return true;
+        }
 
+        [Property]
+        public bool IsAlwaysOriginalSequence(List<string> source)
+        {
+            if (source is null)
+            {
+                // Skip
                 return true;
-            });
+            }
+
+            var result = source.Enumerate().ToList();
+
+            if (source.Count != result.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < source.Count; i++)
+            {
+                if (source[i] != result[i].item)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

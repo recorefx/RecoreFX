@@ -102,94 +102,82 @@ namespace Recore.Linq.Tests
         }
 
         [Property]
-        public Property EmptyEnumerableIsZeroElement()
+        public bool EmptyEnumerableIsZeroElement(List<int> sequence)
         {
-            return Prop.ForAll((List<int> sequence) =>
+            if (sequence is null)
             {
-                if (sequence is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                var product = sequence.Product(Enumerable.Empty<int>());
-                return product.Count() == 0;
-            });
+            var product = sequence.Product(Enumerable.Empty<int>());
+            return product.Count() == 0;
         }
 
         [Property]
-        public Property SingletonEnumerableIsIdentityElement()
+        public bool SingletonEnumerableIsIdentityElement(List<int> sequence, int singleton)
         {
-            return Prop.ForAll((List<int> sequence, int singleton) =>
+            if (sequence is null)
             {
-                if (sequence is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                var product = sequence.Product(new[] { singleton });
-                return sequence.SequenceEqual(product.Select(x => x.first));
-            });
+            var product = sequence.Product(new[] { singleton });
+            return sequence.SequenceEqual(product.Select(x => x.first));
         }
 
         // Product length m with length n -> length m * n
         [Property]
-        public Property ProductLengthEqualsProductOfInputLengths()
+        public bool ProductLengthEqualsProductOfInputLengths(List<int> first, List<string> second)
         {
-            return Prop.ForAll((List<int> first, List<string> second) =>
+            if (first is null || second is null)
             {
-                if (first is null || second is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                var product = first.Product(second).ToList();
-                return product.Count == (first.Count * second.Count);
-            });
+            var product = first.Product(second).ToList();
+            return product.Count == (first.Count * second.Count);
         }
 
         // Each element of original sequence in new sequence
         [Property]
-        public Property ResultContainsAllInputElements()
+        public bool ResultContainsAllInputElements(List<int> first, List<string> second)
         {
-            return Prop.ForAll((List<int> first, List<string> second) =>
+            if (first is null || second is null)
             {
-                if (first is null || second is null)
-                {
-                    // Skip
-                    return true;
-                }
-
-                if (first.Count == 0 || second.Count == 0)
-                {
-                    // Skip
-                    return true;
-                }
-
-                var product = first.Product(second).ToArray();
-
-                var firsts = product.Select(x => x.first).ToHashSet();
-                foreach (var item in first)
-                {
-                    if (!firsts.Contains(item))
-                    {
-                        return false;
-                    }
-                }
-
-                var seconds = product.Select(x => x.second).ToHashSet();
-                foreach (var item in second)
-                {
-                    if (!seconds.Contains(item))
-                    {
-                        return false;
-                    }
-                }
-
+                // Skip
                 return true;
-            });
+            }
+
+            if (first.Count == 0 || second.Count == 0)
+            {
+                // Skip
+                return true;
+            }
+
+            var product = first.Product(second).ToArray();
+
+            var firsts = product.Select(x => x.first).ToHashSet();
+            foreach (var item in first)
+            {
+                if (!firsts.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            var seconds = product.Select(x => x.second).ToHashSet();
+            foreach (var item in second)
+            {
+                if (!seconds.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

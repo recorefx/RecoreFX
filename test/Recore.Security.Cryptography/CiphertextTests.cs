@@ -132,82 +132,70 @@ namespace Recore.Security.Cryptography.Tests
         }
 
         [Property]
-        public Property MD5HelperAlwaysEqualToLongForm()
+        public bool MD5HelperAlwaysEqualToLongForm(string plaintext, byte[] salt)
         {
-            return Prop.ForAll((string plaintext, byte[] salt) =>
+            if (plaintext is null || salt is null)
             {
-                if (plaintext is null || salt is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                using (var md5 = MD5.Create())
-                {
-                    var longForm = Ciphertext<MD5>.Encrypt(plaintext, salt, md5);
-                    var shortForm = Ciphertext.MD5(plaintext, salt);
-                    return longForm == shortForm;
-                }
-            });
+            using (var md5 = MD5.Create())
+            {
+                var longForm = Ciphertext<MD5>.Encrypt(plaintext, salt, md5);
+                var shortForm = Ciphertext.MD5(plaintext, salt);
+                return longForm == shortForm;
+            }
         }
 
         [Property]
-        public Property SHA1HelperAlwaysEqualToLongForm()
+        public bool SHA1HelperAlwaysEqualToLongForm(string plaintext, byte[] salt)
         {
-            return Prop.ForAll((string plaintext, byte[] salt) =>
+            if (plaintext is null || salt is null)
             {
-                if (plaintext is null || salt is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                using (var sha1 = SHA1.Create())
-                {
-                    var longForm = Ciphertext<SHA1>.Encrypt(plaintext, salt, sha1);
-                    var shortForm = Ciphertext.SHA1(plaintext, salt);
-                    return longForm == shortForm;
-                }
-            });
+            using (var sha1 = SHA1.Create())
+            {
+                var longForm = Ciphertext<SHA1>.Encrypt(plaintext, salt, sha1);
+                var shortForm = Ciphertext.SHA1(plaintext, salt);
+                return longForm == shortForm;
+            }
         }
 
         [Property]
-        public Property SHA256HelperAlwaysEqualToLongForm()
+        public bool SHA256HelperAlwaysEqualToLongForm(string plaintext, byte[] salt)
         {
-            return Prop.ForAll((string plaintext, byte[] salt) =>
+            if (plaintext is null || salt is null)
             {
-                if (plaintext is null || salt is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                using (var sha256 = SHA256.Create())
-                {
-                    var longForm = Ciphertext<SHA256>.Encrypt(plaintext, salt, sha256);
-                    var shortForm = Ciphertext.SHA256(plaintext, salt);
-                    return longForm == shortForm;
-                }
-            });
+            using (var sha256 = SHA256.Create())
+            {
+                var longForm = Ciphertext<SHA256>.Encrypt(plaintext, salt, sha256);
+                var shortForm = Ciphertext.SHA256(plaintext, salt);
+                return longForm == shortForm;
+            }
         }
 
         [Property]
-        public Property SaltedHashNeverEqualToUnsalted()
+        public bool SaltedHashNeverEqualToUnsalted(string plaintext, byte[] salt)
         {
-            return Prop.ForAll((string plaintext, byte[] salt) =>
+            if (plaintext is null
+                || salt is null
+                || salt.Length == 0)
             {
-                if (plaintext is null
-                    || salt is null
-                    || salt.Length == 0)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                var unsalted = Ciphertext.SHA256(plaintext, Array.Empty<byte>());
-                var salted = Ciphertext.SHA256(plaintext, salt);
-                return unsalted != salted;
-            });
+            var unsalted = Ciphertext.SHA256(plaintext, Array.Empty<byte>());
+            var salted = Ciphertext.SHA256(plaintext, salt);
+            return unsalted != salted;
         }
     }
 }

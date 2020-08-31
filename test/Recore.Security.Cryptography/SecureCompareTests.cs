@@ -41,25 +41,22 @@ namespace Recore.Security.Cryptography.Tests
         }
 
         [Property]
-        public Property IsFunctionallyEquivalentToSequenceEqual()
+        public bool IsFunctionallyEquivalentToSequenceEqual(byte[] lhs, byte[] rhs)
         {
-            return Prop.ForAll((byte[] lhs, byte[] rhs) =>
+            if (lhs is null || rhs is null)
             {
-                if (lhs is null || rhs is null)
-                {
-                    // Skip
-                    return true;
-                }
+                // Skip
+                return true;
+            }
 
-                if (lhs.SequenceEqual(rhs))
-                {
-                    return SecureCompare.TimeInvariantEquals(lhs, rhs);
-                }
-                else
-                {
-                    return !SecureCompare.TimeInvariantEquals(lhs, rhs);
-                }
-            });
+            if (lhs.SequenceEqual(rhs))
+            {
+                return SecureCompare.TimeInvariantEquals(lhs, rhs);
+            }
+            else
+            {
+                return !SecureCompare.TimeInvariantEquals(lhs, rhs);
+            }
         }
     }
 }
