@@ -112,8 +112,8 @@ namespace Recore.Linq.Tests
                     return true;
                 }
 
-                var product = sequence.Product(Enumerable.Empty<int>()).ToList();
-                return product.Count == 0;
+                var product = sequence.Product(Enumerable.Empty<int>());
+                return product.Count() == 0;
             });
         }
 
@@ -128,7 +128,7 @@ namespace Recore.Linq.Tests
                     return true;
                 }
 
-                var product = sequence.Product(new[] { singleton }).ToList();
+                var product = sequence.Product(new[] { singleton });
                 return sequence.SequenceEqual(product.Select(x => x.first));
             });
         }
