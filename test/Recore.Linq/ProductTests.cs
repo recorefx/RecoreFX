@@ -101,6 +101,38 @@ namespace Recore.Linq.Tests
                 empty.Product(empty).ToArray());
         }
 
+        [Property]
+        public Property EmptyEnumerableIsZeroElement()
+        {
+            return Prop.ForAll((List<int> sequence) =>
+            {
+                if (sequence is null)
+                {
+                    // Skip
+                    return true;
+                }
+
+                var product = sequence.Product(Enumerable.Empty<int>()).ToList();
+                return product.Count == 0;
+            });
+        }
+
+        [Property]
+        public Property SingletonEnumerableIsIdentityElement()
+        {
+            return Prop.ForAll((List<int> sequence, int singleton) =>
+            {
+                if (sequence is null)
+                {
+                    // Skip
+                    return true;
+                }
+
+                var product = sequence.Product(new[] { singleton }).ToList();
+                return sequence.SequenceEqual(product.Select(x => x.first));
+            });
+        }
+
         // Product length m with length n -> length m * n
         [Property]
         public Property ProductLengthEqualsProductOfInputLengths()
