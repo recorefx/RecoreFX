@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Linq.Tests
@@ -99,11 +101,83 @@ namespace Recore.Linq.Tests
                 empty.Product(empty).ToArray());
         }
 
-        // FsCheck properties:
-        // - product with empty -> empty
-        // - product with length 1 -> same length
-        // - product length m with length n -> length m * n
-        // - each element of original sequence in new sequence
-        // - a.Product(b).SortBy(x => x.first) == b.Product(a).Select(Swap).SortBy(x => x.first)
+        [Property]
+        public bool EmptyEnumerableIsZeroElement(List<int> sequence)
+        {
+            if (sequence is null)
+            {
+                // Skip
+                return true;
+            }
+
+            var product = sequence.Product(Enumerable.Empty<int>());
+            return product.Count() == 0;
+        }
+
+        [Property]
+        public bool SingletonEnumerableIsIdentityElement(List<int> sequence, int singleton)
+        {
+            if (sequence is null)
+            {
+                // Skip
+                return true;
+            }
+
+            var product = sequence.Product(new[] { singleton });
+            return sequence.SequenceEqual(product.Select(x => x.first));
+        }
+
+        // Product length m with length n -> length m * n
+        [Property]
+        public bool ProductLengthEqualsProductOfInputLengths(List<int> first, List<string> second)
+        {
+            if (first is null || second is null)
+            {
+                // Skip
+                return true;
+            }
+
+            var product = first.Product(second).ToList();
+            return product.Count == (first.Count * second.Count);
+        }
+
+        // Each element of original sequence in new sequence
+        [Property]
+        public bool ResultContainsAllInputElements(List<int> first, List<string> second)
+        {
+            if (first is null || second is null)
+            {
+                // Skip
+                return true;
+            }
+
+            if (first.Count == 0 || second.Count == 0)
+            {
+                // Skip
+                return true;
+            }
+
+            var product = first.Product(second).ToArray();
+
+            var firsts = product.Select(x => x.first).ToHashSet();
+            foreach (var item in first)
+            {
+                if (!firsts.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            var seconds = product.Select(x => x.second).ToHashSet();
+            foreach (var item in second)
+            {
+                if (!seconds.Contains(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

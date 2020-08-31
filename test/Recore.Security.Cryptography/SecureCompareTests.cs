@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
 
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Security.Cryptography.Tests
@@ -35,6 +38,25 @@ namespace Recore.Security.Cryptography.Tests
         {
             Assert.False(SecureCompare.TimeInvariantEquals(new byte[] { 0 }, new byte[] { 1 }));
             Assert.False(SecureCompare.TimeInvariantEquals(new byte[] { 1 }, new byte[] { 0 }));
+        }
+
+        [Property]
+        public bool IsFunctionallyEquivalentToSequenceEqual(byte[] lhs, byte[] rhs)
+        {
+            if (lhs is null || rhs is null)
+            {
+                // Skip
+                return true;
+            }
+
+            if (lhs.SequenceEqual(rhs))
+            {
+                return SecureCompare.TimeInvariantEquals(lhs, rhs);
+            }
+            else
+            {
+                return !SecureCompare.TimeInvariantEquals(lhs, rhs);
+            }
         }
     }
 }
