@@ -18,47 +18,55 @@ dotnet add package RecoreFX
 
 ## What's in it?
 
-* `Recore`
-    - [`AbsoluteUri`]() and [`RelativeUri`]()
-    - [`AsyncAction`](), [`AsyncAction<T>`](), etc.
-    - [`AsyncFunc<TResult>`](), [`AsyncFunc<T, TResult>`](), etc.
-    - [`Composer<TValue, TResult>`]() and [`Pipeline<T>`]()
-    - [`Defer`]()
-    - [`Either<TLeft, TRight>`](), [`Optional<T>`](), and [`Result<TValue, TError>`]()
-    - [`Func`]()
-    - [`Of<T>`]()
-    - [`Unit`]()
-* `Recore.Collections.Generic`
-    - [`AnonymousComparer<T>`]()
-    - [`AnonymousEqualityComparer<T>`]()
-    - [`MappedComparer<T, U>`]()
-    - [`MappedEqualityComparer<T, U>`]()
-    - Extension methods:
-        - [`ICollection<T>.Append()`]()
-        - [`IDictionary<TKey, TValue>.AddRange()`]()
-        - [`IDictionary<TKey, TValue>.GetOrAdd()`]()
-        - [`IDictionary<TKey, TValue>.ValueOrDefault()`]()
-        - [`LinkedList<T>.Add()`]()
-* `Recore.Linq`
-    - [`IEnumerable<T>.Argmax()`]()
-    - [`IEnumerable<T>.Argmin()`]()
-    - [`IEnumerable<T>.Enumerate()`]()
-    - [`IEnumerable<T>.Flatten()`]()
-    - [`IEnumerable<T>.ForEach()`]()
-    - [`IEnumerable<T>.NonNull()`]()
-    - [`IEnumerable<T>.Product()`]()
-    - [`IEnumerable<T>.ToLinkedList()`]()
-    - [`IEnumerable<T>.ZipTuple()`]()
-    - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnKeys()`]()
-    - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnValues()`]()
-    - [`IEnumerable<KeyValuePair<TKey, TValue>>.ToDictionary()`]()
-* `Recore.Security.Cryptography`
-    - [`Ciphertext()`]()
-    - [`SecureCompare()`]()
-* `Recore.Threading.Tasks`
-    - [`Task.Synchronize()`]()
-    - [`Task<T>.Synchronize()`]()
+#### Recore
 
+- [`AbsoluteUri`]() and [`RelativeUri`]()
+- [`AsyncAction`](), [`AsyncAction<T>`](), etc.
+- [`AsyncFunc<TResult>`](), [`AsyncFunc<T, TResult>`](), etc.
+- [`Composer<TValue, TResult>`]() and [`Pipeline<T>`]()
+- [`Defer`]()
+- [`Either<TLeft, TRight>`](), [`Optional<T>`](), and [`Result<TValue, TError>`]()
+- [`Func`]()
+- [`Of<T>`]()
+- [`Unit`]()
+
+#### Recore.Collections.Generic
+
+- [`AnonymousComparer<T>`]()
+- [`AnonymousEqualityComparer<T>`]()
+- [`MappedComparer<T, U>`]()
+- [`MappedEqualityComparer<T, U>`]()
+- Extension methods:
+    - [`ICollection<T>.Append()`]()
+    - [`IDictionary<TKey, TValue>.AddRange()`]()
+    - [`IDictionary<TKey, TValue>.GetOrAdd()`]()
+    - [`IDictionary<TKey, TValue>.ValueOrDefault()`]()
+    - [`LinkedList<T>.Add()`]()
+    
+#### Recore.Linq
+
+- [`IEnumerable<T>.Argmax()`]()
+- [`IEnumerable<T>.Argmin()`]()
+- [`IEnumerable<T>.Enumerate()`]()
+- [`IEnumerable<T>.Flatten()`]()
+- [`IEnumerable<T>.ForEach()`]()
+- [`IEnumerable<T>.NonNull()`]()
+- [`IEnumerable<T>.Product()`]()
+- [`IEnumerable<T>.ToLinkedList()`]()
+- [`IEnumerable<T>.ZipTuple()`]()
+- [`IEnumerable<KeyValuePair<TKey, TValue>>.OnKeys()`]()
+- [`IEnumerable<KeyValuePair<TKey, TValue>>.OnValues()`]()
+- [`IEnumerable<KeyValuePair<TKey, TValue>>.ToDictionary()`]()
+
+#### Recore.Security.Cryptography
+
+- [`Ciphertext()`]()
+- [`SecureCompare()`]()
+
+#### Recore.Threading.Tasks
+
+- [`Task.Synchronize()`]()
+- [`Task<T>.Synchronize()`]()
 
 ## Why Recore?
 
