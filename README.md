@@ -18,7 +18,7 @@ dotnet add package RecoreFX
 
 ## What's in it?
 
-* namespace `Recore`
+* `Recore`
     - [`AbsoluteUri`]() and [`RelativeUri`]()
     - [`AsyncAction`](), [`AsyncAction<T>`](), etc.
     - [`AsyncFunc<TResult>`](), [`AsyncFunc<T, TResult>`](), etc.
@@ -28,7 +28,7 @@ dotnet add package RecoreFX
     - [`Func`]()
     - [`Of<T>`]()
     - [`Unit`]()
-* namespace `Recore.Collections.Generic`
+* `Recore.Collections.Generic`
     - `AnonymousComparer<T>`
     - `AnonymousEqualityComparer<T>`
     - `MappedComparer<T, U>`
@@ -39,7 +39,7 @@ dotnet add package RecoreFX
         - [`IDictionary<TKey, TValue>.GetOrAdd()`]()
         - [`IDictionary<TKey, TValue>.ValueOrDefault()`]()
         - [`LinkedList<T>.Add()`]()
-* namespace `Recore.Linq`
+* `Recore.Linq`
     - [`IEnumerable<T>.Argmax()`]()
     - [`IEnumerable<T>.Argmin()`]()
     - [`IEnumerable<T>.Enumerate()`]()
@@ -52,10 +52,10 @@ dotnet add package RecoreFX
     - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnKeys()`]()
     - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnValues()`]()
     - [`IEnumerable<KeyValuePair<TKey, TValue>>.ToDictionary()`]()
-* namespace `Recore.Security.Cryptography`
+* `Recore.Security.Cryptography`
     - [`Ciphertext()`]()
     - [`SecureCompare()`]()
-* namespace `Recore.Threading.Tasks`
+* `Recore.Threading.Tasks`
     - [`Task.Synchronize()`]()
     - [`Task<T>.Synchronize()`]()
 
