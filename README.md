@@ -53,7 +53,7 @@ dotnet add package RecoreFX
 - [`IEnumerable<T>.NonNull()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_NonNull__1_IEnumerable___0__)
 - [`IEnumerable<T>.Product()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Product__2_IEnumerable___0__IEnumerable___1__)
 - [`IEnumerable<T>.ToLinkedList()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_ToLinkedList__1_IEnumerable___0__)
-- [`IEnumerable<T>.Zip()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Zip__2_IEnumerable___0__IEnumerable___1__
+- [`IEnumerable<T>.Zip()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Zip__2_IEnumerable___0__IEnumerable___1__)
 - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnKeys()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_OnKeys__3_IEnumerable_KeyValuePair___0___1___Recore_Func___0___2__)
 - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnValues()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_OnValues__3_IEnumerable_KeyValuePair___0___1___Recore_Func___1___2__)
 - [`IEnumerable<KeyValuePair<TKey, TValue>>.ToDictionary()`]()
