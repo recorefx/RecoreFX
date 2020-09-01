@@ -29,10 +29,10 @@ dotnet add package RecoreFX
     - [`Of<T>`]()
     - [`Unit`]()
 * `Recore.Collections.Generic`
-    - `AnonymousComparer<T>`
-    - `AnonymousEqualityComparer<T>`
-    - `MappedComparer<T, U>`
-    - `MappedEqualityComparer<T, U>`
+    - [`AnonymousComparer<T>`]()
+    - [`AnonymousEqualityComparer<T>`]()
+    - [`MappedComparer<T, U>`]()
+    - [`MappedEqualityComparer<T, U>`]()
     - Extension methods:
         - [`ICollection<T>.Append()`]()
         - [`IDictionary<TKey, TValue>.AddRange()`]()
