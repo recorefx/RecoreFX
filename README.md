@@ -1,7 +1,8 @@
 # RecoreFX
 
-[![CI](https://github.com/brcrista/RecoreFX/workflows/CI/badge.svg)](https://github.com/recorefx/RecoreFX/actions?query=workflow%3ACI)
-[![Build Status](https://dev.azure.com/briancristante/RecoreFX/_apis/build/status/RecoreFX?branchName=main)](https://dev.azure.com/briancristante/RecoreFX/_build/latest?definitionId=11&branchName=main)
+[![GitHub Actions Badge](https://github.com/brcrista/RecoreFX/workflows/CI/badge.svg)](https://github.com/recorefx/RecoreFX/actions?query=workflow%3ACI)
+[![Azure Pipelines Badge](https://dev.azure.com/briancristante/RecoreFX/_apis/build/status/RecoreFX?branchName=main)](https://dev.azure.com/briancristante/RecoreFX/_build/latest?definitionId=11&branchName=main)
+[![NuGet Badge](https://buildstats.info/nuget/RecoreFX)](https://www.nuget.org/packages/RecoreFX)
 
 **RecoreFX** fills the most common needs for C# code after the .NET standard library.
 
