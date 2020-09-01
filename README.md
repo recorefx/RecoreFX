@@ -6,9 +6,6 @@
 
 **RecoreFX** fills the most common needs for C# code after the .NET standard library.
 
-Recore includes a variety of [collection](src/Recore.Collections.Generic) and [LINQ](src/Recore.Linq) extensions as well as some [best practices](src/Recore.Security.Cryptography/SecureCompare.cs) that most codebases end up implementing from scratch.
-Recore also brings some F#-specific features, such as [`Optional`](src/Recore/Optional.cs) and [`Of`](src/Recore/Of.cs), to C# and other languages targeting .NET.
-
 ## Installation
 
 Install from [NuGet](https://www.nuget.org/packages/RecoreFX/):
@@ -16,6 +13,28 @@ Install from [NuGet](https://www.nuget.org/packages/RecoreFX/):
 ```
 dotnet add package RecoreFX
 ```
+
+## Why use it?
+
+### Convenience methods
+
+If you're like me, there's a bunch of useful methods that you write for every project you work on. Some are simple, such as [`IDictionary.GetOrAdd()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_GetOrAdd__2_IDictionary___0___1____0___1_). Others are more subtle, such as [`SecureCompare.TimeInvariantEquals()`](https://recorefx.github.io/api/Recore.Security.Cryptography.SecureCompare.html#Recore_Security_Cryptography_SecureCompare_TimeInvariantEquals_System_Byte___System_Byte___).
+
+There's a lot of low-hanging fruit. Want JavaScript-style IIFEs? Write [`Func.Invoke()`](https://recorefx.github.io/api/Recore.Func.html#Recore_Func_Invoke__1_Recore_Func___0__). Want ad-hoc RAII like in Go? Create a [`Defer`](https://recorefx.github.io/api/Recore.Defer.html) type. Tired of checking `IsAbsoluteUri`? Define an [`AbsoluteUri`](https://recorefx.github.io/api/Recore.AbsoluteUri.html) subtype. (But let's be honest, who really checks?)
+
+All of this starts to add up, though. That's why I put it all together into a single installable, unit-tested package.
+
+### New stuff
+
+There are some other goodies here that are farther reaching:
+- [`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html) gives you a type-safe union type that will be familiar to TypeScript users.
+- [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you a way to add in statically-typed null safety if you don't have nullable references enabled (or if you're on .NET Framework).
+- [`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html) gives you a way to handle errors besides immediately terminating execution of a method or going `Try*` everywhere. Instead, you can build up an error context as you go along.
+- [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) makes it cheap to define new classes so you can make your code self-documenting through the type system.
+- [`Unit`](https://recorefx.github.io/api/Recore.Unit.html) fixes the `Task` / `Task<T>` problem of having to duplicate your generic types for void-returning operations.
+
+These are all borrowed from functional programming, but the goal here isn't to turn C# into F#.
+RecoreFX is meant to encourage more expressive, type-safe code that's still idiomatic C#.
 
 ## What's in it?
 
@@ -69,14 +88,6 @@ dotnet add package RecoreFX
 - [`Task.Synchronize()`](https://recorefx.github.io/api/Recore.Threading.Tasks.TaskExtensions.html#Recore_Threading_Tasks_TaskExtensions_Synchronize_Task_)
 - [`Task<T>.Synchronize()`](https://recorefx.github.io/api/Recore.Threading.Tasks.TaskExtensions.html#Recore_Threading_Tasks_TaskExtensions_Synchronize__1_Task___0__)
 
-## Why Recore?
+## Reference
 
-There are other packages offering more LINQ-style methods, better URI handling, or implementations of `Optional`.
-These packages admittedly have richer feature sets than Recore has, and may be right for your project if you want that depth of functionality.
-
-RecoreFX is designed to feel like a natural extension of CoreFX.
-It's meant to be a one-stop shop, filling in the most common use cases without a steep learning curve.
-
-## API documentation
-
-<https://recorefx.github.io/>
+<https://recorefx.github.io>
