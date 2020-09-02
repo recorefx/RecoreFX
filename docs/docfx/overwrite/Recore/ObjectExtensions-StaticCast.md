@@ -1,9 +1,8 @@
 ---
-uid: Recore.ObjectExtensions.StaticCast*
+uid: Recore.ObjectExtensions.StaticCast``1(``0)
 example:
 - *content
 ---
-
 
 Useful for overcoming those pesky variance issues:
 
