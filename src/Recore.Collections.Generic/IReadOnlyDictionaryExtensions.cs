@@ -11,7 +11,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
-        public static TValue ValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
             {
@@ -27,13 +27,13 @@ namespace Recore.Collections.Generic
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
         /// <remarks>
-        /// This is duplicated from <see cref="ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
-        /// in order to resolve the compile-time ambiguity between that method and <see cref="IDictionaryExtensions.ValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
+        /// This is duplicated from <see cref="GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
+        /// in order to resolve the compile-time ambiguity between that method and <see cref="IDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
         /// for instances of <see cref="ReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
-        public static TValue ValueOrDefault<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
-            return dict.StaticCast<IReadOnlyDictionary<TKey, TValue>>().ValueOrDefault(key);
+            return dict.StaticCast<IReadOnlyDictionary<TKey, TValue>>().GetValueOrDefault(key);
         }
     }
 }

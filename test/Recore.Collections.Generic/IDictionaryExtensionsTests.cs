@@ -8,35 +8,35 @@ namespace Recore.Collections.Generic.Tests
     public class IDictionaryExtensionsTests
     {
         [Fact]
-        public void ValueOrDefault_NullDictionary()
+        public void GetValueOrDefault_NullDictionary()
         {
             Assert.Throws<NullReferenceException>(() =>
             {
                 IDictionary<string, int> dictionary = null;
-                dictionary.ValueOrDefault("hello");
+                dictionary.GetValueOrDefault("hello");
             });
         }
 
         [Fact]
-        public void ValueOrDefault_HasValue()
+        public void GetValueOrDefault_HasValue()
         {
             var dictionary = new Dictionary<string, int>
             {
                 ["abc"] = 12
             };
 
-            Assert.Equal(12, dictionary.ValueOrDefault("abc"));
+            Assert.Equal(12, dictionary.GetValueOrDefault("abc"));
         }
 
         [Fact]
-        public void ValueOrDefault_Default()
+        public void GetValueOrDefault_Default()
         {
             var dictionary = new Dictionary<string, int>
             {
                 ["abc"] = 12
             };
 
-            Assert.Equal(default, dictionary.ValueOrDefault("xyz"));
+            Assert.Equal(default, dictionary.GetValueOrDefault("xyz"));
         }
 
         [Fact]

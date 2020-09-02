@@ -12,10 +12,10 @@ namespace Recore.Collections.Generic
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
         /// <remarks>
-        /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions.ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
+        /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
         /// because <see cref="IDictionary{TKey, TValue}"/> does not extend <see cref="IReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
-        public static TValue ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
             {
@@ -31,13 +31,13 @@ namespace Recore.Collections.Generic
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
         /// <remarks>
-        /// This is duplicated from <see cref="ValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
-        /// in order to resolve the compile-time ambiguity between that method and <see cref="IReadOnlyDictionaryExtensions.ValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
+        /// This is duplicated from <see cref="GetValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
+        /// in order to resolve the compile-time ambiguity between that method and <see cref="IReadOnlyDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
         /// for instances of <see cref="Dictionary{TKey, TValue}"/>.
         /// </remarks>
-        public static TValue ValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
+        public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
         {
-            return dict.StaticCast<IDictionary<TKey, TValue>>().ValueOrDefault(key);
+            return dict.StaticCast<IDictionary<TKey, TValue>>().GetValueOrDefault(key);
         }
 
         /// <summary>
