@@ -12,20 +12,6 @@ namespace Recore
     /// <see cref="Composer{TValue, TResult}"/> produces a function as its final result, whereas
     /// <seealso cref="Pipeline{T}"/> produces a value.
     /// </remarks>
-    /// <example>
-    /// Without <see cref="Composer{TValue, TResult}"/>:
-    /// <code>
-    /// var result = Baz(Bar(Foo(value)));
-    /// </code>
-    ///
-    /// With <see cref="Composer{TValue, TResult}"/>:
-    /// <code>
-    /// var result = new Composer&lt;string, int&gt;(Foo)
-    ///     .Then(Bar)
-    ///     .Then(Baz)
-    ///     .Func(value);
-    /// </code>
-    /// </example>
     public sealed class Composer<TValue, TResult>
     {
         /// <summary>

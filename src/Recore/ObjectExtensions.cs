@@ -13,7 +13,7 @@ namespace Recore
         /// <remarks>
         /// This method is analogous to <c>static_cast</c> in C++.
         /// In C#, casting is normally an unsafe operation: a failed cast will throw <see cref="InvalidCastException"/>.
-        /// On the other hand, <see cref="StaticCast{T}"/> will never throw at runtime if it compiles.
+        /// On the other hand, <see cref="StaticCast{T}"/> will never throw at run time if it compiles.
         /// </remarks>
         public static T StaticCast<T>(this T obj) => obj;
     }
