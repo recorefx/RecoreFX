@@ -115,6 +115,10 @@ If you like RecoreFX, check out these other libraries:
 
 RecoreFX v1 targets .NET Standard 2.0, so it works with [.NET Framework ≥ 4.6.1](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
 
+## Sample App
+
+The [RecoreFX Sample App](https://github.com/recorefx/RecoreFX-Sample-App) is a fully worked out Web app with a console app client using RecoreFX.
+
 ## Reference
 
 <https://recorefx.github.io>
