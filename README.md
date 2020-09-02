@@ -188,7 +188,7 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
     - [`ICollection<T>.Append()`](https://recorefx.github.io/api/Recore.Collections.Generic.ICollectionExtensions.html#Recore_Collections_Generic_ICollectionExtensions_Append__1_ICollection___0____0_)
     - [`IDictionary<TKey, TValue>.AddRange()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_AddRange__2_IDictionary___0___1__IEnumerable_KeyValuePair___0___1___)
     - [`IDictionary<TKey, TValue>.GetOrAdd()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_GetOrAdd__2_IDictionary___0___1____0___1_)
-    - [`IDictionary<TKey, TValue>.ValueOrDefault()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_ValueOrDefault__2_Dictionary___0___1____0_)
+    - [`IDictionary<TKey, TValue>.GetValueOrDefault()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_GetValueOrDefault__2_Dictionary___0___1____0_)
     - [`LinkedList<T>.Add()`](https://recorefx.github.io/api/Recore.Collections.Generic.LinkedListExtensions.html#Recore_Collections_Generic_LinkedListExtensions_Add__1_LinkedList___0____0_)
     
 #### Recore.Linq
