@@ -10,9 +10,26 @@ namespace ReadmeExample
 {
     class WithRecore
     {
-        public async Task DownloadBlobsAsync(IEnumerable<IBlob> blobs)
+        public async Task DownloadBlobsAsync(IEnumerable<IBlob> blobs, bool overwrite)
         {
-            Result<IBlob, IBlob>[] results = await Task.WhenAll(blobs.Select(blob =>
+            // Check `overwrite` to see which blobs to download
+            var compareOnName = new MappedEqualityComparer<IBlob, string>(x => x.Name);
+            IEnumerable<IBlob> existingBlobs = await GetLocalBlobsAsync();
+
+            IEnumerable<IBlob> blobsToWrite = Func.Invoke(() =>
+            {
+                if (overwrite)
+                {
+                    return blobs;
+                }
+                else
+                {
+                    return blobs.Except(existingBlobs, compareOnName);
+                }
+            });
+
+            // Write blobs
+            Result<IBlob, IBlob>[] results = await Task.WhenAll(blobsToWrite.Select(blob =>
                 Result.TryAsync(async () =>
                 {
                     await WriteBlobAsync(blob);
@@ -27,9 +44,6 @@ namespace ReadmeExample
             // Print summary
             List<IBlob> successes = results.Successes().ToList();
             List<IBlob> failures = results.Failures().ToList();
-
-            var compareOnName = new MappedEqualityComparer<IBlob, string>(x => x.Name);
-            IEnumerable<IBlob> existingBlobs = await GetLocalBlobsAsync();
 
             Console.WriteLine($"Downloaded {successes.Except(existingBlobs, compareOnName).Count()} new blob(s)");
             Console.WriteLine($"Overwrote {successes.Intersect(existingBlobs, compareOnName).Count()} existing blob(s)");

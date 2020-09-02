@@ -7,12 +7,34 @@ namespace ReadmeExample
 {
     class WithoutRecore
     {
-        public async Task DownloadBlobsAsync(IEnumerable<IBlob> blobs)
+        public async Task DownloadBlobsAsync(IEnumerable<IBlob> blobs, bool overwrite)
         {
+            // Check `overwrite` to see which blobs to download
+            IEnumerable<IBlob> existingBlobs = await GetLocalBlobsAsync();
+            IEnumerable<string> existingBlobNames = existingBlobs.Select(x => x.Name);
+
+            List<IBlob> blobsToWrite;
+            if (overwrite)
+            {
+                blobsToWrite = blobs.ToList();
+            }
+            else
+            {
+                blobsToWrite = new List<IBlob>();
+                foreach (var blob in blobs)
+                {
+                    if (!existingBlobNames.Contains(blob.Name))
+                    {
+                        blobsToWrite.Add(blob);
+                    }
+                }
+            }
+
+            // Write blobs
             var successes = new List<IBlob>();
             var failures = new List<IBlob>();
 
-            foreach (var blob in blobs)
+            foreach (var blob in blobsToWrite)
             {
                 try
                 {
@@ -27,9 +49,6 @@ namespace ReadmeExample
             }
             
             // Print summary
-            IEnumerable<IBlob> existingBlobs = await GetLocalBlobsAsync();
-            IEnumerable<string> existingBlobNames = existingBlobs.Select(x => x.Name);
-
             int numNewBlobs = successes
                 .Select(x => x.Name)
                 .Except(existingBlobNames)

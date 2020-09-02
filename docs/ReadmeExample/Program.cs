@@ -25,7 +25,7 @@ namespace ReadmeExample
                 "world"
             }.Select(name => new MockBlob { Name = name });
 
-            await example.DownloadBlobsAsync(blobs);
+            await example.DownloadBlobsAsync(blobs, overwrite: false);
         }
     }
 }
