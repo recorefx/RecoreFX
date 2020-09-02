@@ -28,9 +28,9 @@ All of this starts to add up, though. That's why I put it all together into a si
 
 There are some other goodies here that are farther reaching:
 - [`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html) gives you a type-safe union type that will be familiar to TypeScript users.
-- [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you a way to add in statically-typed null safety if you don't have nullable references enabled (or if you're on .NET Framework).
+- [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you compiler-checked null safety if you don't have nullable references enabled (or if you're on .NET Framework).
 - [`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html) gives you a way to handle errors besides immediately terminating execution of a method or going `Try*` everywhere. Instead, you can build up an error context as you go along.
-- [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) makes it cheap to define new classes so you can make your code self-documenting through the type system.
+- [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) takes the boilerplate out of definining simple types. Want to replace `string` with `Email`? Now you can.
 - [`Unit`](https://recorefx.github.io/api/Recore.Unit.html) fixes the `Task` / `Task<T>` problem of having to duplicate your generic types for void-returning operations.
 
 These are all borrowed from functional programming, but the goal here isn't to turn C# into F#.
