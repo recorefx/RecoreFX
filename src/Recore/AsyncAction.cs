@@ -6,32 +6,12 @@ namespace Recore
     /// Encapsulates an asynchronous method that has no parameters and does not return a value.
     /// Equivalent to <c>Func&lt;Task&gt;</c>.
     /// </summary>
-    /// <example>
-    /// Say you have a method with the signature
-    /// <code>
-    /// Task DoThing(int x, string s, Func&lt;Task&gt; thing)
-    /// </code>
-    /// You can refactor this to
-    /// <code>
-    /// Task DoThing(int x, string s, AsyncAction thing)
-    /// </code>
-    /// </example>
     public delegate Task AsyncAction();
 
     /// <summary>
     /// Encapsulates an asynchronous method that has one parameter and does not return a value.
     /// Equivalent to <c>Func&lt;T, Task&gt;</c>.
     /// </summary>
-    /// <example>
-    /// Say you have a method with the signature
-    /// <code>
-    /// Task DoThing(int x, string s, Func&lt;int, Task&gt; thing)
-    /// </code>
-    /// You can refactor this to
-    /// <code>
-    /// Task DoThing(int x, string s, AsyncAction&lt;int&gt; thing)
-    /// </code>
-    /// </example>
     public delegate Task AsyncAction<in T>(T obj);
 
     /// <summary>

@@ -28,6 +28,7 @@
         ]
       }
     ],
+    "overwrite": "overwrite/**/*.md",
     "globalMetadata": {
       "_appTitle": "RecoreFX",
       "_enableSearch": true
