@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
 using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
@@ -24,7 +25,6 @@ namespace Recore
     /// For example:
     /// 
     /// <code>
-    /// &lt;code&gt;
     /// class Person
     /// {
     ///     public string Name { get; set; }
@@ -52,7 +52,6 @@ namespace Recore
     /// 
     /// // Deserializes correctly
     /// JsonSerializer.Deserialize&lt;Result&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
-    /// &lt;/code&gt;
     /// </code>
     /// </remarks>
     [JsonConverter(typeof(ResultConverter))]
