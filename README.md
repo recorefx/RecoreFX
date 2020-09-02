@@ -88,6 +88,33 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 - [`Task.Synchronize()`](https://recorefx.github.io/api/Recore.Threading.Tasks.TaskExtensions.html#Recore_Threading_Tasks_TaskExtensions_Synchronize_Task_)
 - [`Task<T>.Synchronize()`](https://recorefx.github.io/api/Recore.Threading.Tasks.TaskExtensions.html#Recore_Threading_Tasks_TaskExtensions_Synchronize__1_Task___0__)
 
+## FAQs
+
+### Do you accept contributions?
+
+Yes! Start with the [contributor's guide](docs/CONTRIBUTING.md).
+
+### Why doesn't this have `$TYPE` or `$METHOD`?
+
+If it's generally useful (as opposed to oriented towards a specific application) and fills a common need in C# programming, then there's no reason why not! Feel free to open an issue or submit a PR for discussion.
+
+### How does this compare to `$LIBRARY`?
+
+The [design principles](docs/CONTRIBUTING.md#design-principles) of RecoreFX are:
+1. Generally useful
+2. Common sense-ness
+3. Follows the programming paradigm of standard C#
+
+If you like RecoreFX, check out these other libraries:
+- [louthy/language-ext](https://github.com/louthy/language-ext)
+- [mcintyre321/OneOf](https://github.com/mcintyre321/OneOf)
+- [morelinq/MoreLINQ](https://github.com/morelinq/MoreLINQ)
+- [StephenCleary/AsyncEx](https://github.com/StephenCleary/AsyncEx)
+
+### Does this work with .NET Framework?
+
+RecoreFX v1 targets .NET Standard 2.0, so it works with [.NET Framework ≥ 4.6.1](https://docs.microsoft.com/en-us/dotnet/standard/net-standard).
+
 ## Reference
 
 <https://recorefx.github.io>
