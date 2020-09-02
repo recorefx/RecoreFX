@@ -34,6 +34,9 @@
     },
     "markdownEngineName": "markdig",
     "dest": "_site",
+    "template": [
+      "statictoc"
+    ],
     "xrefService": [
       "https://xref.docs.microsoft.com/query?uid={uid}"
     ]
