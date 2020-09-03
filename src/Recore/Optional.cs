@@ -15,10 +15,10 @@ namespace Recore
     /// <remarks>
     /// <see cref="Optional{T}"/> differs from <see cref="Nullable{T}"/> in the following ways:
     /// <list type="bullet">
-    /// <item><see cref="Nullable{T}"/> has syntactic sugar like the alias <c>T?</c> and the operators <c>?.</c> and <c>??</c></item>
-    /// <item><see cref="Nullable{T}"/> has some special-case behavior in the CLR for boxing and <see cref="object.GetType()"/></item>
-    /// <item><see cref="Nullable{T}"/> works only with value types while <see cref="Optional{T}"/> works with both value and reference types</item>
-    /// <item><see cref="Nullable{T}"/> provides direct access to its value through <see cref="Nullable{T}.Value"/>, while <see cref="Optional{T}"/> requires access through methods</item>
+    /// <item><description><see cref="Nullable{T}"/> has syntactic sugar like the alias <c>T?</c> and the operators <c>?.</c> and <c>??</c></description></item>
+    /// <item><description><see cref="Nullable{T}"/> has some special-case behavior in the CLR for boxing and <see cref="object.GetType()"/></description></item>
+    /// <item><description><see cref="Nullable{T}"/> works only with value types while <see cref="Optional{T}"/> works with both value and reference types</description></item>
+    /// <item><description><see cref="Nullable{T}"/> provides direct access to its value through <see cref="Nullable{T}.Value"/>, while <see cref="Optional{T}"/> requires access through its methods</description></item>
     /// </list>
     /// 
     /// The last point is the most significant. Accessing the value directly through <see cref="Nullable{T}.Value"/> opens up the possibility for a <see cref="NullReferenceException"/>.
