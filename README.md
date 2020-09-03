@@ -216,11 +216,11 @@ async Task DownloadBlobsAsync(IEnumerable<IBlob> blobs, bool overwrite)
 
 You can see, build, and run this example [here](docs/ReadmeExample).
 
+## Contributing
+
+Have a look at the [contributor's guide](docs/CONTRIBUTING.md).
+
 ## FAQs
-
-### Do you accept contributions?
-
-Yes! Start with the [contributor's guide](docs/CONTRIBUTING.md).
 
 ### Why doesn't this have `$TYPE` or `$METHOD`?
 
