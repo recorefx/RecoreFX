@@ -77,6 +77,25 @@ async Task<Result<Person, HttpStatusCode>> GetPersonAsync(int id)
 }
 ```
 
+It also makes it easy to build up an error context as you go along rather than terminating immediately:
+
+```cs
+Result<IBlob, IBlob>[] results = await Task.WhenAll(blobsToWrite.Select(blob =>
+    Result.TryAsync(async () =>
+    {
+        await WriteBlobAsync(blob);
+        return blob;
+    })
+    .CatchAsync((Exception e) =>
+    {
+        Console.Error.WriteLine(e);
+        return Task.FromResult(blob);
+    })));
+
+List<IBlob> successes = results.Successes().ToList();
+List<IBlob> failures = results.Failures().ToList();
+```
+
 ### `Of<T>`
 
 [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) makes it easy to define "type aliases."

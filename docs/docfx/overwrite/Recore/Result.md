@@ -151,3 +151,22 @@ async Task<bool> GetPersonAndPrint(int id)
     return retry;
 }
 ```
+
+It also makes it easy to build up an error context as you go along rather than terminating immediately ([see this code](https://github.com/recorefx/RecoreFX/tree/main/docs/ReadmeExample)):
+
+```cs
+Result<IBlob, IBlob>[] results = await Task.WhenAll(blobsToWrite.Select(blob =>
+    Result.TryAsync(async () =>
+    {
+        await WriteBlobAsync(blob);
+        return blob;
+    })
+    .CatchAsync((Exception e) =>
+    {
+        Console.Error.WriteLine(e);
+        return Task.FromResult(blob);
+    })));
+
+List<IBlob> successes = results.Successes().ToList();
+List<IBlob> failures = results.Failures().ToList();
+```
