@@ -1,5 +1,8 @@
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -8,6 +11,7 @@ namespace Recore.Tests
 {
     public class ResultTests
     {
+        HttpClient httpClient = new HttpClient();
         [Fact]
         public void Constructor()
         {
@@ -106,6 +110,43 @@ namespace Recore.Tests
             var failure = Result.Failure<int, string>("hello");
             Assert.False(failure.GetValue().HasValue);
             Assert.Equal("hello", failure.GetError());
+        }
+        class Person { }
+
+        async Task<Result<Person, HttpStatusCode>> GetPersonAsync(int id)
+        {
+            var response = await httpClient.GetAsync($"/api/v1/person/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var person = JsonSerializer.Deserialize<Person>(json);
+                return Result.Success<Person, HttpStatusCode>(person);
+            }
+            else
+            {
+                return Result.Failure<Person, HttpStatusCode>(response.StatusCode);
+            }
+        }
+
+        async Task<bool> GetPersonAndPrint(int id)
+        {
+            bool retry = false;
+            var personResult = await GetPersonAsync(id);
+            personResult.Switch(
+                person => Console.WriteLine(person),
+                status =>
+                {
+                    if ((int)status >= 500)
+                    {
+                        retry = true;
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine($"Fatal error: {status}");
+                    }
+                });
+
+            return retry;
         }
 
         [Fact]
