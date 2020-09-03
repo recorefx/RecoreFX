@@ -6,7 +6,7 @@ example:
 
 Here are a few examples for how to work with an optional value.
 
-`Optional` has public constructors that you can use, but the easiest way to create an instance is to use the helper methods:
+@Recore.Optional`1 has public constructors that you can use, but the easiest way to create an instance is to use the helper methods:
 
 ```cs
 Optional<string> opt;         // Optional is a value type, so this defaults to empty
@@ -34,7 +34,7 @@ int messageLength = opt.Switch(
 
 But, a more idiomatic way to handle the above case is to use `OnValue()`.
 This will map `Optional<T>` to `Optional<U>`.
-If the original `Optional` is empty, the new one will also be empty.
+If the original @Recore.Optional`1 is empty, the new one will also be empty.
 
 ```cs
 Optional<int> messageLength = opt.OnValue(x => x.Length);

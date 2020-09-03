@@ -52,7 +52,6 @@ namespace Recore
     /// 
     /// // Deserializes correctly
     /// JsonSerializer.Deserialize&lt;Either&lt;Person, Address&gt;&gt;("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)
-    /// &lt;/code&gt;
     /// </code>
     /// </remarks>
     [JsonConverter(typeof(EitherConverter))]
