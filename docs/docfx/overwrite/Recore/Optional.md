@@ -10,7 +10,7 @@ Here are a few examples for how to work with an optional value.
 
 ```cs
 Optional<string> opt;         // Optional is a value type, so this defaults to empty
-opt = Optional.Of("hello");   // Creates an Optional with the value "hello"
+opt = "hello";                // Creates an Optional with the value "hello"
 opt = Optional<string>.Empty; // Now it's empty again
 ```
 
@@ -20,7 +20,7 @@ It's akin to a switch statement.
 ```cs
 opt.Switch(
     x => Console.WriteLine("Message: " + x),
-    () => Console.WriteLine("no message"));
+    () => Console.WriteLine("No message"));
 ```
 
 You can also return a value like a switch expression.

@@ -9,6 +9,9 @@ class Address : Of<string> {}
 
 var address = new Address { Value = "1 Microsoft Way" };
 Console.WriteLine(address); // prints "1 Microsoft Way"
+
+var address2 = new Address { Value = "1 Microsoft Way" };
+Console.WriteLine(address == address2); // prints "true"
 ```
 
 You can add @Recore.OfJsonAttribute so that the type is serialized

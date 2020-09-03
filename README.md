@@ -27,11 +27,158 @@ All of this starts to add up, though. That's why I put it all together into a si
 ### New stuff
 
 There are some other goodies here that are farther reaching:
-- [`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html) gives you a type-safe union type that will be familiar to TypeScript users.
-- [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you compiler-checked null safety if you don't have nullable references enabled (or if you're on .NET Framework).
-- [`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html) gives you a way to handle errors besides immediately terminating execution of a method or going `Try*` everywhere. Instead, you can build up an error context as you go along.
-- [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) takes the boilerplate out of definining simple types. Want to replace `string` with `Email`? Now you can.
-- [`Unit`](https://recorefx.github.io/api/Recore.Unit.html) fixes the `Task` / `Task<T>` problem of having to duplicate your generic types for void-returning operations.
+
+### `Optional<T>`
+
+[`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you compiler-checked null safety if you don't have nullable references enabled (or if you're on .NET Framework):
+
+```cs
+Optional<string> opt = "hello";
+Optional<string> empty = Optional<string>.Empty;
+
+opt.Switch(
+    x => Console.WriteLine("Message: " + x),
+    () => Console.WriteLine("No message"));
+
+Optional<int> messageLength = opt.OnValue(x => x.Length);
+string message = opt.ValueOr(default);
+```
+
+### `Either<TLeft, TRight>`
+
+[`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html) gives you a type-safe union type that will be familiar to TypeScript users:
+
+```cs
+Either<string, int> either = "hello";
+
+var message = either.Switch(
+    l => $"Value is a string: {l}",
+    r => $"Value is an int: {r}");
+```
+
+### `Result<TValue, TError>`
+
+[`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html) gives you a way to handle "expected" errors. You can think of it as a nicer version of the `TryParse` pattern:
+
+```cs
+async Task<Result<Person, HttpStatusCode>> GetPersonAsync(int id)
+{
+    var response = await httpClient.GetAsync($"/api/v1/person/{id}");
+    if (response.IsSuccessStatusCode)
+    {
+        var json = await response.Content.ReadAsStringAsync();
+        var person = JsonSerializer.Deserialize<Person>(json);
+        return Result.Success<Person, HttpStatusCode>(person);
+    }
+    else
+    {
+        return Result.Failure<Person, HttpStatusCode>(response.StatusCode);
+    }
+}
+```
+
+### `Of<T>`
+
+[`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html) makes it easy to define "type aliases."
+
+
+Consider a method with the signature:
+
+```cs
+void AddRecord(string address, string firstName, string lastName)
+```
+
+
+It's easy to make mistakes like this:
+
+```cs
+AddRecord("Jane", "Doe", "1 Microsoft Way"); // oops!
+```
+
+You can prevent this with strong typing:
+
+```cs
+class Address : Of<string> {}
+
+void AddRecord(Address address, string firstName, string lastName) {}
+
+AddRecord("Jane", "Doe", "1 Microsoft Way"); // compiler error
+```
+
+While defining a new type that behaves the same way `string` does usually takes a lot of boilerplate, `Of<T>` handles this automatically:
+
+```cs
+var address = new Address { Value = "1 Microsoft Way" };
+Console.WriteLine(address); // prints "1 Microsoft Way"
+
+var address2 = new Address { Value = "1 Microsoft Way" };
+Console.WriteLine(address == address2); // prints "true"
+```
+
+### `Pipeline<T>`
+
+`Pipeline<T>` gives you a way to call any method with postfix syntax:
+
+```cs
+var result = Pipeline.Of(value)
+    .Then(Foo)
+    .Then(Bar)
+    .Then(Baz)
+    .Result;
+```
+
+### `Defer`
+
+`Defer` is analogous to Golang's `defer` statement. It lets you do some kind of cleanup before exiting a method.
+
+The classic way to do this in C# is with `try-finally`:
+
+```cs
+try
+{
+    Console.WriteLine("Doing stuff");
+}
+finally
+{
+    Console.WriteLine("Running cleanup");
+}
+```
+
+With `Defer` and C# 8's new `using` declarations, we can do it more simply:
+
+```cs
+using var cleanup = new Defer(() => Console.WriteLine("Running cleanup"));
+Console.WriteLine("Doing stuff");
+```
+
+### `Unit`
+
+[`Unit`](https://recorefx.github.io/api/Recore.Unit.html) is a type with only one value (like how `Void` is a type with no values).
+
+Imagine a type `ApiResult<T>` that wraps the deserialized JSON response from a REST API.
+Without `Unit`, you'd have to define a separate, non-generic `ApiResult` type for when the response doesn't have a body:
+
+```cs
+ApiResult postResult = await PostPersonAsync(person);
+ApiResult<Person> getResult = await GetPersonAsync(id);
+```
+
+With `Unit`, you can just reuse the same type:
+
+```cs
+ApiResult<Unit> postResult = await PostPersonAsync(person);
+ApiResult<Person> getResult = await GetPersonAsync(id);
+```
+
+In the definition of `PostPersonAsync()`, just return `Unit.Value`:
+
+```cs
+ApiResult<Unit> PostPersonAsync(Person person)
+{
+    // ...
+    return new ApiResult<Unit>(Unit.Value);
+}
+```
 
 These are all borrowed from functional programming, but the goal here isn't to turn C# into F#.
 RecoreFX is meant to encourage more expressive, type-safe code that's still idiomatic C#.
