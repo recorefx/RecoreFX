@@ -107,7 +107,6 @@ Consider a method with the signature:
 void AddRecord(string address, string firstName, string lastName)
 ```
 
-
 It's easy to make mistakes like this:
 
 ```cs
