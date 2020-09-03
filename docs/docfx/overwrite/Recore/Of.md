@@ -4,7 +4,6 @@ example:
 - *content
 ---
 
-
 ```cs
 class Address : Of<string> {}
 

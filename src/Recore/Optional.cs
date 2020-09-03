@@ -12,6 +12,20 @@ namespace Recore
     /// <summary>
     /// Provides type-safe access to a nullable value.
     /// </summary>
+    /// <remarks>
+    /// <see cref="Optional{T}"/> differs from <see cref="Nullable{T}"/> in the following ways:
+    /// <list type="bullet">
+    /// <item><description><see cref="Nullable{T}"/> has syntactic sugar like the alias <c>T?</c> and the operators <c>?.</c> and <c>??</c></description></item>
+    /// <item><description><see cref="Nullable{T}"/> has some special-case behavior in the CLR for boxing and <see cref="object.GetType()"/></description></item>
+    /// <item><description><see cref="Nullable{T}"/> works only with value types while <see cref="Optional{T}"/> works with both value and reference types</description></item>
+    /// <item><description><see cref="Nullable{T}"/> provides direct access to its value through <see cref="Nullable{T}.Value"/>, while <see cref="Optional{T}"/> requires access through its methods</description></item>
+    /// </list>
+    /// 
+    /// The last point is the most significant. Accessing the value directly through <see cref="Nullable{T}.Value"/> opens up the possibility for a <see cref="NullReferenceException"/>.
+    /// With <see cref="Optional{T}"/>, once you have an optional value, all operations on it happen in an "optional context."
+    /// You can't get rid of <see cref="Optional{T}"/> until you do something to handle the null case such as by calling <see cref="Optional{T}.Switch{U}(Func{T, U}, Func{U})"/>
+    /// or <see cref="Optional{T}.ValueOr(T)"/>.
+    /// </remarks>
     [JsonConverter(typeof(OptionalConverter))]
     public readonly struct Optional<T> : IEquatable<Optional<T>>
     {
