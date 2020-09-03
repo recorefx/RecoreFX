@@ -6,7 +6,7 @@ namespace Recore
     /// A type with only one value.
     /// </summary>
     /// <remarks>
-    /// Whereas <see cref="void"/>is a type with no values,
+    /// Whereas <see cref="void"/> is a type with no values,
     /// <see cref="Unit"/> is a type with one value.
     /// It is useful when designing generic types or methods so that a non-generic version
     /// does not have to be provided.
