@@ -6,6 +6,10 @@ namespace Recore.Collections.Generic
     /// <summary>
     /// Compares instances of a type using the given equality function.
     /// </summary>
+    /// <remarks>
+    /// Note that there is no corresponding <c>AnonymousComparer&lt;T&gt;</c> type for <see cref="IComparer{T}"/>.
+    /// That use case is already filled by <see cref="Comparer{T}.Create(Comparison{T})"/>.
+    /// </remarks>
     public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T>
     {
         private readonly Func<T, T, bool> equals;
