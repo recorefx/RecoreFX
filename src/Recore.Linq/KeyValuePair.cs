@@ -19,11 +19,11 @@ namespace Recore.Linq
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TKey, TResult> func)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            if (func == null)
+            if (func is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -41,11 +41,11 @@ namespace Recore.Linq
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TValue, TResult> func)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
-            if (func == null)
+            if (func is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
