@@ -231,13 +231,19 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void LiftAction_ThrowsOnNull()
+        public void Lift_ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
                 () => Either.Lift<string, int>(null, x => { }));
 
             Assert.Throws<ArgumentNullException>(
                 () => Either.Lift<string, int>(x => { }, null));
+
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int, int>(null, x => 1));
+
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int, int>(x => 1, null));
         }
 
         [Fact]
@@ -249,6 +255,9 @@ namespace Recore.Tests
                 (string s) => { leftCalled = true; },
                 (int n) => { rightCalled = true; });
 
+            Assert.False(leftCalled);
+            Assert.False(rightCalled);
+
             Either<string, int> either;
 
             either = "hello";
@@ -259,16 +268,6 @@ namespace Recore.Tests
             either = 1;
             lifted(either);
             Assert.True(rightCalled);
-        }
-
-        [Fact]
-        public void LiftFunc_ThrowsOnNull()
-        {
-            Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int, int>(null, x => 1));
-
-            Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int, int>(x => 1, null));
         }
 
         [Fact]

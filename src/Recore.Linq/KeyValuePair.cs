@@ -18,10 +18,21 @@ namespace Recore.Linq
         public static IEnumerable<KeyValuePair<TResult, TValue>> OnKeys<TKey, TValue, TResult>(
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TKey, TResult> func)
-            => source
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return source
                 // TODO .NET Standard 2.1 use KeyValuePair.Create
                 .Select(kvp => new KeyValuePair<TResult, TValue>(func(kvp.Key), kvp.Value))
                 .ToDictionary();
+        }
 
         /// <summary>
         /// Projects each value in a sequence of key-value pairs to a new form.
@@ -29,9 +40,20 @@ namespace Recore.Linq
         public static IEnumerable<KeyValuePair<TKey, TResult>> OnValues<TKey, TValue, TResult>(
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TValue, TResult> func)
-            => source
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return source
                 // TODO .NET Standard 2.1 use KeyValuePair.Create
                 .Select(kvp => new KeyValuePair<TKey, TResult>(kvp.Key, func(kvp.Value)))
                 .ToDictionary();
+        }
     }
 }
