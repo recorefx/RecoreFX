@@ -29,7 +29,7 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ForEachWithValues()
         {
-            // Type as IEnumeable to avoid calling List<T>.ForEach()
+            // Type as IEnumerable to avoid calling List<T>.ForEach()
             IEnumerable<int> enumerable = new List<int> { 1, 2, 3, 4, 5 };
 
             int timesCalled = 0;
