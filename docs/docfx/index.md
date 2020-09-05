@@ -217,7 +217,6 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 
 #### Recore.Collections.Generic
 
-- [`AnonymousComparer<T>`](https://recorefx.github.io/api/Recore.Collections.Generic.AnonymousComparer-1.html)
 - [`AnonymousEqualityComparer<T>`](https://recorefx.github.io/api/Recore.Collections.Generic.AnonymousEqualityComparer-1.html)
 - [`MappedComparer<T, U>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedComparer-2.html)
 - [`MappedEqualityComparer<T, U>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedEqualityComparer-2.html)
