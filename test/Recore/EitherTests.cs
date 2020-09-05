@@ -231,6 +231,64 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void LiftAction_ThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int>(null, x => { }));
+
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int>(x => { }, null));
+        }
+
+        [Fact]
+        public void LiftAction()
+        {
+            bool leftCalled = false;
+            bool rightCalled = false;
+            var lifted = Either.Lift(
+                (string s) => { leftCalled = true; },
+                (int n) => { rightCalled = true; });
+
+            Either<string, int> either;
+
+            either = "hello";
+            lifted(either);
+            Assert.True(leftCalled);
+            Assert.False(rightCalled);
+
+            either = 1;
+            lifted(either);
+            Assert.True(rightCalled);
+        }
+
+        [Fact]
+        public void LiftFunc_ThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int, int>(null, x => 1));
+
+            Assert.Throws<ArgumentNullException>(
+                () => Either.Lift<string, int, int>(x => 1, null));
+        }
+
+        [Fact]
+        public void LiftFunc()
+        {
+            var lifted = Either.Lift(
+                (string s) => 0,
+                (int n) => 1);
+
+            Either<string, int> either;
+
+            either = "hello";
+            lifted(either);
+            Assert.Equal(0, lifted(either));
+
+            either = 1;
+            Assert.Equal(1, lifted(either));
+        }
+
+        [Fact]
         public void Lefts()
         {
             var collection = new Either<string, int>[]
