@@ -89,6 +89,19 @@ namespace Recore
         /// <summary>
         /// Converts a function's arguments to a tuple.
         /// </summary>
+        public static Func<ValueTuple<T1>, TResult> TupleArgs<T1, TResult>(Func<T1, TResult> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            return tupleArgs => func(tupleArgs.Item1);
+        }
+
+        /// <summary>
+        /// Converts a function's arguments to a tuple.
+        /// </summary>
         public static Func<ValueTuple<T1, T2>, TResult> TupleArgs<T1, T2, TResult>(Func<T1, T2, TResult> func)
         {
             if (func is null)
@@ -166,6 +179,19 @@ namespace Recore
 
         #endregion TupleArgs
         #region UntupleArgs
+
+        /// <summary>
+        /// Spreads a unary function's tuple argument.
+        /// </summary>
+        public static Func<T1, TResult> UntupleArgs<T1, TResult>(Func<ValueTuple<T1>, TResult> func)
+        {
+            if (func is null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            return (arg1) => func(ValueTuple.Create(arg1));
+        }
 
         /// <summary>
         /// Spreads a unary function's tuple argument.
