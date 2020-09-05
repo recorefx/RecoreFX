@@ -423,6 +423,49 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void Lift_ThrowsOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => Optional.Lift<string>(null));
+
+            Assert.Throws<ArgumentNullException>(
+                () => Optional.Lift<string, int>(null));
+        }
+
+        [Fact]
+        public void LiftAction()
+        {
+            bool called = false;
+            var lifted = Optional.Lift(
+                (string s) => { called = true; });
+
+            Assert.False(called);
+
+            var optional = Optional<string>.Empty;
+            lifted(optional);
+            Assert.False(called);
+
+            optional = "hello";
+            lifted(optional);
+            Assert.True(called);
+        }
+
+        [Fact]
+        public void LiftFunc()
+        {
+            var lifted = Optional.Lift(
+                (string s) => 1);
+
+            var optional = Optional<string>.Empty;
+            lifted(optional);
+            Assert.Equal(Optional<int>.Empty, lifted(optional));
+
+            optional = "hello";
+            lifted(optional);
+            Assert.Equal(1, lifted(optional));
+        }
+
+        [Fact]
         public void Flatten()
         {
             var doubleValue = new Optional<Optional<string>>("hello");
