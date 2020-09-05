@@ -33,7 +33,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
             // Spec check: make sure Uri deserializes the same way
             Assert.Equal(
-                expected: new Uri(uriString),
+                expected: new Uri(uriString, UriKind.Relative),
                 actual: JsonSerializer.Deserialize<Uri>($"\"{uriString}\""));
         }
     }

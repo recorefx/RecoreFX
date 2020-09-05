@@ -1,10 +1,14 @@
 using System;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Represents an absolute URI.
     /// </summary>
+    [JsonConverter(typeof(AbsoluteUriConverter))]
     public class AbsoluteUri : Uri
     {
         /// <summary>
@@ -90,6 +94,7 @@ namespace Recore
     /// <summary>
     /// Represents a relative URI.
     /// </summary>
+    [JsonConverter(typeof(RelativeUriConverter))]
     public class RelativeUri : Uri
     {
         /// <summary>

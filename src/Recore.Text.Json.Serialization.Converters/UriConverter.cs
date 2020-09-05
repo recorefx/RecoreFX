@@ -24,4 +24,23 @@ namespace Recore.Text.Json.Serialization.Converters
             writer.WriteStringValue(value.OriginalString);
         }
     }
+
+    internal sealed class RelativeUriConverter : JsonConverter<RelativeUri>
+    {
+        public override RelativeUri Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            string uriString = reader.GetString();
+            if (RelativeUri.TryCreate(uriString, out RelativeUri value))
+            {
+                return value;
+            }
+
+            throw new JsonException();
+        }
+
+        public override void Write(Utf8JsonWriter writer, RelativeUri value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.OriginalString);
+        }
+    }
 }
