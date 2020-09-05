@@ -24,7 +24,6 @@ namespace Recore
     /// For example:
     /// 
     /// <code>
-    /// &lt;code&gt;
     /// class Person
     /// {
     ///     public string Name { get; set; }
