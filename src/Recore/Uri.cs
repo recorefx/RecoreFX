@@ -1,10 +1,14 @@
 using System;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Represents an absolute URI.
     /// </summary>
+    [JsonConverter(typeof(AbsoluteUriConverter))]
     public class AbsoluteUri : Uri
     {
         /// <summary>
@@ -68,11 +72,29 @@ namespace Recore
 
             return new AbsoluteUri(baseUri, relativeUri);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="AbsoluteUri"/>. Does not throw an exception if the <see cref="AbsoluteUri"/> cannot be created.
+        /// </summary>
+        public static bool TryCreate(string uriString, out AbsoluteUri result)
+        {
+            result = null;
+            if (Uri.TryCreate(uriString, UriKind.Absolute, out Uri value))
+            {
+                result = value.AsAbsoluteUri();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     /// <summary>
     /// Represents a relative URI.
     /// </summary>
+    [JsonConverter(typeof(RelativeUriConverter))]
     public class RelativeUri : Uri
     {
         /// <summary>
@@ -112,6 +134,23 @@ namespace Recore
 
             return new RelativeUri(baseUriString + relativeUriString);
         }
+
+        /// <summary>
+        /// Creates a new <see cref="RelativeUri"/>. Does not throw an exception if the <see cref="RelativeUri"/> cannot be created.
+        /// </summary>
+        public static bool TryCreate(string uriString, out RelativeUri result)
+        {
+            result = null;
+            if (Uri.TryCreate(uriString, UriKind.Relative, out Uri value))
+            {
+                result = value.AsRelativeUri();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     /// <summary>
@@ -138,6 +177,27 @@ namespace Recore
             else
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an instance of <see cref="AbsoluteUri"/> with the same value as <paramref name="uri"/> 
+        /// if it is absolute, or null if it is relative.
+        /// </summary>
+        /// <remarks>
+        /// Because an instance of <see cref="Uri"/> may be neither <see cref="AbsoluteUri"/> nor <see cref="RelativeUri"/>,
+        /// patterns like <c>(AbsoluteUri)uri</c> or <c>uri as AbsoluteUri</c> cannot be used reliably.
+        /// <see cref="AsRelativeUri(Uri)"/> works as <c>uri as RelativeUri</c> would if <see cref="Uri"/> were an abstract base class.
+        /// </remarks>
+        public static RelativeUri AsRelativeUri(this Uri uri)
+        {
+            if (uri.IsAbsoluteUri)
+            {
+                return null;
+            }
+            else
+            {
+                return new RelativeUri(uri.ToString());
             }
         }
     }

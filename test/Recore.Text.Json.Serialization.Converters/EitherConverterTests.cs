@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Xunit;
 
 namespace Recore.Text.Json.Serialization.Converters.Tests
