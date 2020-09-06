@@ -109,6 +109,20 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void OnValueOnError()
+        {
+            Result<int, string> result;
+
+            result = 123;
+            Assert.Equal(1, result.OnValue(x => 1));
+            Assert.Equal(Result.Success<int, int>(123), result.OnError(x => 1));
+
+            result = "hello";
+            Assert.Equal("hello", result.OnValue(x => 1));
+            Assert.Equal(Result.Failure<int, int>(1), result.OnError(x => 1));
+        }
+
+        [Fact]
         public void IfValueIfError()
         {
             Result<int, string> result;
