@@ -1,5 +1,12 @@
 # AbsoluteUri and RelativeUri
 
+## Why don't they have all the same constructor overloads as `Uri`?
+
+`Uri` has a bunch of constructor overloads to combine a base URI with a relative URI.
+This behavior turns out to be pretty complicated and unintuitive since it will actually let you combine two absolute URIs.
+
+I've replaced these constructors with a `Combine()` method that more clearly communicates intent.
+
 ## Why none of the other `TryCreate()` overloads?
 
 [`TryCreate()`](https://docs.microsoft.com/en-us/dotnet/api/system.uri.trycreate?view=netcore-3.1) has the following overloads:
