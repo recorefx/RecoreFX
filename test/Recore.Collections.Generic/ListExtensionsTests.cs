@@ -51,10 +51,10 @@ namespace Recore.Collections.Generic.Tests
         [Fact]
         public void AppendRange_ModifiesOriginalCollection()
         {
-            var originalCollection = new List<string> { "abc" };
-            var appendedCollection = originalCollection.AppendRange(new[] { "hello" });
+            var originalList = new List<string> { "abc" };
+            var appendedList = originalList.AppendRange(new[] { "hello" });
 
-            Assert.Equal(originalCollection, appendedCollection);
+            Assert.Equal(appendedList, originalList);
         }
     }
 }
