@@ -56,7 +56,7 @@ namespace Recore.Collections.Generic.Tests
             var originalCollection = new List<string> { "abc" };
             var appendedCollection = originalCollection.Append("hello");
 
-            Assert.Equal(originalCollection, appendedCollection);
+            Assert.Equal(appendedCollection, originalCollection);
         }
     }
 }
