@@ -226,7 +226,7 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
     - [`IDictionary<TKey, TValue>.GetOrAdd()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_GetOrAdd__2_IDictionary___0___1____0___1_)
     - [`IDictionary<TKey, TValue>.GetValueOrDefault()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_GetValueOrDefault__2_Dictionary___0___1____0_)
     - [`LinkedList<T>.Add()`](https://recorefx.github.io/api/Recore.Collections.Generic.LinkedListExtensions.html#Recore_Collections_Generic_LinkedListExtensions_Add__1_LinkedList___0____0_)
-    
+
 #### Recore.Linq
 
 - [`IEnumerable<T>.Argmax()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Argmax__2_IEnumerable___0__Recore_Func___0___1__)
