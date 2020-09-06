@@ -15,16 +15,6 @@ namespace Recore.Collections.Generic
         /// It is needed to be able to use collection initializer syntax with <see cref="LinkedList{T}"/>.
         /// </remarks>
         public static void Add<T>(this LinkedList<T> linkedList, T item)
-            => linkedList.AddLast(item);
-
-        /// <summary>
-        /// Adds a new node with containing the specified value to the end of the <see cref="LinkedList{T}"/>
-        /// and returns the <see cref="LinkedList{T}"/>.
-        /// </summary>
-        public static LinkedList<T> Append<T>(this LinkedList<T> linkedList, T item)
-        {
-            linkedList.AddLast(item);
-            return linkedList;
-        }
+            => linkedList.StaticCast<ICollection<T>>().Add(item);
     }
 }
