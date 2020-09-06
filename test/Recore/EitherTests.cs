@@ -92,6 +92,20 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void OnLeftOnRight()
+        {
+            Either<int, string> either;
+
+            either = 123;
+            Assert.Equal(1, either.OnLeft(x => 1));
+            Assert.Equal(new Either<int, int>(left: 123), either.OnRight(x => 1));
+
+            either = "hello";
+            Assert.Equal("hello", either.OnLeft(x => 1));
+            Assert.Equal(new Either<int, int>(right: 1), either.OnRight(x => 1));
+        }
+
+        [Fact]
         public void IfLeftIfRight()
         {
             Either<int, string> either;
