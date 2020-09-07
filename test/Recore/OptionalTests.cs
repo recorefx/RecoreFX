@@ -227,8 +227,25 @@ namespace Recore.Tests
             }
         }
 
+        private static Optional<int> NullableInt(int? x)
+            => Optional.Of(Func.Invoke(() =>
+            {
+                if (x is null)
+                {
+                    return -1;
+                }
+                else if (x == 2)
+                {
+                    return null;
+                }
+                else
+                {
+                    return x + 1;
+                }
+            }));
+
         [Fact]
-        public void MonadLaws_LeftIdentity()
+        public void MonadLaws_LeftIdentity_StringToOption()
         {
             foreach (var value in new[] { "hello", string.Empty, null })
             {
@@ -236,6 +253,17 @@ namespace Recore.Tests
                     StringToOption(value),
                     new Optional<string>(value).Then(StringToOption));
             }
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(null)]
+        public void MonadLaws_LeftIdentity_NullableInt(int? value)
+        {
+            Assert.Equal(
+                NullableInt(value),
+                Optional.Of(value).Then(x => NullableInt(x)));
         }
 
         [Fact]
