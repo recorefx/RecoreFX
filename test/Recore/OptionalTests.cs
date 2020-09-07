@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.DependencyModel;
 using Xunit;
 
 namespace Recore.Tests
@@ -387,6 +387,32 @@ namespace Recore.Tests
             Assert.Equal(new Optional<int>(12), Optional.Of(12));
         }
 
+        // You shouldn't be able to trick Optional by giving it a Nullable.
+        // For more Nullable handling, see Of() and Flatten().
+        [Fact]
+        public void Nullable()
+        {
+            var optional = Optional.Of((int?)null);
+            Assert.False(optional.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optional.AssertValue());
+
+            optional = 5;
+            Assert.Equal(5, optional);
+            Assert.Equal(5, optional.AssertValue());
+
+            var optionalNullable = new Optional<int?>(null);
+            Assert.False(optionalNullable.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optionalNullable.AssertValue());
+
+            optionalNullable = Optional<int?>.Empty;
+            Assert.False(optionalNullable.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optionalNullable.AssertValue());
+
+            optionalNullable = 5;
+            Assert.Equal(5, optionalNullable);
+            Assert.Equal(5, optionalNullable.AssertValue());
+        }
+
         [Fact]
         public void If()
         {
@@ -466,7 +492,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void Flatten()
+        public void FlattenOptional()
         {
             var doubleValue = new Optional<Optional<string>>("hello");
             Assert.Equal("hello", doubleValue.Flatten());
@@ -476,6 +502,16 @@ namespace Recore.Tests
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
             Assert.False(valueNone.Flatten().HasValue);
+        }
+
+        [Fact]
+        public void FlattenNullable()
+        {
+            var hasValue = new Optional<int?>(1);
+            Assert.Equal(1, hasValue.Flatten());
+
+            var isNull = new Optional<int?>();
+            Assert.False(isNull.Flatten().HasValue);
         }
 
         [Fact]

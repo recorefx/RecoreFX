@@ -252,6 +252,27 @@ namespace Recore
         public static Optional<T> Of<T>(T value) => new Optional<T>(value);
 
         /// <summary>
+        /// Converts a <see cref="Nullable{T}"/> to <see cref="Optional{T}"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is useful for type inference in some cases where the implicit conversion
+        /// can't be used, such as creating an <see cref="Optional{T}"/>
+        /// and immediately invoking a method.
+        /// It can also be passed as a delegate whereas the constructor can't be.
+        /// </remarks>
+        public static Optional<T> Of<T>(T? value) where T : struct
+        {
+            if (value.HasValue)
+            {
+                return new Optional<T>(value.GetValueOrDefault());
+            }
+            else
+            {
+                return Optional<T>.Empty;
+            }
+        }
+
+        /// <summary>
         /// Sets an optional value if a condition is true.
         /// </summary>
         /// <remarks>
@@ -324,6 +345,13 @@ namespace Recore
         /// </summary>
         public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional)
             => optionalOptional.Then(x => x);
+
+        /// <summary>
+        /// Converts an <c>Optional&lt;Nullable&lt;T&gt;&gt;</c>
+        /// to an <see cref="Optional{T}"/>.
+        /// </summary>
+        public static Optional<T> Flatten<T>(this Optional<T?> optionalNullable) where T : struct
+            => optionalNullable.Then(Of);
 
         /// <summary>
         /// Collects the non-empty values from the sequence.
