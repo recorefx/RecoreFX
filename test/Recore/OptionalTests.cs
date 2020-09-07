@@ -397,6 +397,20 @@ namespace Recore.Tests
                 Optional.Of(value) == Optional<int>.Empty);
         }
 
+        // Here's a quirk of how Equals() works with Optional<T>:
+        // it will automatically cast Optional<T> to Optional<Optional<T>>.
+        // This isn't by design, but I'm adding a test to protect the behavior
+        // so a breaking change doesn't slip in accidentally.
+        [Property]
+        public void Equality_DoubleOptional(int? value)
+        {
+            Assert.True(
+                Optional.Of(Optional.Of(value)) == Optional.Of(value));
+
+            Assert.False(
+                Optional<Optional<int>>.Empty == Optional.Of(value));
+        }
+
         [Fact]
         public void GetHashCode_()
         {
