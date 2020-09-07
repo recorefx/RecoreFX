@@ -114,13 +114,13 @@ namespace Recore.Tests
             Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData(1)]
-        public void ValueOr_Associativity(int? value)
+        // Unlike OnValue() and Then(), ValueOr() preserves the result of null coalescing.
+        // It's more of identity than associativity, though, since we end up with a non-optional value.
+        [Property]
+        public void ValueOr_NullCoalescing_Identity(int? value)
         {
             Assert.Equal(
-                Optional.Of(value ?? 0),
+                value ?? 0,
                 Optional.Of(value).ValueOr(0));
         }
 
@@ -196,6 +196,27 @@ namespace Recore.Tests
                 Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
+        // Associativity isn't a functor law, but it is a monad law.
+        // But to illustrate how the issue isn't particular to Then(),
+        // this test shows how the issue appears for OnValue() as well.
+        [Property]
+        public void Functor_NullCoalescingNotAssociative(int? value)
+        {
+            if (value == null)
+            {
+                // Known limitation: null coalescing isn't associative with Optional
+                Assert.NotEqual(
+                    new Optional<int>(value ?? 0),
+                    new Optional<int?>(value).OnValue(x => x ?? 0));
+            }
+            else
+            {
+                Assert.Equal(
+                    new Optional<int>(value ?? 0),
+                    new Optional<int?>(value).OnValue(x => x ?? 0));
+            }
+        }
+
         // A bunch of functions for testing monad properties
         static class MonadFuncs
         {
@@ -229,6 +250,7 @@ namespace Recore.Tests
                 }
             }
 
+            // Negative case: null coalescing isn't associative with Optional
             public static Optional<int> NullableToOptional(int? n)
                 => Optional.Of(n ?? 0);
 
@@ -273,9 +295,19 @@ namespace Recore.Tests
         [Property]
         public void MonadLaws_LeftIdentity_NullableToOptional(int? value)
         {
-            Assert.Equal(
-                MonadFuncs.NullableToOptional(value),
-                Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+            if (value == null)
+            {
+                // Known limitation: null coalescing isn't associative with Optional
+                Assert.NotEqual(
+                    MonadFuncs.NullableToOptional(value),
+                    Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+            }
+            else
+            {
+                Assert.Equal(
+                    MonadFuncs.NullableToOptional(value),
+                    Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+            }
         }
 
         [Property]
