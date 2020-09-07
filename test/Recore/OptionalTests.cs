@@ -196,15 +196,12 @@ namespace Recore.Tests
                 Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
-        // Associativity isn't a functor law, but it is a monad law.
-        // But to illustrate how the issue isn't particular to Then(),
-        // this test shows how the issue appears for OnValue() as well.
         [Property]
-        public void Functor_NullCoalescingNotAssociative(int? value)
+        public void Functor_NullCoalescing(int? value)
         {
             if (value == null)
             {
-                // Known limitation: null coalescing isn't associative with Optional
+                // Known limitation
                 Assert.NotEqual(
                     new Optional<int>(value ?? 0),
                     new Optional<int?>(value).OnValue(x => x ?? 0));
@@ -250,7 +247,7 @@ namespace Recore.Tests
                 }
             }
 
-            // Negative case: null coalescing isn't associative with Optional
+            // Negative case: null coalescing with Then() breaks left identity
             public static Optional<int> NullableToOptional(int? n)
                 => Optional.Of(n ?? 0);
 
@@ -297,16 +294,16 @@ namespace Recore.Tests
         {
             if (value == null)
             {
-                // Known limitation: null coalescing isn't associative with Optional
+                // Known limitation
                 Assert.NotEqual(
                     MonadFuncs.NullableToOptional(value),
-                    Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+                    new Optional<int?>(value).Then(MonadFuncs.NullableToOptional));
             }
             else
             {
                 Assert.Equal(
                     MonadFuncs.NullableToOptional(value),
-                    Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+                    new Optional<int?>(value).Then(MonadFuncs.NullableToOptional));
             }
         }
 
