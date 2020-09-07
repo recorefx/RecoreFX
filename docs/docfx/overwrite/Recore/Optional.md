@@ -4,8 +4,6 @@ example:
 - *content
 ---
 
-# Tutorial
-
 Here are a few examples for how to work with an optional value.
 
 @Recore.Optional`1 has public constructors that you can use, but the easiest way to create an instance is to use the helper methods:
@@ -58,8 +56,6 @@ A safer way to get the value out is to use `ValueOr()`, which requires you to pa
 ```cs
 string message = opt.ValueOr(default);
 ```
-
-# Don't pass null-coalescing functions to an `Optional`
 
 There's a special case where `OnValue()` and `Then()` can cause their callback to work differently than it does outside the `Optional` context. Consider these two calls:
 
