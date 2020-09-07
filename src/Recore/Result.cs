@@ -357,6 +357,14 @@ namespace Recore
             => resultResult.Then(x => x);
 
         /// <summary>
+        /// Retrieves the value of a <see cref="Result{TValue, TError}"/> when <c>TValue</c> and <c>TError</c> are the same.
+        /// </summary>
+        public static T Collapse<T>(this Result<T, T> result)
+            => result.Switch(
+                v => v,
+                e => e);
+
+        /// <summary>
         /// Collects all the values of successful results from the sequence.
         /// </summary>
         public static IEnumerable<TValue> Successes<TValue, TError>(this IEnumerable<Result<TValue, TError>> source)

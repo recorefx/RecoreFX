@@ -282,6 +282,14 @@ namespace Recore
     public static class Either
     {
         /// <summary>
+        /// Retrieves the value of an <see cref="Either{TLeft, TRight}"/> when <c>TLeft</c> and <c>TRight</c> are the same.
+        /// </summary>
+        public static T Collapse<T>(this Either<T, T> either)
+            => either.Switch(
+                l => l,
+                r => r);
+
+        /// <summary>
         /// Combines two unary actions into a single action taking either of their parameters.
         /// </summary>
         public static Action<Either<TLeft, TRight>> Lift<TLeft, TRight>(
