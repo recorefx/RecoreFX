@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyModel;
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Tests
@@ -113,6 +114,16 @@ namespace Recore.Tests
             Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData(1)]
+        public void ValueOr_Associativity(int? value)
+        {
+            Assert.Equal(
+                Optional.Of(value ?? 0),
+                Optional.Of(value).ValueOr(0));
+        }
+
         [Fact]
         public void AssertValue()
         {
@@ -159,9 +170,8 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void FunctorLaws()
+        public void FunctorLaws_Identity()
         {
-            // Identity
             Optional<string> referenceOptional = "hello world";
             Optional<int> valueOptional = 123;
             T Id<T>(T t) => t;
@@ -169,8 +179,11 @@ namespace Recore.Tests
             Assert.Equal("hello world", referenceOptional.OnValue(Id));
             Assert.Equal(123, valueOptional.OnValue(Id));
             Assert.Equal(Optional<object>.Empty, Optional<object>.Empty.OnValue(Id));
+        }
 
-            // Composition
+        [Fact]
+        public void FunctorLaws_Composition()
+        {
             int Square(int n) => n * n;
             int PlusTwo(int n) => n + 2;
 
@@ -183,11 +196,16 @@ namespace Recore.Tests
                 Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
-        [Fact]
-        public void Then()
+        // A bunch of functions for testing monad properties
+        static class MonadFuncs
         {
-            Optional<int> FindFirstSpace(string str)
+            public static Optional<int> FindFirstSpace(string str)
             {
+                if (str == null)
+                {
+                    return Optional<int>.Empty;
+                }
+
                 var result = str.IndexOf(' ');
                 if (result == -1)
                 {
@@ -199,77 +217,105 @@ namespace Recore.Tests
                 }
             }
 
+            public static Optional<string> StringToOptional(string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    return Optional<string>.Empty;
+                }
+                else
+                {
+                    return str;
+                }
+            }
+
+            public static Optional<int> NullableToOptional(int? n)
+                => Optional.Of(n ?? 0);
+
+            public static Optional<int> NullsafeLength(string str) => Optional.Of(str).OnValue(x => x.Length);
+        }
+
+        [Fact]
+        public void Then()
+        {
             Optional<string> optionalString;
             Optional<int> actual;
 
             optionalString = "hello world";
-            actual = optionalString.Then(FindFirstSpace);
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
             Assert.Equal(5, actual);
 
             optionalString = "hello";
-            actual = optionalString.Then(FindFirstSpace);
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
             Assert.False(actual.HasValue);
 
             optionalString = Optional<string>.Empty;
-            actual = optionalString.Then(FindFirstSpace);
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
             Assert.False(actual.HasValue);
         }
 
-        private static Optional<string> StringToOption(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return Optional<string>.Empty;
-            }
-            else
-            {
-                return str;
-            }
-        }
-
-        private static Optional<int> NullableInt(int? x)
-            => Optional.Of(Func.Invoke(() =>
-            {
-                if (x is null)
-                {
-                    return -1;
-                }
-                else if (x == 2)
-                {
-                    return null;
-                }
-                else
-                {
-                    return x + 1;
-                }
-            }));
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("hello")]
-        public void MonadLaws_LeftIdentity_StringToOption(string value)
+        [Property]
+        public void MonadLaws_LeftIdentity_FindFirstSpace(string value)
         {
             Assert.Equal(
-                StringToOption(value),
-                new Optional<string>(value).Then(StringToOption));
+                MonadFuncs.FindFirstSpace(value),
+                new Optional<string>(value).Then(MonadFuncs.FindFirstSpace));
+        }
+
+        [Property]
+        public void MonadLaws_LeftIdentity_StringToOptional(string value)
+        {
+            Assert.Equal(
+                MonadFuncs.StringToOptional(value),
+                new Optional<string>(value).Then(MonadFuncs.StringToOptional));
         }
 
         //[Theory]
         //[InlineData(null)]
+        //[InlineData(0)]
         //[InlineData(1)]
-        //[InlineData(2)]
         //public void MonadLaws_LeftIdentity_NullableInt(int? value)
         //{
+        //    // From https://www.sitepoint.com/how-optional-breaks-the-monad-laws-and-why-it-matters
+        //    Optional<int> NullableInt(int? x)
+        //        => Optional.Of(Func.Invoke(() =>
+        //        {
+        //            if (x is null)
+        //            {
+        //                return -1;
+        //            }
+        //            else if (x == 0)
+        //            {
+        //                return null;
+        //            }
+        //            else
+        //            {
+        //                return x;
+        //            }
+        //        }));
+
         //    Assert.Equal(
         //        NullableInt(value),
         //        Optional.Of(value).Then(x => NullableInt(x)));
         //}
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("hello")]
+        [Property]
+        public void MonadLaws_LeftIdentity_NullableToOptional(int? value)
+        {
+            Assert.Equal(
+                MonadFuncs.NullableToOptional(value),
+                Optional.Of(value).Then(x => MonadFuncs.NullableToOptional(x)));
+        }
+
+        [Property]
+        public void MonadLaws_LeftIdentity_NullsafeLength(string value)
+        {
+            Assert.Equal(
+                MonadFuncs.NullsafeLength(value),
+                new Optional<string>(value).Then(MonadFuncs.NullsafeLength));
+        }
+
+        [Property]
         public void MonadLaws_RightIdentity(string value)
         {
             var optional = Optional.Of(value);
@@ -278,18 +324,13 @@ namespace Recore.Tests
                 optional.Then(Optional.Of));
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("hello")]
-        public void MonadLaws_Associativity(string value)
+        [Property]
+        public void MonadLaws_Associativity_StringToOptional_NullsafeLength(string value)
         {
-            Optional<int> NullsafeLength(string str) => Optional.Of(str).OnValue(x => x.Length);
-
             var optional = Optional.Of(value);
             Assert.Equal(
-                optional.Then(StringToOption).Then(NullsafeLength),
-                optional.Then(x => StringToOption(x).Then(NullsafeLength)));
+                optional.Then(MonadFuncs.StringToOptional).Then(MonadFuncs.NullsafeLength),
+                optional.Then(x => MonadFuncs.StringToOptional(x).Then(MonadFuncs.NullsafeLength)));
         }
 
         [Fact]
