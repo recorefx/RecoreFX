@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Tests
@@ -113,6 +114,16 @@ namespace Recore.Tests
             Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
+        // Unlike OnValue() and Then(), ValueOr() preserves the result of null coalescing.
+        // It's more of identity than associativity, though, since we end up with a non-optional value.
+        [Property]
+        public void ValueOr_NullCoalescing_Identity(int? value)
+        {
+            Assert.Equal(
+                value ?? 0,
+                Optional.Of(value).ValueOr(0));
+        }
+
         [Fact]
         public void AssertValue()
         {
@@ -159,9 +170,8 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void FunctorLaws()
+        public void FunctorLaws_Identity()
         {
-            // Identity
             Optional<string> referenceOptional = "hello world";
             Optional<int> valueOptional = 123;
             T Id<T>(T t) => t;
@@ -169,8 +179,11 @@ namespace Recore.Tests
             Assert.Equal("hello world", referenceOptional.OnValue(Id));
             Assert.Equal(123, valueOptional.OnValue(Id));
             Assert.Equal(Optional<object>.Empty, Optional<object>.Empty.OnValue(Id));
+        }
 
-            // Composition
+        [Fact]
+        public void FunctorLaws_Composition()
+        {
             int Square(int n) => n * n;
             int PlusTwo(int n) => n + 2;
 
@@ -183,11 +196,34 @@ namespace Recore.Tests
                 Optional<int>.Empty.OnValue(x => PlusTwo(Square(x))));
         }
 
-        [Fact]
-        public void Then()
+        [Property]
+        public void Functor_NullCoalescing(int? value)
         {
-            Optional<int> FindFirstSpace(string str)
+            if (value == null)
             {
+                // Known limitation
+                Assert.NotEqual(
+                    new Optional<int>(value ?? 0),
+                    new Optional<int?>(value).OnValue(x => x ?? 0));
+            }
+            else
+            {
+                Assert.Equal(
+                    new Optional<int>(value ?? 0),
+                    new Optional<int?>(value).OnValue(x => x ?? 0));
+            }
+        }
+
+        // A bunch of functions for testing monad properties
+        static class MonadFuncs
+        {
+            public static Optional<int> FindFirstSpace(string str)
+            {
+                if (str == null)
+                {
+                    return Optional<int>.Empty;
+                }
+
                 var result = str.IndexOf(' ');
                 if (result == -1)
                 {
@@ -199,26 +235,7 @@ namespace Recore.Tests
                 }
             }
 
-            Optional<string> optionalString;
-            Optional<int> actual;
-
-            optionalString = "hello world";
-            actual = optionalString.Then(FindFirstSpace);
-            Assert.Equal(5, actual);
-
-            optionalString = "hello";
-            actual = optionalString.Then(FindFirstSpace);
-            Assert.False(actual.HasValue);
-
-            optionalString = Optional<string>.Empty;
-            actual = optionalString.Then(FindFirstSpace);
-            Assert.False(actual.HasValue);
-        }
-
-        [Fact]
-        public void MonadLaws()
-        {
-            Optional<string> StringToOption(string str)
+            public static Optional<string> StringToOptional(string str)
             {
                 if (string.IsNullOrEmpty(str))
                 {
@@ -230,41 +247,90 @@ namespace Recore.Tests
                 }
             }
 
-            // Left identity
-            foreach (var value in new[] { "hello", string.Empty, null })
+            // Negative case: null coalescing with Then() breaks left identity
+            public static Optional<int> NullableToOptional(int? n)
+                => Optional.Of(n ?? 0);
+
+            public static Optional<int> NullsafeLength(string str) => Optional.Of(str).OnValue(x => x.Length);
+        }
+
+        [Fact]
+        public void Then()
+        {
+            Optional<string> optionalString;
+            Optional<int> actual;
+
+            optionalString = "hello world";
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
+            Assert.Equal(5, actual);
+
+            optionalString = "hello";
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
+            Assert.False(actual.HasValue);
+
+            optionalString = Optional<string>.Empty;
+            actual = optionalString.Then(MonadFuncs.FindFirstSpace);
+            Assert.False(actual.HasValue);
+        }
+
+        [Property]
+        public void MonadLaws_LeftIdentity_FindFirstSpace(string value)
+        {
+            Assert.Equal(
+                MonadFuncs.FindFirstSpace(value),
+                new Optional<string>(value).Then(MonadFuncs.FindFirstSpace));
+        }
+
+        [Property]
+        public void MonadLaws_LeftIdentity_StringToOptional(string value)
+        {
+            Assert.Equal(
+                MonadFuncs.StringToOptional(value),
+                new Optional<string>(value).Then(MonadFuncs.StringToOptional));
+        }
+
+        [Property]
+        public void MonadLaws_LeftIdentity_NullableToOptional(int? value)
+        {
+            if (value == null)
+            {
+                // Known limitation
+                Assert.NotEqual(
+                    MonadFuncs.NullableToOptional(value),
+                    new Optional<int?>(value).Then(MonadFuncs.NullableToOptional));
+            }
+            else
             {
                 Assert.Equal(
-                    StringToOption(value),
-                    new Optional<string>(value).Then(StringToOption));
+                    MonadFuncs.NullableToOptional(value),
+                    new Optional<int?>(value).Then(MonadFuncs.NullableToOptional));
             }
+        }
 
-            // Right identity
-            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
-            {
-                Assert.Equal(
-                    optional,
-                    optional.Then(Optional.Of<string>));
-            }
+        [Property]
+        public void MonadLaws_LeftIdentity_NullsafeLength(string value)
+        {
+            Assert.Equal(
+                MonadFuncs.NullsafeLength(value),
+                new Optional<string>(value).Then(MonadFuncs.NullsafeLength));
+        }
 
-            // Associativity
-            Optional<int> NullsafeLength(string str)
-            {
-                if (str is null)
-                {
-                    return Optional<int>.Empty;
-                }
-                else
-                {
-                    return str.Length;
-                }
-            }
+        [Property]
+        public void MonadLaws_RightIdentity(string value)
+        {
+            var optional = Optional.Of(value);
+            Assert.Equal(
+                optional,
+                optional.Then(Optional.Of));
+        }
 
-            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
-            {
-                Assert.Equal(
-                    optional.Then(StringToOption).Then(NullsafeLength),
-                    optional.Then(x => StringToOption(x).Then(NullsafeLength)));
-            }
+        [Property]
+        public void MonadLaws_Associativity_StringToOptional_NullsafeLength(string value)
+        {
+            var optional = Optional.Of(value);
+            Assert.Equal(
+                optional.Then(MonadFuncs.StringToOptional).Then(MonadFuncs.NullsafeLength),
+                optional.Then(x => MonadFuncs.StringToOptional(x).Then(MonadFuncs.NullsafeLength)));
         }
 
         [Fact]
@@ -274,9 +340,7 @@ namespace Recore.Tests
             Assert.Equal("none", Optional<string>.Empty.ToString());
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
+        [Property]
         public void Equals_(int value)
         {
             // object.Equals
@@ -300,10 +364,45 @@ namespace Recore.Tests
                 Optional<int>.Empty.Equals(Optional.Of(value)));
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public void EqualityOperators(int value)
+        [Property]
+        public void Equals_EquivalenceRelation_Reflexive(int? a)
+        {
+            var optionalA = Optional.Of(a);
+            Assert.Equal(optionalA, optionalA);
+        }
+
+        [Property]
+        public void Equals_EquivalenceRelation_Symmetric(int? a, int? b)
+        {
+            var optionalA = Optional.Of(a);
+            var optionalB = Optional.Of(b);
+
+            if (Equals(optionalA, optionalB))
+            {
+                Assert.Equal(b, a);
+            }
+            else
+            {
+                Assert.NotEqual(b, a);
+            }
+        }
+
+        [Property]
+        public void Equals_EquivalenceRelation_Transitive(int? a, int? b, int? c)
+        {
+            var optionalA = Optional.Of(a);
+            var optionalB = Optional.Of(b);
+            var optionalC = Optional.Of(c);
+
+            if (Equals(optionalA, optionalB)
+                && Equals(optionalB, optionalC))
+            {
+                Assert.Equal(optionalA, optionalC);
+            }
+        }
+
+        [Property]
+        public void EqualityOperators(int? value)
         {
             // operator==
             Assert.True(
@@ -312,36 +411,33 @@ namespace Recore.Tests
             Assert.True(
                 new Optional<int>() == new Optional<int>());
 
-            Assert.False(
-                Optional.Of(0) == Optional<int>.Empty);
-
             // operator!=
             Assert.False(
                 Optional.Of(value) != Optional.Of(value));
 
             Assert.False(
                 new Optional<int>() != new Optional<int>());
-
-            Assert.True(
-                Optional.Of(value) != Optional<int>.Empty);
         }
 
-        [Fact]
-        public void EqualsEquivalenceRelation()
+        [Property]
+        public void Equality_OptionalWithValueNeverEqualsEmpty(int value)
         {
-            // Reflexive
-            Optional<int> a = 1;
-            Assert.Equal(a, a);
+            Assert.False(
+                Optional.Of(value) == Optional<int>.Empty);
+        }
 
-            // Symmetric
-            Optional<int> b = 1;
-            Assert.Equal(a, b);
-            Assert.Equal(b, a);
+        // Here's a quirk of how Equals() works with Optional<T>:
+        // it will automatically cast Optional<T> to Optional<Optional<T>>.
+        // This isn't by design, but I'm adding a test to protect the behavior
+        // so a breaking change doesn't slip in accidentally.
+        [Property]
+        public void Equality_DoubleOptional(int? value)
+        {
+            Assert.True(
+                Optional.Of(Optional.Of(value)) == Optional.Of(value));
 
-            // Transitive
-            Optional<int> c = 1;
-            Assert.Equal(b, c);
-            Assert.Equal(a, c);
+            Assert.False(
+                Optional<Optional<int>>.Empty == Optional.Of(value));
         }
 
         [Fact]
@@ -385,6 +481,32 @@ namespace Recore.Tests
         public void Of()
         {
             Assert.Equal(new Optional<int>(12), Optional.Of(12));
+        }
+
+        // You shouldn't be able to trick Optional by giving it a Nullable.
+        // For more Nullable handling, see Of() and Flatten().
+        [Fact]
+        public void Nullable()
+        {
+            var optional = Optional.Of((int?)null);
+            Assert.False(optional.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optional.AssertValue());
+
+            optional = 5;
+            Assert.Equal(5, optional);
+            Assert.Equal(5, optional.AssertValue());
+
+            var optionalNullable = new Optional<int?>(null);
+            Assert.False(optionalNullable.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optionalNullable.AssertValue());
+
+            optionalNullable = Optional<int?>.Empty;
+            Assert.False(optionalNullable.HasValue);
+            Assert.Throws<InvalidOperationException>(() => optionalNullable.AssertValue());
+
+            optionalNullable = 5;
+            Assert.Equal(5, optionalNullable);
+            Assert.Equal(5, optionalNullable.AssertValue());
         }
 
         [Fact]
@@ -466,7 +588,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void Flatten()
+        public void FlattenOptional()
         {
             var doubleValue = new Optional<Optional<string>>("hello");
             Assert.Equal("hello", doubleValue.Flatten());
@@ -476,6 +598,16 @@ namespace Recore.Tests
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
             Assert.False(valueNone.Flatten().HasValue);
+        }
+
+        [Fact]
+        public void FlattenNullable()
+        {
+            var hasValue = new Optional<int?>(1);
+            Assert.Equal(1, hasValue.Flatten());
+
+            var isNull = new Optional<int?>();
+            Assert.False(isNull.Flatten().HasValue);
         }
 
         [Fact]

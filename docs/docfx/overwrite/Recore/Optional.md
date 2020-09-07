@@ -56,3 +56,38 @@ A safer way to get the value out is to use `ValueOr()`, which requires you to pa
 ```cs
 string message = opt.ValueOr(default);
 ```
+
+There's a special case where `OnValue()` and `Then()` can cause their callback to work differently than it does outside the `Optional` context. Consider these two calls:
+
+```cs
+int? value = null;
+
+new Optional<int>(value ?? 0)
+new Optional<int?>(value).OnValue(x => x ?? 0)
+```
+
+Normally, you'd expect these two lines to be equivalent for any function.
+But if `value` is `null`, they won't be the same.
+
+The same thing goes for `Then()`:
+
+```cs
+Optional<int> NullableToOptional(int? n) => Optional.Of(n ?? 0);
+
+NullableToOptional(value)
+new Optional<int?>(value).Then(NullableToOptional)
+```
+
+The problem is that "null coalescing" operations (by which I mean any function that turns `null` into a non-`null` value, including the `??` operator) won't work as expected when passed through `Optional<T>`.
+This is because they will never receive `null` as an input.
+
+(A note to functional-programming aficionados: the first example has implications for associativity.
+Passing a composed function to `OnValue()` may produce a different result than two separate `OnValue()` calls if null coalescing is involved.
+The second example is the monad law of left identity.)
+
+Since any reference type can be `null`, there's no way to fix it except to avoid it.
+Just know that you **can't perform null-coalescing inside of an `Optional` context**.
+Rather, use `Optional`'s own operations.
+Every example I can think of stands out as a bug if you examine it under this principle.
+
+For more information, [this writeup](https://www.sitepoint.com/how-optional-breaks-the-monad-laws-and-why-it-matters) explores the issue in the context of Java's `optional` type.
