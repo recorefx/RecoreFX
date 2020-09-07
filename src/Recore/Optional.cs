@@ -244,7 +244,7 @@ namespace Recore
         /// Makes a value optional.
         /// </summary>
         /// <remarks>
-        /// This is useful for type inference in some cases where the implicit conversion
+        /// This is useful for type inference in cases where the implicit conversion
         /// can't be used, such as creating an <see cref="Optional{T}"/>
         /// and immediately invoking a method.
         /// It can also be passed as a delegate whereas the constructor can't be.
@@ -255,10 +255,8 @@ namespace Recore
         /// Converts a <see cref="Nullable{T}"/> to <see cref="Optional{T}"/>.
         /// </summary>
         /// <remarks>
-        /// This is useful for type inference in some cases where the implicit conversion
-        /// can't be used, such as creating an <see cref="Optional{T}"/>
-        /// and immediately invoking a method.
-        /// It can also be passed as a delegate whereas the constructor can't be.
+        /// This is a special overload for nullable types to avoid ending up with <c>Optional&lt;T?&gt;</c>.
+        /// For a value type such as <see cref="int"/>, this method is equivalent to <c>new Optional&lt;int?&gt;(x).Collapse()</c>.
         /// </remarks>
         public static Optional<T> Of<T>(T? value) where T : struct
         {
