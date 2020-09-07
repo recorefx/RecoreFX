@@ -215,49 +215,44 @@ namespace Recore.Tests
             Assert.False(actual.HasValue);
         }
 
-        [Fact]
-        public void MonadLaws()
+        private static Optional<string> StringToOption(string str)
         {
-            Optional<string> StringToOption(string str)
+            if (string.IsNullOrEmpty(str))
             {
-                if (string.IsNullOrEmpty(str))
-                {
-                    return Optional<string>.Empty;
-                }
-                else
-                {
-                    return str;
-                }
+                return Optional<string>.Empty;
             }
+            else
+            {
+                return str;
+            }
+        }
 
-            // Left identity
+        [Fact]
+        public void MonadLaws_LeftIdentity()
+        {
             foreach (var value in new[] { "hello", string.Empty, null })
             {
                 Assert.Equal(
                     StringToOption(value),
                     new Optional<string>(value).Then(StringToOption));
             }
+        }
 
-            // Right identity
+        [Fact]
+        public void MonadLaws_RightIdentity()
+        {
             foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
                 Assert.Equal(
                     optional,
                     optional.Then(Optional.Of<string>));
             }
+        }
 
-            // Associativity
-            Optional<int> NullsafeLength(string str)
-            {
-                if (str is null)
-                {
-                    return Optional<int>.Empty;
-                }
-                else
-                {
-                    return str.Length;
-                }
-            }
+        [Fact]
+        public void MonadLaws_Associativity()
+        {
+            Optional<int> NullsafeLength(string str) => Optional.Of(str).OnValue(x => x.Length);
 
             foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
             {
