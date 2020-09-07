@@ -270,35 +270,6 @@ namespace Recore.Tests
                 new Optional<string>(value).Then(MonadFuncs.StringToOptional));
         }
 
-        //[Theory]
-        //[InlineData(null)]
-        //[InlineData(0)]
-        //[InlineData(1)]
-        //public void MonadLaws_LeftIdentity_NullableInt(int? value)
-        //{
-        //    // From https://www.sitepoint.com/how-optional-breaks-the-monad-laws-and-why-it-matters
-        //    Optional<int> NullableInt(int? x)
-        //        => Optional.Of(Func.Invoke(() =>
-        //        {
-        //            if (x is null)
-        //            {
-        //                return -1;
-        //            }
-        //            else if (x == 0)
-        //            {
-        //                return null;
-        //            }
-        //            else
-        //            {
-        //                return x;
-        //            }
-        //        }));
-
-        //    Assert.Equal(
-        //        NullableInt(value),
-        //        Optional.Of(value).Then(x => NullableInt(x)));
-        //}
-
         [Property]
         public void MonadLaws_LeftIdentity_NullableToOptional(int? value)
         {
@@ -340,9 +311,7 @@ namespace Recore.Tests
             Assert.Equal("none", Optional<string>.Empty.ToString());
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
+        [Property]
         public void Equals_(int value)
         {
             // object.Equals
@@ -366,10 +335,45 @@ namespace Recore.Tests
                 Optional<int>.Empty.Equals(Optional.Of(value)));
         }
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        public void EqualityOperators(int value)
+        [Property]
+        public void Equals_EquivalenceRelation_Reflexive(int? a)
+        {
+            var optionalA = Optional.Of(a);
+            Assert.Equal(optionalA, optionalA);
+        }
+
+        [Property]
+        public void Equals_EquivalenceRelation_Symmetric(int? a, int? b)
+        {
+            var optionalA = Optional.Of(a);
+            var optionalB = Optional.Of(b);
+
+            if (Equals(optionalA, optionalB))
+            {
+                Assert.Equal(b, a);
+            }
+            else
+            {
+                Assert.NotEqual(b, a);
+            }
+        }
+
+        [Property]
+        public void Equals_EquivalenceRelation_Transitive(int? a, int? b, int? c)
+        {
+            var optionalA = Optional.Of(a);
+            var optionalB = Optional.Of(b);
+            var optionalC = Optional.Of(c);
+
+            if (Equals(optionalA, optionalB)
+                && Equals(optionalB, optionalC))
+            {
+                Assert.Equal(optionalA, optionalC);
+            }
+        }
+
+        [Property]
+        public void EqualityOperators(int? value)
         {
             // operator==
             Assert.True(
@@ -378,36 +382,19 @@ namespace Recore.Tests
             Assert.True(
                 new Optional<int>() == new Optional<int>());
 
-            Assert.False(
-                Optional.Of(0) == Optional<int>.Empty);
-
             // operator!=
             Assert.False(
                 Optional.Of(value) != Optional.Of(value));
 
             Assert.False(
                 new Optional<int>() != new Optional<int>());
-
-            Assert.True(
-                Optional.Of(value) != Optional<int>.Empty);
         }
 
-        [Fact]
-        public void EqualsEquivalenceRelation()
+        [Property]
+        public void Equality_OptionalWithValueNeverEqualsEmpty(int value)
         {
-            // Reflexive
-            Optional<int> a = 1;
-            Assert.Equal(a, a);
-
-            // Symmetric
-            Optional<int> b = 1;
-            Assert.Equal(a, b);
-            Assert.Equal(b, a);
-
-            // Transitive
-            Optional<int> c = 1;
-            Assert.Equal(b, c);
-            Assert.Equal(a, c);
+            Assert.False(
+                Optional.Of(value) == Optional<int>.Empty);
         }
 
         [Fact]
