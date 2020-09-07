@@ -98,11 +98,11 @@ namespace Recore.Tests
 
             either = 123;
             Assert.Equal(1, either.OnLeft(x => 1));
-            Assert.Equal(new Either<int, int>(left: 123), either.OnRight(x => 1));
+            Assert.Equal(123, either.OnRight(x => 1).Collapse());
 
             either = "hello";
             Assert.Equal("hello", either.OnLeft(x => 1));
-            Assert.Equal(new Either<int, int>(right: 1), either.OnRight(x => 1));
+            Assert.Equal(1, either.OnRight(x => 1).Collapse());
         }
 
         [Fact]
