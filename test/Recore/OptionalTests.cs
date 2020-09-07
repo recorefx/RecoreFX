@@ -244,50 +244,52 @@ namespace Recore.Tests
                 }
             }));
 
-        [Fact]
-        public void MonadLaws_LeftIdentity_StringToOption()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("hello")]
+        public void MonadLaws_LeftIdentity_StringToOption(string value)
         {
-            foreach (var value in new[] { "hello", string.Empty, null })
-            {
-                Assert.Equal(
-                    StringToOption(value),
-                    new Optional<string>(value).Then(StringToOption));
-            }
+            Assert.Equal(
+                StringToOption(value),
+                new Optional<string>(value).Then(StringToOption));
+        }
+
+        //[Theory]
+        //[InlineData(null)]
+        //[InlineData(1)]
+        //[InlineData(2)]
+        //public void MonadLaws_LeftIdentity_NullableInt(int? value)
+        //{
+        //    Assert.Equal(
+        //        NullableInt(value),
+        //        Optional.Of(value).Then(x => NullableInt(x)));
+        //}
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("hello")]
+        public void MonadLaws_RightIdentity(string value)
+        {
+            var optional = Optional.Of(value);
+            Assert.Equal(
+                optional,
+                optional.Then(Optional.Of));
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
         [InlineData(null)]
-        public void MonadLaws_LeftIdentity_NullableInt(int? value)
-        {
-            Assert.Equal(
-                NullableInt(value),
-                Optional.Of(value).Then(x => NullableInt(x)));
-        }
-
-        [Fact]
-        public void MonadLaws_RightIdentity()
-        {
-            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
-            {
-                Assert.Equal(
-                    optional,
-                    optional.Then(Optional.Of<string>));
-            }
-        }
-
-        [Fact]
-        public void MonadLaws_Associativity()
+        [InlineData("")]
+        [InlineData("hello")]
+        public void MonadLaws_Associativity(string value)
         {
             Optional<int> NullsafeLength(string str) => Optional.Of(str).OnValue(x => x.Length);
 
-            foreach (var optional in new[] { "hello", null, Optional<string>.Empty })
-            {
-                Assert.Equal(
-                    optional.Then(StringToOption).Then(NullsafeLength),
-                    optional.Then(x => StringToOption(x).Then(NullsafeLength)));
-            }
+            var optional = Optional.Of(value);
+            Assert.Equal(
+                optional.Then(StringToOption).Then(NullsafeLength),
+                optional.Then(x => StringToOption(x).Then(NullsafeLength)));
         }
 
         [Fact]
