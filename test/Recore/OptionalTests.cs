@@ -381,6 +381,16 @@ namespace Recore.Tests
             Assert.Null((string)optional);
         }
 
+        public class Animal { }
+        public class Cat : Animal { }
+
+        [Fact]
+        public void ImplicitConvert()
+        {
+            var cat = Optional.Of(new Cat());
+            var animal = cat.OnValue(x => x.StaticCast<Animal>());
+        }
+
         [Fact]
         public void Of()
         {

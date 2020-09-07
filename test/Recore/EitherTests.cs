@@ -244,6 +244,47 @@ namespace Recore.Tests
             Assert.Equal("hello", right.ToString());
         }
 
+        class Animal { }
+        class Cat : Animal { }
+
+        [Fact]
+        public void Subtypes()
+        {
+            var cat = new Cat();
+            var eitherCat = new Either<Cat, string>(cat);
+            var eitherAnimal = new Either<Animal, string>(cat);
+
+            // Either<TLeft, TRight>.Equals() requires both to be an instance of Either<TLeft, TRight>:
+            Assert.False(eitherCat.Equals(eitherAnimal));
+
+            // To do any kind of comparison when the types aren't the same, use Switch():
+            Assert.True(eitherCat.Switch(
+                cat_ => eitherAnimal.Switch(
+                    animal => Equals(cat_, animal),
+                    str => false),
+                str => false));
+        }
+
+        enum Color { Red, Green, Blue }
+        enum Day { Monday, Tuesday, Wednesday }
+
+        [Fact]
+        public void Enums()
+        {
+            var red = new Either<Color, string>(Color.Red);
+            var monday = new Either<Day, string>(Day.Monday);
+
+            // Either<TLeft, TRight>.Equals() requires both to be an instance of Either<TLeft, TRight>:
+            Assert.False(red.Equals(monday));
+
+            // To do any kind of comparison when the types aren't the same, use Switch():
+            Assert.True(red.Switch(
+                color => monday.Switch(
+                    day => Equals((int)color, (int)day),
+                    str => false),
+                str => false));
+        }
+
         [Fact]
         public void Lift_ThrowsOnNull()
         {
