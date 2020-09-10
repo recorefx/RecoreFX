@@ -20,8 +20,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            int value;
-            using (IEnumerator<int> e = source.GetEnumerator())
+            (int Index, int Item) value;
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -31,10 +31,9 @@ namespace Recore.Linq
                 value = e.Current;
                 while (e.MoveNext())
                 {
-                    int x = e.Current;
-                    if (x > value)
+                    if (e.Current.Item > value.Item)
                     {
-                        value = x;
+                        value = e.Current;
                     }
                 }
             }
@@ -52,8 +51,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            int? value = null;
-            using (IEnumerator<int?> e = source.GetEnumerator())
+            (int Index, int? Item) value = (0, null);
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 do
                 {
@@ -64,9 +63,9 @@ namespace Recore.Linq
 
                     value = e.Current;
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                int valueVal = value.GetValueOrDefault();
+                int valueVal = value.Item.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     // We can fast-path this case where we know HasValue will
@@ -77,8 +76,8 @@ namespace Recore.Linq
                     // uses, it's only been done in this direction for int? and long?.
                     while (e.MoveNext())
                     {
-                        int? cur = e.Current;
-                        int x = cur.GetValueOrDefault();
+                        var cur = e.Current;
+                        int x = cur.Item.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
@@ -90,12 +89,12 @@ namespace Recore.Linq
                 {
                     while (e.MoveNext())
                     {
-                        int? cur = e.Current;
-                        int x = cur.GetValueOrDefault();
+                        var cur = e.Current;
+                        int x = cur.Item.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.HasValue & x > valueVal)
+                        if (cur.Item.HasValue & x > valueVal)
                         {
                             valueVal = x;
                             value = cur;
@@ -117,8 +116,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            long value;
-            using (IEnumerator<long> e = source.GetEnumerator())
+            (int Index, long Item) value;
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -128,10 +127,9 @@ namespace Recore.Linq
                 value = e.Current;
                 while (e.MoveNext())
                 {
-                    long x = e.Current;
-                    if (x > value)
+                    if (e.Current.Item > value.Item)
                     {
-                        value = x;
+                        value = e.Current;
                     }
                 }
             }
@@ -149,8 +147,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            long? value = null;
-            using (IEnumerator<long?> e = source.GetEnumerator())
+            (int Index, long? Item) value = (0, null);
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 do
                 {
@@ -161,15 +159,15 @@ namespace Recore.Linq
 
                     value = e.Current;
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                long valueVal = value.GetValueOrDefault();
+                long valueVal = value.Item.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     while (e.MoveNext())
                     {
-                        long? cur = e.Current;
-                        long x = cur.GetValueOrDefault();
+                        var cur = e.Current;
+                        long x = cur.Item.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
@@ -181,12 +179,12 @@ namespace Recore.Linq
                 {
                     while (e.MoveNext())
                     {
-                        long? cur = e.Current;
-                        long x = cur.GetValueOrDefault();
+                        var cur = e.Current;
+                        long x = cur.Item.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.HasValue & x > valueVal)
+                        if (cur.Item.HasValue & x > valueVal)
                         {
                             valueVal = x;
                             value = cur;
@@ -208,8 +206,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            double value;
-            using (IEnumerator<double> e = source.GetEnumerator())
+            (int Index, double Item) value;
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -222,7 +220,7 @@ namespace Recore.Linq
                 // less than all other values. We need to do explicit checks to ensure this, but
                 // once we've found a value that is not NaN we need no longer worry about it,
                 // so first loop until such a value is found (or not, as the case may be).
-                while (double.IsNaN(value))
+                while (double.IsNaN(value.Item))
                 {
                     if (!e.MoveNext())
                     {
@@ -234,10 +232,9 @@ namespace Recore.Linq
 
                 while (e.MoveNext())
                 {
-                    double x = e.Current;
-                    if (x > value)
+                    if (e.Current.Item > value.Item)
                     {
-                        value = x;
+                        value = e.Current;
                     }
                 }
             }
@@ -255,8 +252,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            double? value = null;
-            using (IEnumerator<double?> e = source.GetEnumerator())
+            (int Index, double? Item) value = (0, null);
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 do
                 {
@@ -267,9 +264,9 @@ namespace Recore.Linq
 
                     value = e.Current;
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                double valueVal = value.GetValueOrDefault();
+                double valueVal = value.Item.GetValueOrDefault();
                 while (double.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -277,21 +274,22 @@ namespace Recore.Linq
                         return value;
                     }
 
-                    double? cur = e.Current;
-                    if (cur.HasValue)
+                    var cur = e.Current;
+                    if (cur.Item.HasValue)
                     {
-                        valueVal = (value = cur).GetValueOrDefault();
+                        value = cur;
+                        valueVal = value.Item.GetValueOrDefault();
                     }
                 }
 
                 while (e.MoveNext())
                 {
-                    double? cur = e.Current;
-                    double x = cur.GetValueOrDefault();
+                    var cur = e.Current;
+                    double x = cur.Item.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.HasValue & x > valueVal)
+                    if (cur.Item.HasValue & x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -312,8 +310,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            float value;
-            using (IEnumerator<float> e = source.GetEnumerator())
+            (int Index, float Item) value;
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -321,7 +319,7 @@ namespace Recore.Linq
                 }
 
                 value = e.Current;
-                while (float.IsNaN(value))
+                while (float.IsNaN(value.Item))
                 {
                     if (!e.MoveNext())
                     {
@@ -333,10 +331,9 @@ namespace Recore.Linq
 
                 while (e.MoveNext())
                 {
-                    float x = e.Current;
-                    if (x > value)
+                    if (e.Current.Item > value.Item)
                     {
-                        value = x;
+                        value = e.Current;
                     }
                 }
             }
@@ -354,8 +351,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            float? value = null;
-            using (IEnumerator<float?> e = source.GetEnumerator())
+            (int Index, float? Item) value = (0, null);
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 do
                 {
@@ -366,9 +363,9 @@ namespace Recore.Linq
 
                     value = e.Current;
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                float valueVal = value.GetValueOrDefault();
+                float valueVal = value.Item.GetValueOrDefault();
                 while (float.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -376,21 +373,22 @@ namespace Recore.Linq
                         return value;
                     }
 
-                    float? cur = e.Current;
-                    if (cur.HasValue)
+                    var cur = e.Current;
+                    if (cur.Item.HasValue)
                     {
-                        valueVal = (value = cur).GetValueOrDefault();
+                        value = cur;
+                        valueVal = value.Item.GetValueOrDefault();
                     }
                 }
 
                 while (e.MoveNext())
                 {
-                    float? cur = e.Current;
-                    float x = cur.GetValueOrDefault();
+                    var cur = e.Current;
+                    float x = cur.Item.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.HasValue & x > valueVal)
+                    if (cur.Item.HasValue & x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -411,8 +409,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            decimal value;
-            using (IEnumerator<decimal> e = source.GetEnumerator())
+            (int Index, decimal Item) value;
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -422,10 +420,9 @@ namespace Recore.Linq
                 value = e.Current;
                 while (e.MoveNext())
                 {
-                    decimal x = e.Current;
-                    if (x > value)
+                    if (e.Current.Item > value.Item)
                     {
-                        value = x;
+                        value = e.Current;
                     }
                 }
             }
@@ -443,8 +440,8 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(source));
             }
 
-            decimal? value = null;
-            using (IEnumerator<decimal?> e = source.GetEnumerator())
+            (int Index, decimal? Item) value = (0, null);
+            using (var e = source.Enumerate().GetEnumerator())
             {
                 do
                 {
@@ -455,14 +452,14 @@ namespace Recore.Linq
 
                     value = e.Current;
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                decimal valueVal = value.GetValueOrDefault();
+                decimal valueVal = value.Item.GetValueOrDefault();
                 while (e.MoveNext())
                 {
-                    decimal? cur = e.Current;
-                    decimal x = cur.GetValueOrDefault();
-                    if (cur.HasValue && x > valueVal)
+                    var cur = e.Current;
+                    decimal x = cur.Item.GetValueOrDefault();
+                    if (cur.Item.HasValue && x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -489,7 +486,7 @@ namespace Recore.Linq
             TSource value = default!;
             if (value == null)
             {
-                using (IEnumerator<TSource> e = source.GetEnumerator())
+                using (var e = source.Enumerate().GetEnumerator())
                 {
                     do
                     {
@@ -504,17 +501,16 @@ namespace Recore.Linq
 
                     while (e.MoveNext())
                     {
-                        TSource x = e.Current;
                         if (x != null && comparer.Compare(x, value) > 0)
                         {
-                            value = x;
+                            value = e.Current;
                         }
                     }
                 }
             }
             else
             {
-                using (IEnumerator<TSource> e = source.GetEnumerator())
+                using (var e = source.Enumerate().GetEnumerator())
                 {
                     if (!e.MoveNext())
                     {
@@ -524,10 +520,9 @@ namespace Recore.Linq
                     value = e.Current;
                     while (e.MoveNext())
                     {
-                        TSource x = e.Current;
                         if (comparer.Compare(x, value) > 0)
                         {
-                            value = x;
+                            value = e.Current;
                         }
                     }
                 }
@@ -552,7 +547,7 @@ namespace Recore.Linq
             }
 
             int value;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -589,7 +584,7 @@ namespace Recore.Linq
             }
 
             int? value = null;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 do
                 {
@@ -600,9 +595,9 @@ namespace Recore.Linq
 
                     value = selector(e.Current);
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                int valueVal = value.GetValueOrDefault();
+                int valueVal = value.Item.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     // We can fast-path this case where we know HasValue will
@@ -614,7 +609,7 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         int? cur = selector(e.Current);
-                        int x = cur.GetValueOrDefault();
+                        int x = cur.Item.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
@@ -627,11 +622,11 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         int? cur = selector(e.Current);
-                        int x = cur.GetValueOrDefault();
+                        int x = cur.Item.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.HasValue & x > valueVal)
+                        if (cur.Item.HasValue & x > valueVal)
                         {
                             valueVal = x;
                             value = cur;
@@ -659,7 +654,7 @@ namespace Recore.Linq
             }
 
             long value;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -696,7 +691,7 @@ namespace Recore.Linq
             }
 
             long? value = null;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 do
                 {
@@ -707,15 +702,15 @@ namespace Recore.Linq
 
                     value = selector(e.Current);
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                long valueVal = value.GetValueOrDefault();
+                long valueVal = value.Item.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     while (e.MoveNext())
                     {
                         long? cur = selector(e.Current);
-                        long x = cur.GetValueOrDefault();
+                        long x = cur.Item.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
@@ -728,11 +723,11 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         long? cur = selector(e.Current);
-                        long x = cur.GetValueOrDefault();
+                        long x = cur.Item.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.HasValue & x > valueVal)
+                        if (cur.Item.HasValue & x > valueVal)
                         {
                             valueVal = x;
                             value = cur;
@@ -760,7 +755,7 @@ namespace Recore.Linq
             }
 
             float value;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -768,7 +763,7 @@ namespace Recore.Linq
                 }
 
                 value = selector(e.Current);
-                while (float.IsNaN(value))
+                while (float.IsNaN(value.Item))
                 {
                     if (!e.MoveNext())
                     {
@@ -807,7 +802,7 @@ namespace Recore.Linq
             }
 
             float? value = null;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 do
                 {
@@ -818,9 +813,9 @@ namespace Recore.Linq
 
                     value = selector(e.Current);
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                float valueVal = value.GetValueOrDefault();
+                float valueVal = value.Item.GetValueOrDefault();
                 while (float.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -829,7 +824,7 @@ namespace Recore.Linq
                     }
 
                     float? cur = selector(e.Current);
-                    if (cur.HasValue)
+                    if (cur.Item.HasValue)
                     {
                         valueVal = (value = cur).GetValueOrDefault();
                     }
@@ -838,11 +833,11 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     float? cur = selector(e.Current);
-                    float x = cur.GetValueOrDefault();
+                    float x = cur.Item.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.HasValue & x > valueVal)
+                    if (cur.Item.HasValue & x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -869,7 +864,7 @@ namespace Recore.Linq
             }
 
             double value;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -882,7 +877,7 @@ namespace Recore.Linq
                 // less than all other values. We need to do explicit checks to ensure this, but
                 // once we've found a value that is not NaN we need no longer worry about it,
                 // so first loop until such a value is found (or not, as the case may be).
-                while (double.IsNaN(value))
+                while (double.IsNaN(value.Item))
                 {
                     if (!e.MoveNext())
                     {
@@ -921,7 +916,7 @@ namespace Recore.Linq
             }
 
             double? value = null;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 do
                 {
@@ -932,9 +927,9 @@ namespace Recore.Linq
 
                     value = selector(e.Current);
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                double valueVal = value.GetValueOrDefault();
+                double valueVal = value.Item.GetValueOrDefault();
                 while (double.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -943,7 +938,7 @@ namespace Recore.Linq
                     }
 
                     double? cur = selector(e.Current);
-                    if (cur.HasValue)
+                    if (cur.Item.HasValue)
                     {
                         valueVal = (value = cur).GetValueOrDefault();
                     }
@@ -952,11 +947,11 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     double? cur = selector(e.Current);
-                    double x = cur.GetValueOrDefault();
+                    double x = cur.Item.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.HasValue & x > valueVal)
+                    if (cur.Item.HasValue & x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -983,7 +978,7 @@ namespace Recore.Linq
             }
 
             decimal value;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 if (!e.MoveNext())
                 {
@@ -1020,7 +1015,7 @@ namespace Recore.Linq
             }
 
             decimal? value = null;
-            using (IEnumerator<TSource> e = source.GetEnumerator())
+            using (var e = source.GetEnumerator())
             {
                 do
                 {
@@ -1031,14 +1026,14 @@ namespace Recore.Linq
 
                     value = selector(e.Current);
                 }
-                while (!value.HasValue);
+                while (!value.Item.HasValue);
 
-                decimal valueVal = value.GetValueOrDefault();
+                decimal valueVal = value.Item.GetValueOrDefault();
                 while (e.MoveNext())
                 {
                     decimal? cur = selector(e.Current);
-                    decimal x = cur.GetValueOrDefault();
-                    if (cur.HasValue && x > valueVal)
+                    decimal x = cur.Item.GetValueOrDefault();
+                    if (cur.Item.HasValue && x > valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -1070,7 +1065,7 @@ namespace Recore.Linq
             TResult value = default!;
             if (value == null)
             {
-                using (IEnumerator<TSource> e = source.GetEnumerator())
+                using (var e = source.GetEnumerator())
                 {
                     do
                     {
@@ -1095,7 +1090,7 @@ namespace Recore.Linq
             }
             else
             {
-                using (IEnumerator<TSource> e = source.GetEnumerator())
+                using (var e = source.GetEnumerator())
                 {
                     if (!e.MoveNext())
                     {
