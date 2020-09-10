@@ -50,7 +50,7 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgmaxGeneric()
+        public void ArgmaxObject()
         {
             var collection = new[]
             {
@@ -60,8 +60,18 @@ namespace Recore.Linq.Tests
             };
 
             Assert.Equal(
-                collection[1],
-                collection.Argmax(x => x.Age).Argmax);
+                (Argmax: collection[1], Max: 3),
+                collection.Argmax(x => x.Age));
+        }
+
+        [Fact]
+        public void ArgmaxInt32()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmax: 4, Max: 4),
+                collection.Argmax(x => x));
         }
     }
 }

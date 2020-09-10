@@ -50,7 +50,7 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgminGeneric()
+        public void ArgminObject()
         {
             var collection = new[]
             {
@@ -60,8 +60,18 @@ namespace Recore.Linq.Tests
             };
 
             Assert.Equal(
-                collection[0],
-                collection.Argmin(x => x.Age).Argmin);
+                (Argmin: collection[0], Min: 1),
+                collection.Argmin(x => x.Age));
+        }
+
+        [Fact]
+        public void ArgminInt32()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmin: 1, Min: 1),
+                collection.Argmin(x => x));
         }
     }
 }
