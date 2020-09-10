@@ -15,7 +15,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, int Min) Argmin(this IEnumerable<int> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -47,7 +47,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, int? Min) Argmin(this IEnumerable<int?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -94,7 +94,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, long Min) Argmin(this IEnumerable<long> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -126,7 +126,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, long? Min) Argmin(this IEnumerable<long?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -169,7 +169,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, float Min) Argmin(this IEnumerable<float> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -219,7 +219,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, float? Min) Argmin(this IEnumerable<float?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -271,7 +271,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, double Min) Argmin(this IEnumerable<double> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -312,7 +312,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, double? Min) Argmin(this IEnumerable<double?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -364,7 +364,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, decimal Min) Argmin(this IEnumerable<decimal> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -396,7 +396,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmin, decimal? Min) Argmin(this IEnumerable<decimal?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -438,7 +438,7 @@ namespace Recore.Linq
         //[return: MaybeNull]
         public static (TSource Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -499,12 +499,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, int Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -536,12 +536,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, int? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -588,12 +588,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, long Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -625,12 +625,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, long? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -673,12 +673,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, float Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -728,12 +728,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, float? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -785,12 +785,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, double Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -831,12 +831,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, double? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -888,12 +888,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, decimal Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -925,12 +925,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmin, decimal? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -972,12 +972,12 @@ namespace Recore.Linq
         //[return: MaybeNull]
         public static (TSource Argmin, TResult Min) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }

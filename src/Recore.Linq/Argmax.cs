@@ -15,7 +15,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, int Max) Argmax(this IEnumerable<int> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -47,7 +47,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, int? Max) Argmax(this IEnumerable<int?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -112,7 +112,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, long Max) Argmax(this IEnumerable<long> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -144,7 +144,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, long? Max) Argmax(this IEnumerable<long?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -203,7 +203,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, double Max) Argmax(this IEnumerable<double> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -250,7 +250,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, double? Max) Argmax(this IEnumerable<double?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -307,7 +307,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, float Max) Argmax(this IEnumerable<float> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -349,7 +349,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, float? Max) Argmax(this IEnumerable<float?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -406,7 +406,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, decimal Max) Argmax(this IEnumerable<decimal> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -438,7 +438,7 @@ namespace Recore.Linq
         /// </summary>
         public static (int Argmax, decimal? Max) Argmax(this IEnumerable<decimal?> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -480,7 +480,7 @@ namespace Recore.Linq
         //[return: MaybeNull]
         public static (TSource Argmax, (int Argmax, TSource Max) Max) Argmax<TSource>(this IEnumerable<TSource> source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -541,12 +541,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, int Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -578,12 +578,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, int? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -648,12 +648,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, long Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -685,12 +685,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, long? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -749,12 +749,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, float Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -796,12 +796,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, float? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -858,12 +858,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, double Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -910,12 +910,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, double? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -972,12 +972,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, decimal Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -1009,12 +1009,12 @@ namespace Recore.Linq
         /// </summary>
         public static (TSource Argmax, decimal? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
@@ -1056,12 +1056,12 @@ namespace Recore.Linq
         //[return: MaybeNull]
         public static (TSource Argmax, TResult Max) Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (selector == null)
+            if (selector is null)
             {
                 throw new ArgumentNullException(nameof(selector));
             }
