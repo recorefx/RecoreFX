@@ -141,7 +141,6 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-
             if (collection.Count == 0)
             {
                 Assert.Null(collection.Max());
@@ -341,6 +340,248 @@ namespace Recore.Linq.Tests
                 Assert.Equal(
                     collection.Max(),
                     collection.Argmax().Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_Int32(List<int> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_NullableInt32(List<int?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_Int64(List<long> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_NullableInt64(List<long?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_Double(List<double> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_NullableDouble(List<double?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_Single(List<float> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_NullableSingle(List<float?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_Decimal(List<decimal> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_NullableDecimal(List<decimal?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
+            }
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Selector_String(List<string> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Max(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmax(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Max(x => projected[x]),
+                    source.Argmax(x => projected[x]).Max);
             }
         }
     }
