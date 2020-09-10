@@ -23,10 +23,23 @@ namespace Recore.Linq.Tests
         [Fact]
         public void EmptyEnumerable()
         {
-            // Nullable types return null
-            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()).Argmin);
+            // Non-nullable TSource throws
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<int>().Argmin().Argmin);
 
-            // Non-nullable types throw
+            // Nullable TSource returns 0
+            Assert.Equal(0, Enumerable.Empty<string>().Argmin().Argmin);
+
+            // Nullable TSource and TResult returns null
+            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.ToUpper()).Argmin);
+
+            // When one or both of TSource and TResult is non-nullable, throws
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<string>().Argmin(x => x.Length).Argmin);
+
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<int>().Argmin(x => string.Empty).Argmin);
+
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmin(x => x * x));
         }
