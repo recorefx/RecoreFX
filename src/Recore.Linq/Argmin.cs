@@ -8,6 +8,9 @@ namespace Recore.Linq
     // https://github.com/dotnet/runtime/blob/809a06f45161ae686a06b9e9ccc2f45097b91657/src/libraries/System.Linq/src/System/Linq/Min.cs
     public static partial class Renumerable
     {
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of <see cref="int"/> values.
+        /// </summary>
         public static (int Argmin, int Min) Argmin(this IEnumerable<int> source)
         {
             if (source == null)
@@ -37,6 +40,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of nullable <see cref="int"/> values.
+        /// </summary>
         public static (int Argmin, int? Min) Argmin(this IEnumerable<int?> source)
         {
             if (source == null)
@@ -81,6 +87,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of <see cref="long"/> values.
+        /// </summary>
         public static (int Argmin, long Min) Argmin(this IEnumerable<long> source)
         {
             if (source == null)
@@ -110,6 +119,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of nullable <see cref="long"/> values.
+        /// </summary>
         public static (int Argmin, long? Min) Argmin(this IEnumerable<long?> source)
         {
             if (source == null)
@@ -150,6 +162,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of <see cref="float"/> values.
+        /// </summary>
         public static (int Argmin, float Min) Argmin(this IEnumerable<float> source)
         {
             if (source == null)
@@ -197,6 +212,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of nullable <see cref="float"/> values.
+        /// </summary>
         public static (int Argmin, float? Min) Argmin(this IEnumerable<float?> source)
         {
             if (source == null)
@@ -246,6 +264,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of <see cref="double"/> values.
+        /// </summary>
         public static (int Argmin, double Min) Argmin(this IEnumerable<double> source)
         {
             if (source == null)
@@ -284,6 +305,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of nullable <see cref="double"/> values.
+        /// </summary>
         public static (int Argmin, double? Min) Argmin(this IEnumerable<double?> source)
         {
             if (source == null)
@@ -333,6 +357,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of <see cref="decimal"/> values.
+        /// </summary>
         public static (int Argmin, decimal Min) Argmin(this IEnumerable<decimal> source)
         {
             if (source == null)
@@ -362,6 +389,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of nullable <see cref="decimal"/> values.
+        /// </summary>
         public static (int Argmin, decimal? Min) Argmin(this IEnumerable<decimal?> source)
         {
             if (source == null)
@@ -399,6 +429,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the index of the minimum value from a sequence of values.
+        /// </summary>
         // TODO https://github.com/recorefx/RecoreFX/issues/24
         //[return: MaybeNull]
         public static (TSource Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
@@ -459,6 +492,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning <see cref="int"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, int Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
             if (source == null)
@@ -493,6 +529,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="int"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, int? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
         {
             if (source == null)
@@ -542,6 +581,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning <see cref="long"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, long Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
         {
             if (source == null)
@@ -576,6 +618,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="long"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, long? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
         {
             if (source == null)
@@ -621,6 +666,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning <see cref="float"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, float Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
         {
             if (source == null)
@@ -673,6 +721,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="float"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, float? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
         {
             if (source == null)
@@ -727,6 +778,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning <see cref="double"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, double Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
             if (source == null)
@@ -770,6 +824,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="double"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, double? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
         {
             if (source == null)
@@ -824,6 +881,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="decimal"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, decimal Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
         {
             if (source == null)
@@ -858,6 +918,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="decimal"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmin, decimal? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
             if (source == null)
@@ -901,7 +964,7 @@ namespace Recore.Linq
         }
 
         /// <summary>
-        /// Returns the minimum and the minimizing value for a function from a sequence of values.
+        /// Returns the minimum value and the minimizing value for a function on a sequence of values.
         /// </summary>
         // TODO https://github.com/recorefx/RecoreFX/issues/24
         //[return: MaybeNull]

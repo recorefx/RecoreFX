@@ -40,6 +40,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of nullable <see cref="int"/> values.
+        /// </summary>
         public static (int Argmax, int? Max) Argmax(this IEnumerable<int?> source)
         {
             if (source == null)
@@ -102,6 +105,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of <see cref="long"/> values.
+        /// </summary>
         public static (int Argmax, long Max) Argmax(this IEnumerable<long> source)
         {
             if (source == null)
@@ -131,6 +137,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of nullable <see cref="long"/> values.
+        /// </summary>
         public static (int Argmax, long? Max) Argmax(this IEnumerable<long?> source)
         {
             if (source == null)
@@ -187,6 +196,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of <see cref="double"/> values.
+        /// </summary>
         public static (int Argmax, double Max) Argmax(this IEnumerable<double> source)
         {
             if (source == null)
@@ -231,6 +243,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of nullable <see cref="double"/> values.
+        /// </summary>
         public static (int Argmax, double? Max) Argmax(this IEnumerable<double?> source)
         {
             if (source == null)
@@ -285,6 +300,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of <see cref="float"/> values.
+        /// </summary>
         public static (int Argmax, float Max) Argmax(this IEnumerable<float> source)
         {
             if (source == null)
@@ -324,6 +342,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of nullable <see cref="float"/> values.
+        /// </summary>
         public static (int Argmax, float? Max) Argmax(this IEnumerable<float?> source)
         {
             if (source == null)
@@ -378,6 +399,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of <see cref="decimal"/> values.
+        /// </summary>
         public static (int Argmax, decimal Max) Argmax(this IEnumerable<decimal> source)
         {
             if (source == null)
@@ -407,6 +431,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value from a sequence of nullable <see cref="decimal"/> values.
+        /// </summary>
         public static (int Argmax, decimal? Max) Argmax(this IEnumerable<decimal?> source)
         {
             if (source == null)
@@ -507,6 +534,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning <see cref="int"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, int Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
             if (source == null)
@@ -541,6 +571,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning nullable <see cref="int"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, int? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
         {
             if (source == null)
@@ -608,6 +641,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning <see cref="long"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, long Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, long> selector)
         {
             if (source == null)
@@ -642,6 +678,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning nullable <see cref="long"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, long? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
         {
             if (source == null)
@@ -703,6 +742,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning <see cref="float"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, float Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
         {
             if (source == null)
@@ -747,6 +789,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning nullable <see cref="float"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, float? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
         {
             if (source == null)
@@ -806,6 +851,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning <see cref="double"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, double Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
             if (source == null)
@@ -855,6 +903,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning nullable <see cref="double"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, double? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
         {
             if (source == null)
@@ -914,6 +965,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning <see cref="decimal"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, decimal Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
         {
             if (source == null)
@@ -948,6 +1002,9 @@ namespace Recore.Linq
             return value;
         }
 
+        /// <summary>
+        /// Returns the maximum value and the maximizing value for a function returning nullable <see cref="decimal"/> on a sequence of values.
+        /// </summary>
         public static (TSource Argmax, decimal? Max) Argmax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
             if (source == null)
@@ -991,7 +1048,7 @@ namespace Recore.Linq
         }
 
         /// <summary>
-        /// Returns the maximum value and the maximizing value for a function from a sequence of values.
+        /// Returns the maximum value and the maximizing value for a function on a sequence of values.
         /// </summary>
         // TODO https://github.com/recorefx/RecoreFX/issues/24
         //[return: MaybeNull]
