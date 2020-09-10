@@ -122,14 +122,14 @@ namespace Recore.Linq.Tests
 
             if (collection.Count == 0)
             {
-                Assert.Throws<InvalidOperationException>(() => collection.Max());
-                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
             }
             else
             {
                 Assert.Equal(
-                    collection.Max(),
-                    collection.Argmax().Max);
+                    collection.Min(),
+                    collection.Argmin().Min);
             }
         }
 
@@ -156,14 +156,14 @@ namespace Recore.Linq.Tests
 
             if (collection.Count == 0)
             {
-                Assert.Throws<InvalidOperationException>(() => collection.Max());
-                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
             }
             else
             {
                 Assert.Equal(
-                    collection.Max(),
-                    collection.Argmax().Max);
+                    collection.Min(),
+                    collection.Argmin().Min);
             }
         }
 
@@ -190,14 +190,14 @@ namespace Recore.Linq.Tests
 
             if (collection.Count == 0)
             {
-                Assert.Throws<InvalidOperationException>(() => collection.Max());
-                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
             }
             else
             {
                 Assert.Equal(
-                    collection.Max(),
-                    collection.Argmax().Max);
+                    collection.Min(),
+                    collection.Argmin().Min);
             }
         }
 
@@ -224,14 +224,14 @@ namespace Recore.Linq.Tests
 
             if (collection.Count == 0)
             {
-                Assert.Throws<InvalidOperationException>(() => collection.Max());
-                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
             }
             else
             {
                 Assert.Equal(
-                    collection.Max(),
-                    collection.Argmax().Max);
+                    collection.Min(),
+                    collection.Argmin().Min);
             }
         }
 
@@ -258,14 +258,14 @@ namespace Recore.Linq.Tests
 
             if (collection.Count == 0)
             {
-                Assert.Throws<InvalidOperationException>(() => collection.Max());
-                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
             }
             else
             {
                 Assert.Equal(
-                    collection.Max(),
-                    collection.Argmax().Max);
+                    collection.Min(),
+                    collection.Argmin().Min);
             }
         }
 
