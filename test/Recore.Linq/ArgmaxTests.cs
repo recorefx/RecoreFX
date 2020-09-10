@@ -102,9 +102,15 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_Int32(List<int> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
 
             Assert.Equal(
@@ -115,7 +121,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_NullableInt32(List<int?> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
@@ -128,9 +134,15 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_Int64(List<long> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
 
             Assert.Equal(
@@ -141,7 +153,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_NullableInt64(List<long?> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
@@ -154,9 +166,15 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_Double(List<double> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
 
             Assert.Equal(
@@ -167,7 +185,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_NullableDouble(List<double?> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
@@ -180,9 +198,15 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_Single(List<float> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
 
             Assert.Equal(
@@ -193,7 +217,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_NullableSingle(List<float?> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
@@ -206,9 +230,15 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_Decimal(List<decimal> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
 
             Assert.Equal(
@@ -219,7 +249,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_NullableDecimal(List<decimal?> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
@@ -232,7 +262,7 @@ namespace Recore.Linq.Tests
         [Property]
         public void MaxAlwaysEqualsEnumerableMax_String(List<string> collection)
         {
-            if (collection is null || collection.Count == 0)
+            if (collection is null)
             {
                 return;
             }
