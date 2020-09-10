@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Linq.Tests
@@ -50,6 +53,16 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
+        public void ArgminByIndex()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmin: 0, Min: 1),
+                collection.Argmin());
+        }
+
+        [Fact]
         public void ArgminObject()
         {
             var collection = new[]
@@ -72,6 +85,18 @@ namespace Recore.Linq.Tests
             Assert.Equal(
                 (Argmin: 1, Min: 1),
                 collection.Argmin(x => x));
+        }
+
+        [Property]
+        public void ArgminEqualsMinForIdentityFunction(List<int> xs)
+        {
+            if (xs is null || xs.Count == 0)
+            {
+                return;
+            }
+
+            var (argmin, min) = xs.Argmin(x => x);
+            Assert.Equal(argmin, min);
         }
     }
 }

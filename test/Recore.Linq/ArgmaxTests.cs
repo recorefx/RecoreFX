@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
+using FsCheck;
+using FsCheck.Xunit;
 using Xunit;
 
 namespace Recore.Linq.Tests
@@ -50,6 +53,16 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
+        public void ArgmaxByIndex()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmax: 2, Max: 4),
+                collection.Argmax());
+        }
+
+        [Fact]
         public void ArgmaxObject()
         {
             var collection = new[]
@@ -72,6 +85,18 @@ namespace Recore.Linq.Tests
             Assert.Equal(
                 (Argmax: 4, Max: 4),
                 collection.Argmax(x => x));
+        }
+
+        [Property]
+        public void ArgmaxEqualsMaxForIdentityFunction(List<int> xs)
+        {
+            if (xs is null || xs.Count == 0)
+            {
+                return;
+            }
+
+            var (argmax, max) = xs.Argmax(x => x);
+            Assert.Equal(max, argmax);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recore.Linq
 {
@@ -54,6 +55,18 @@ namespace Recore.Linq
         // {
         //     return source.GetEnumerator().Current;
         // }
+
+        /// <summary>
+        /// Returns the maximum value and the index of the maximum value for a function from a sequence of values.
+        /// </summary>
+        public static (int Argmax, TSource Max) Argmax<TSource>(this IEnumerable<TSource> source)
+        {
+            var argmax = source
+                .Enumerate()
+                .Argmax(pair => pair.Item);
+
+            return (Argmax: argmax.Argmax.Index, argmax.Max);
+        }
 
         /// <summary>
         /// Returns the maximum value and the maximizing value for a function from a sequence of values.
