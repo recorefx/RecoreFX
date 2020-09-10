@@ -3,6 +3,8 @@ using System.Collections.Generic;
 // TODO https://github.com/recorefx/RecoreFX/issues/24
 //using System.Diagnostics.CodeAnalysis;
 
+using Recore.Properties;
+
 namespace Recore.Linq
 {
     // https://github.com/dotnet/runtime/blob/809a06f45161ae686a06b9e9ccc2f45097b91657/src/libraries/System.Linq/src/System/Linq/Min.cs
@@ -15,7 +17,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             int value;
@@ -23,7 +25,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = e.Current;
@@ -47,7 +49,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             int? value = null;
@@ -94,7 +96,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             long value;
@@ -102,7 +104,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = e.Current;
@@ -126,7 +128,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             long? value = null;
@@ -169,7 +171,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             float value;
@@ -177,7 +179,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = e.Current;
@@ -219,7 +221,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             float? value = null;
@@ -271,7 +273,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             double value;
@@ -279,7 +281,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = e.Current;
@@ -312,7 +314,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             double? value = null;
@@ -364,7 +366,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             decimal value;
@@ -372,7 +374,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = e.Current;
@@ -396,7 +398,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             decimal? value = null;
@@ -438,7 +440,7 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             Comparer<TSource> comparer = Comparer<TSource>.Default;
@@ -474,7 +476,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        ThrowHelper.ThrowNoElementsException();
+                        throw new InvalidOperationException(Resources.NoElements);
                     }
 
                     value = e.Current;
@@ -499,12 +501,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             int value;
@@ -512,7 +514,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = selector(e.Current);
@@ -536,12 +538,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             int? value = null;
@@ -588,12 +590,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             long value;
@@ -601,7 +603,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = selector(e.Current);
@@ -625,12 +627,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             long? value = null;
@@ -673,12 +675,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             float value;
@@ -686,7 +688,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = selector(e.Current);
@@ -728,12 +730,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             float? value = null;
@@ -785,12 +787,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             double value;
@@ -798,7 +800,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = selector(e.Current);
@@ -831,12 +833,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             double? value = null;
@@ -888,12 +890,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             decimal value;
@@ -901,7 +903,7 @@ namespace Recore.Linq
             {
                 if (!e.MoveNext())
                 {
-                    ThrowHelper.ThrowNoElementsException();
+                    throw new InvalidOperationException(Resources.NoElements);
                 }
 
                 value = selector(e.Current);
@@ -925,12 +927,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             decimal? value = null;
@@ -972,12 +974,12 @@ namespace Recore.Linq
         {
             if (source == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.source);
+                throw new ArgumentNullException(nameof(source));
             }
 
             if (selector == null)
             {
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.selector);
+                throw new ArgumentNullException(nameof(selector));
             }
 
             Comparer<TResult> comparer = Comparer<TResult>.Default;
@@ -1013,7 +1015,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        ThrowHelper.ThrowNoElementsException();
+                        throw new InvalidOperationException(Resources.NoElements);
                     }
 
                     value = selector(e.Current);
