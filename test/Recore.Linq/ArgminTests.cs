@@ -112,10 +112,12 @@ namespace Recore.Linq.Tests
                 Assert.Throws<InvalidOperationException>(() => collection.Max());
                 Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
-
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -144,10 +146,12 @@ namespace Recore.Linq.Tests
                 Assert.Throws<InvalidOperationException>(() => collection.Max());
                 Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
-
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -176,10 +180,12 @@ namespace Recore.Linq.Tests
                 Assert.Throws<InvalidOperationException>(() => collection.Max());
                 Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
-
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -208,10 +214,12 @@ namespace Recore.Linq.Tests
                 Assert.Throws<InvalidOperationException>(() => collection.Max());
                 Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
-
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -240,10 +248,12 @@ namespace Recore.Linq.Tests
                 Assert.Throws<InvalidOperationException>(() => collection.Max());
                 Assert.Throws<InvalidOperationException>(() => collection.Argmax());
             }
-
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
