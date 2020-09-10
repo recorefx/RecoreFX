@@ -431,7 +431,7 @@ namespace Recore.Linq
         /// </summary>
         // TODO https://github.com/recorefx/RecoreFX/issues/24
         //[return: MaybeNull]
-        public static (TSource Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
+        public static (int Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
         {
             if (source is null)
             {
@@ -441,8 +441,8 @@ namespace Recore.Linq
             Comparer<TSource> comparer = Comparer<TSource>.Default;
             // TODO https://github.com/recorefx/RecoreFX/issues/24
             //TSource value = default!;
-            TSource value = default;
-            if (value == null)
+            (int Index, TSource Item) value = (0, default);
+            if (value.Item == null)
             {
                 using (var e = source.Enumerate().GetEnumerator())
                 {
@@ -455,11 +455,11 @@ namespace Recore.Linq
 
                         value = e.Current;
                     }
-                    while (value == null);
+                    while (value.Item == null);
 
                     while (e.MoveNext())
                     {
-                        if (x != null && comparer.Compare(x, value) < 0)
+                        if (e.Current.Item != null && comparer.Compare(e.Current.Item, value.Item) < 0)
                         {
                             value = e.Current;
                         }
@@ -478,7 +478,7 @@ namespace Recore.Linq
                     value = e.Current;
                     while (e.MoveNext())
                     {
-                        if (comparer.Compare(x, value) < 0)
+                        if (comparer.Compare(e.Current.Item, value.Item) < 0)
                         {
                             value = e.Current;
                         }
