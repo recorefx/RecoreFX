@@ -504,6 +504,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             int value;
             using (var e = source.GetEnumerator())
             {
@@ -512,12 +513,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argminCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     int x = selector(e.Current);
                     if (x < value)
                     {
+                        argminCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -541,6 +544,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             int? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -553,21 +557,22 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
                 // Keep hold of the wrapped value, and do comparisons on that, rather than
                 // using the lifted operation each time.
-                int valueVal = value.Item.GetValueOrDefault();
+                int valueVal = value.GetValueOrDefault();
                 while (e.MoveNext())
                 {
                     int? cur = selector(e.Current);
-                    int x = cur.Item.GetValueOrDefault();
+                    int x = cur.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.Item.HasValue & x < valueVal)
+                    if (cur.HasValue & x < valueVal)
                     {
                         valueVal = x;
                         value = cur;
@@ -593,6 +598,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             long value;
             using (var e = source.GetEnumerator())
             {
@@ -601,12 +607,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argminCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     long x = selector(e.Current);
                     if (x < value)
                     {
+                        argminCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -630,6 +638,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             long? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -640,21 +649,23 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                long valueVal = value.Item.GetValueOrDefault();
+                long valueVal = value.GetValueOrDefault();
                 while (e.MoveNext())
                 {
                     long? cur = selector(e.Current);
-                    long x = cur.Item.GetValueOrDefault();
+                    long x = cur.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.Item.HasValue & x < valueVal)
+                    if (cur.HasValue & x < valueVal)
                     {
                         valueVal = x;
+                        argminCandidate = e.Current;
                         value = cur;
                     }
                 }
@@ -678,6 +689,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             float value;
             using (var e = source.GetEnumerator())
             {
@@ -686,8 +698,9 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argminCandidate = e.Current;
                 value = selector(e.Current);
-                if (float.IsNaN(value.Item))
+                if (float.IsNaN(value))
                 {
                     return value;
                 }
@@ -697,6 +710,7 @@ namespace Recore.Linq
                     float x = selector(e.Current);
                     if (x < value)
                     {
+                        argminCandidate = e.Current;
                         value = x;
                     }
 
@@ -733,6 +747,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             float? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -743,11 +758,12 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                float valueVal = value.Item.GetValueOrDefault();
+                float valueVal = value.GetValueOrDefault();
                 if (float.IsNaN(valueVal))
                 {
                     return value;
@@ -756,12 +772,13 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     float? cur = selector(e.Current);
-                    if (cur.Item.HasValue)
+                    if (cur.HasValue)
                     {
-                        float x = cur.Item.GetValueOrDefault();
+                        float x = cur.GetValueOrDefault();
                         if (x < valueVal)
                         {
                             valueVal = x;
+                            argminCandidate = e.Current;
                             value = cur;
                         }
                         else if (float.IsNaN(x))
@@ -790,6 +807,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             double value;
             using (var e = source.GetEnumerator())
             {
@@ -798,6 +816,7 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argminCandidate = e.Current;
                 value = selector(e.Current);
                 if (double.IsNaN(value.Item))
                 {
@@ -809,6 +828,7 @@ namespace Recore.Linq
                     double x = selector(e.Current);
                     if (x < value)
                     {
+                        argminCandidate = e.Current;
                         value = x;
                     }
                     else if (double.IsNaN(x))
@@ -836,6 +856,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             double? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -846,11 +867,12 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                double valueVal = value.Item.GetValueOrDefault();
+                double valueVal = value.GetValueOrDefault();
                 if (double.IsNaN(valueVal))
                 {
                     return value;
@@ -859,12 +881,13 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     double? cur = selector(e.Current);
-                    if (cur.Item.HasValue)
+                    if (cur.HasValue)
                     {
-                        double x = cur.Item.GetValueOrDefault();
+                        double x = cur.GetValueOrDefault();
                         if (x < valueVal)
                         {
                             valueVal = x;
+                            argminCandidate = e.Current;
                             value = cur;
                         }
                         else if (double.IsNaN(x))
@@ -893,6 +916,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             decimal value;
             using (var e = source.GetEnumerator())
             {
@@ -901,12 +925,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argminCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     decimal x = selector(e.Current);
                     if (x < value)
                     {
+                        argminCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -930,6 +956,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argminCandidate;
             decimal? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -940,18 +967,20 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                decimal valueVal = value.Item.GetValueOrDefault();
+                decimal valueVal = value.GetValueOrDefault();
                 while (e.MoveNext())
                 {
                     decimal? cur = selector(e.Current);
-                    decimal x = cur.Item.GetValueOrDefault();
-                    if (cur.Item.HasValue && x < valueVal)
+                    decimal x = cur.GetValueOrDefault();
+                    if (cur.HasValue && x < valueVal)
                     {
                         valueVal = x;
+                        argminCandidate = e.Current;
                         value = cur;
                     }
                 }
@@ -980,6 +1009,7 @@ namespace Recore.Linq
             Comparer<TResult> comparer = Comparer<TResult>.Default;
             // TODO https://github.com/recorefx/RecoreFX/issues/24
             //TResult value = default!;
+            TSource argminCandidate;
             TResult value = default;
             if (value == null)
             {
@@ -992,6 +1022,7 @@ namespace Recore.Linq
                             return value;
                         }
 
+                        argminCandidate = e.Current;
                         value = selector(e.Current);
                     }
                     while (value == null);
@@ -1001,6 +1032,7 @@ namespace Recore.Linq
                         TResult x = selector(e.Current);
                         if (x != null && comparer.Compare(x, value) < 0)
                         {
+                            argminCandidate = e.Current;
                             value = x;
                         }
                     }
@@ -1015,12 +1047,14 @@ namespace Recore.Linq
                         throw new InvalidOperationException(Resources.NoElements);
                     }
 
+                    argminCandidate = e.Current;
                     value = selector(e.Current);
                     while (e.MoveNext())
                     {
                         TResult x = selector(e.Current);
                         if (comparer.Compare(x, value) < 0)
                         {
+                            argminCandidate = e.Current;
                             value = x;
                         }
                     }

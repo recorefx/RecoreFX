@@ -548,6 +548,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             int value;
             using (var e = source.GetEnumerator())
             {
@@ -556,12 +557,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argmaxCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     int x = selector(e.Current);
                     if (x > value)
                     {
+                        argmaxCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -585,6 +588,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             int? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -595,11 +599,12 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                int valueVal = value.Item.GetValueOrDefault();
+                int valueVal = value.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     // We can fast-path this case where we know HasValue will
@@ -611,10 +616,11 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         int? cur = selector(e.Current);
-                        int x = cur.Item.GetValueOrDefault();
+                        int x = cur.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
+                            argmaxCandidate = e.Current;
                             value = cur;
                         }
                     }
@@ -624,13 +630,14 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         int? cur = selector(e.Current);
-                        int x = cur.Item.GetValueOrDefault();
+                        int x = cur.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.Item.HasValue & x > valueVal)
+                        if (cur.HasValue & x > valueVal)
                         {
                             valueVal = x;
+                            argmaxCandidate = e.Current;
                             value = cur;
                         }
                     }
@@ -655,6 +662,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             long value;
             using (var e = source.GetEnumerator())
             {
@@ -663,12 +671,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argmaxCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     long x = selector(e.Current);
                     if (x > value)
                     {
+                        argmaxCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -692,6 +702,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             long? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -702,20 +713,22 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                long valueVal = value.Item.GetValueOrDefault();
+                long valueVal = value.GetValueOrDefault();
                 if (valueVal >= 0)
                 {
                     while (e.MoveNext())
                     {
                         long? cur = selector(e.Current);
-                        long x = cur.Item.GetValueOrDefault();
+                        long x = cur.GetValueOrDefault();
                         if (x > valueVal)
                         {
                             valueVal = x;
+                            argmaxCandidate = e.Current;
                             value = cur;
                         }
                     }
@@ -725,13 +738,14 @@ namespace Recore.Linq
                     while (e.MoveNext())
                     {
                         long? cur = selector(e.Current);
-                        long x = cur.Item.GetValueOrDefault();
+                        long x = cur.GetValueOrDefault();
 
                         // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                         // unless nulls either never happen or always happen.
-                        if (cur.Item.HasValue & x > valueVal)
+                        if (cur.HasValue & x > valueVal)
                         {
                             valueVal = x;
+                            argmaxCandidate = e.Current;
                             value = cur;
                         }
                     }
@@ -756,6 +770,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             float value;
             using (var e = source.GetEnumerator())
             {
@@ -764,8 +779,9 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argmaxCandidate = e.Current;
                 value = selector(e.Current);
-                while (float.IsNaN(value.Item))
+                while (float.IsNaN(value))
                 {
                     if (!e.MoveNext())
                     {
@@ -780,6 +796,7 @@ namespace Recore.Linq
                     float x = selector(e.Current);
                     if (x > value)
                     {
+                        argmaxCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -803,6 +820,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             float? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -813,11 +831,12 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                float valueVal = value.Item.GetValueOrDefault();
+                float valueVal = value.GetValueOrDefault();
                 while (float.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -826,8 +845,9 @@ namespace Recore.Linq
                     }
 
                     float? cur = selector(e.Current);
-                    if (cur.Item.HasValue)
+                    if (cur.HasValue)
                     {
+                        argmaxCandidate = e.Current;
                         valueVal = (value = cur).GetValueOrDefault();
                     }
                 }
@@ -835,13 +855,14 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     float? cur = selector(e.Current);
-                    float x = cur.Item.GetValueOrDefault();
+                    float x = cur.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.Item.HasValue & x > valueVal)
+                    if (cur.HasValue & x > valueVal)
                     {
                         valueVal = x;
+                        argmaxCandidate = e.Current;
                         value = cur;
                     }
                 }
@@ -865,6 +886,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             double value;
             using (var e = source.GetEnumerator())
             {
@@ -873,13 +895,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argmaxCandidate = e.Current;
                 value = selector(e.Current);
 
                 // As described in a comment on Min(this IEnumerable<double>) NaN is ordered
                 // less than all other values. We need to do explicit checks to ensure this, but
                 // once we've found a value that is not NaN we need no longer worry about it,
                 // so first loop until such a value is found (or not, as the case may be).
-                while (double.IsNaN(value.Item))
+                while (double.IsNaN(value))
                 {
                     if (!e.MoveNext())
                     {
@@ -894,6 +917,7 @@ namespace Recore.Linq
                     double x = selector(e.Current);
                     if (x > value)
                     {
+                        argmaxCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -917,6 +941,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             double? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -927,11 +952,12 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                double valueVal = value.Item.GetValueOrDefault();
+                double valueVal = value.GetValueOrDefault();
                 while (double.IsNaN(valueVal))
                 {
                     if (!e.MoveNext())
@@ -940,8 +966,9 @@ namespace Recore.Linq
                     }
 
                     double? cur = selector(e.Current);
-                    if (cur.Item.HasValue)
+                    if (cur.HasValue)
                     {
+                        argmaxCandidate = e.Current;
                         valueVal = (value = cur).GetValueOrDefault();
                     }
                 }
@@ -949,13 +976,14 @@ namespace Recore.Linq
                 while (e.MoveNext())
                 {
                     double? cur = selector(e.Current);
-                    double x = cur.Item.GetValueOrDefault();
+                    double x = cur.GetValueOrDefault();
 
                     // Do not replace & with &&. The branch prediction cost outweighs the extra operation
                     // unless nulls either never happen or always happen.
-                    if (cur.Item.HasValue & x > valueVal)
+                    if (cur.HasValue & x > valueVal)
                     {
                         valueVal = x;
+                        argmaxCandidate = e.Current;
                         value = cur;
                     }
                 }
@@ -979,6 +1007,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             decimal value;
             using (var e = source.GetEnumerator())
             {
@@ -987,12 +1016,14 @@ namespace Recore.Linq
                     throw new InvalidOperationException(Resources.NoElements);
                 }
 
+                argmaxCandidate = e.Current;
                 value = selector(e.Current);
                 while (e.MoveNext())
                 {
                     decimal x = selector(e.Current);
                     if (x > value)
                     {
+                        argmaxCandidate = e.Current;
                         value = x;
                     }
                 }
@@ -1016,6 +1047,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
+            TSource argmaxCandidate;
             decimal? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -1026,18 +1058,20 @@ namespace Recore.Linq
                         return value;
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
-                while (!value.Item.HasValue);
+                while (!value.HasValue);
 
-                decimal valueVal = value.Item.GetValueOrDefault();
+                decimal valueVal = value.GetValueOrDefault();
                 while (e.MoveNext())
                 {
                     decimal? cur = selector(e.Current);
-                    decimal x = cur.Item.GetValueOrDefault();
-                    if (cur.Item.HasValue && x > valueVal)
+                    decimal x = cur.GetValueOrDefault();
+                    if (cur.HasValue && x > valueVal)
                     {
                         valueVal = x;
+                        argmaxCandidate = e.Current;
                         value = cur;
                     }
                 }
@@ -1066,6 +1100,7 @@ namespace Recore.Linq
             Comparer<TResult> comparer = Comparer<TResult>.Default;
             // TODO https://github.com/recorefx/RecoreFX/issues/24
             //TResult value = default!;
+            TSource argmaxCandidate;
             TResult value = default;
             if (value == null)
             {
@@ -1078,6 +1113,7 @@ namespace Recore.Linq
                             return value;
                         }
 
+                        argmaxCandidate = e.Current;
                         value = selector(e.Current);
                     }
                     while (value == null);
@@ -1087,6 +1123,7 @@ namespace Recore.Linq
                         TResult x = selector(e.Current);
                         if (x != null && comparer.Compare(x, value) > 0)
                         {
+                            argmaxCandidate = e.Current;
                             value = x;
                         }
                     }
@@ -1101,12 +1138,14 @@ namespace Recore.Linq
                         throw new InvalidOperationException(Resources.NoElements);
                     }
 
+                    argmaxCandidate = e.Current;
                     value = selector(e.Current);
                     while (e.MoveNext())
                     {
                         TResult x = selector(e.Current);
                         if (comparer.Compare(x, value) > 0)
                         {
+                            argmaxCandidate = e.Current;
                             value = x;
                         }
                     }
