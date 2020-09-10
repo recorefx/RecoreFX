@@ -526,7 +526,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argminCandidate, value);
                     }
 
                     argminCandidate = e.Current;
@@ -580,7 +580,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -620,7 +620,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -646,7 +646,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argminCandidate, value);
                     }
 
                     argminCandidate = e.Current;
@@ -671,7 +671,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -702,7 +702,7 @@ namespace Recore.Linq
                 value = selector(e.Current);
                 if (float.IsNaN(value))
                 {
-                    return value;
+                    return (argminCandidate, value);
                 }
 
                 while (e.MoveNext())
@@ -724,12 +724,12 @@ namespace Recore.Linq
                     // can't find a smaller value, we can short-circuit.
                     else if (float.IsNaN(x))
                     {
-                        return x;
+                        return (e.Current, x);
                     }
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -755,7 +755,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argminCandidate, value);
                     }
 
                     argminCandidate = e.Current;
@@ -766,7 +766,7 @@ namespace Recore.Linq
                 float valueVal = value.GetValueOrDefault();
                 if (float.IsNaN(valueVal))
                 {
-                    return value;
+                    return (argminCandidate, value);
                 }
 
                 while (e.MoveNext())
@@ -783,13 +783,13 @@ namespace Recore.Linq
                         }
                         else if (float.IsNaN(x))
                         {
-                            return cur;
+                            return (e.Current, cur);
                         }
                     }
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -818,9 +818,9 @@ namespace Recore.Linq
 
                 argminCandidate = e.Current;
                 value = selector(e.Current);
-                if (double.IsNaN(value.Item))
+                if (double.IsNaN(value))
                 {
-                    return value;
+                    return (argminCandidate, value);
                 }
 
                 while (e.MoveNext())
@@ -833,12 +833,12 @@ namespace Recore.Linq
                     }
                     else if (double.IsNaN(x))
                     {
-                        return x;
+                        return (e.Current, x);
                     }
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -864,7 +864,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argminCandidate, value);
                     }
 
                     argminCandidate = e.Current;
@@ -875,7 +875,7 @@ namespace Recore.Linq
                 double valueVal = value.GetValueOrDefault();
                 if (double.IsNaN(valueVal))
                 {
-                    return value;
+                    return (argminCandidate, value);
                 }
 
                 while (e.MoveNext())
@@ -892,13 +892,13 @@ namespace Recore.Linq
                         }
                         else if (double.IsNaN(x))
                         {
-                            return cur;
+                            return (e.Current, cur);
                         }
                     }
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -938,7 +938,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -964,7 +964,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argminCandidate, value);
                     }
 
                     argminCandidate = e.Current;
@@ -986,7 +986,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
 
         /// <summary>
@@ -1019,7 +1019,7 @@ namespace Recore.Linq
                     {
                         if (!e.MoveNext())
                         {
-                            return value;
+                            return (argminCandidate, value);
                         }
 
                         argminCandidate = e.Current;
@@ -1061,7 +1061,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argminCandidate, value);
         }
     }
 }

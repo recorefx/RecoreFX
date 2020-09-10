@@ -570,7 +570,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -596,7 +596,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     argmaxCandidate = e.Current;
@@ -644,7 +644,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -684,7 +684,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -710,7 +710,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     argmaxCandidate = e.Current;
@@ -752,7 +752,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -785,7 +785,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     value = selector(e.Current);
@@ -802,7 +802,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -828,7 +828,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     argmaxCandidate = e.Current;
@@ -841,7 +841,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     float? cur = selector(e.Current);
@@ -868,7 +868,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -906,7 +906,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     value = selector(e.Current);
@@ -923,7 +923,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -949,7 +949,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     argmaxCandidate = e.Current;
@@ -962,7 +962,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     double? cur = selector(e.Current);
@@ -989,7 +989,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -1029,7 +1029,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -1055,7 +1055,7 @@ namespace Recore.Linq
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        return (argmaxCandidate, value);
                     }
 
                     argmaxCandidate = e.Current;
@@ -1077,7 +1077,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
 
         /// <summary>
@@ -1110,7 +1110,7 @@ namespace Recore.Linq
                     {
                         if (!e.MoveNext())
                         {
-                            return value;
+                            return (argmaxCandidate, value);
                         }
 
                         argmaxCandidate = e.Current;
@@ -1152,7 +1152,7 @@ namespace Recore.Linq
                 }
             }
 
-            return value;
+            return (argmaxCandidate, value);
         }
     }
 }
