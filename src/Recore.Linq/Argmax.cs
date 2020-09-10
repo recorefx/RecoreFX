@@ -588,17 +588,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             int? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argmaxCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argmaxCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -702,17 +711,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             long? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argmaxCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argmaxCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -820,17 +838,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             float? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argmaxCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argmaxCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -941,17 +968,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             double? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argmaxCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argmaxCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -1047,17 +1083,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             decimal? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argmaxCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argmaxCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argmaxCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -1100,19 +1145,28 @@ namespace Recore.Linq
             Comparer<TResult> comparer = Comparer<TResult>.Default;
             // TODO https://github.com/recorefx/RecoreFX/issues/24
             //TResult value = default!;
-            TSource argmaxCandidate;
+            TSource argmaxCandidate = default;
             TResult value = default;
             if (value == null)
             {
                 using (var e = source.GetEnumerator())
                 {
+                    bool isEmpty = true;
                     do
                     {
                         if (!e.MoveNext())
                         {
-                            return (argmaxCandidate, value);
+                            if (isEmpty && default(TSource) != null)
+                            {
+                                throw new InvalidOperationException(Resources.NoElements);
+                            }
+                            else
+                            {
+                                return (argmaxCandidate, value);
+                            }
                         }
 
+                        isEmpty = false;
                         argmaxCandidate = e.Current;
                         value = selector(e.Current);
                     }

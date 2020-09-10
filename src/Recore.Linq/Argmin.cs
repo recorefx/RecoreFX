@@ -544,19 +544,28 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             int? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 // Start off knowing that we've a non-null value (or exit here, knowing we don't)
                 // so we don't have to keep testing for nullity.
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argminCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argminCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -638,17 +647,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             long? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argminCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argminCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -747,17 +765,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             float? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argminCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argminCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -856,17 +883,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             double? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argminCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argminCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -956,17 +992,26 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             decimal? value = null;
             using (var e = source.GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return (argminCandidate, value);
+                        if (isEmpty && default(TSource) != null)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return (argminCandidate, value);
+                        }
                     }
 
+                    isEmpty = false;
                     argminCandidate = e.Current;
                     value = selector(e.Current);
                 }
@@ -1009,19 +1054,28 @@ namespace Recore.Linq
             Comparer<TResult> comparer = Comparer<TResult>.Default;
             // TODO https://github.com/recorefx/RecoreFX/issues/24
             //TResult value = default!;
-            TSource argminCandidate;
+            TSource argminCandidate = default;
             TResult value = default;
             if (value == null)
             {
                 using (var e = source.GetEnumerator())
                 {
+                    bool isEmpty = true;
                     do
                     {
                         if (!e.MoveNext())
                         {
-                            return (argminCandidate, value);
+                            if (isEmpty && default(TSource) != null)
+                            {
+                                throw new InvalidOperationException(Resources.NoElements);
+                            }
+                            else
+                            {
+                                return (argminCandidate, value);
+                            }
                         }
 
+                        isEmpty = false;
                         argminCandidate = e.Current;
                         value = selector(e.Current);
                     }
