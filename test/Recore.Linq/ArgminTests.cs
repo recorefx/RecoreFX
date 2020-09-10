@@ -23,12 +23,25 @@ namespace Recore.Linq.Tests
         [Fact]
         public void EmptyEnumerable()
         {
-            // Nullable types return null
-            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.GetHashCode()).Argmin);
+            // With no selector, always throws
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<int>().Argmin().Argmin);
 
-            // Non-nullable types throw
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<string>().Argmin().Argmin);
+
+            // When one or both of TSource and TResult is non-nullable, throws
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<string>().Argmin(x => x.Length).Argmin);
+
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<int>().Argmin(x => string.Empty).Argmin);
+
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmin(x => x * x));
+
+            // When both of TSource and TResult are non-nullable, returns null
+            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.ToUpper()).Argmin);
         }
 
         [Fact]
@@ -97,6 +110,479 @@ namespace Recore.Linq.Tests
 
             var (argmin, min) = xs.Argmin(x => x);
             Assert.Equal(argmin, min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Int32(List<int> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableInt32(List<int?> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Int64(List<long> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableInt64(List<long?> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Double(List<double> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableDouble(List<double?> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Single(List<float> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableSingle(List<float?> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Decimal(List<decimal> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableDecimal(List<decimal?> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_String(List<string> collection)
+        {
+            if (collection is null)
+            {
+                return;
+            }
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_Int32(List<int> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_NullableInt32(List<int?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_Int64(List<long> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_NullableInt64(List<long?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_Double(List<double> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_NullableDouble(List<double?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_Single(List<float> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_NullableSingle(List<float?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_Decimal(List<decimal> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Throws<InvalidOperationException>(() => source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_NullableDecimal(List<decimal?> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Selector_String(List<string> projected)
+        {
+            if (projected is null)
+            {
+                return;
+            }
+
+            var source = Enumerable.Range(0, projected.Count).ToList();
+            if (source.Count == 0)
+            {
+                Assert.Null(source.Min(x => projected[x]));
+                Assert.Throws<InvalidOperationException>(() => source.Argmin(x => projected[x]));
+            }
+            else
+            {
+                Assert.Equal(
+                    source.Min(x => projected[x]),
+                    source.Argmin(x => projected[x]).Min);
+            }
         }
     }
 }

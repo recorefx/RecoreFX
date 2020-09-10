@@ -61,6 +61,15 @@ namespace Recore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sequence contains no elements.
+        /// </summary>
+        internal static string NoElements {
+            get {
+                return ResourceManager.GetString("NoElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An optional value was asserted to have a value, but was empty..
         /// </summary>
         internal static string OptionalAssertValue {
