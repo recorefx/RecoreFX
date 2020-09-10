@@ -58,7 +58,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum and the minimizing value for a function from a sequence of values.
         /// </summary>
-        public static (TResult Min, TSource Argmin) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        public static (TSource Argmin, TResult Min) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source is null)
             {
@@ -70,7 +70,6 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            var comparer = Comparer<TResult>.Default;
             using (var enumerator = source.GetEnumerator())
             {
                 // No elements
@@ -91,6 +90,7 @@ namespace Recore.Linq
                 // Initialize with first element
                 var argmin = enumerator.Current;
                 var min = selector(enumerator.Current);
+                var comparer = Comparer<TResult>.Default;
                 while (enumerator.MoveNext())
                 {
                     var value = selector(enumerator.Current);
@@ -101,7 +101,7 @@ namespace Recore.Linq
                     }
                 }
 
-                return (min, argmin);
+                return (argmin, min);
             }
         }
     }
