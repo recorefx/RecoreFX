@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recore.Linq
 {
@@ -56,9 +57,21 @@ namespace Recore.Linq
         // }
 
         /// <summary>
+        /// Returns the maximum value and the index of the maximum value for a function from a sequence of values.
+        /// </summary>
+        public static (int Argmax, TSource Max) Argmax<TSource>(this IEnumerable<TSource> source)
+        {
+            var argmax = source
+                .Enumerate()
+                .Argmax(pair => pair.Item);
+
+            return (Argmax: argmax.Argmax.Index, argmax.Max);
+        }
+
+        /// <summary>
         /// Returns the maximum value and the maximizing value for a function from a sequence of values.
         /// </summary>
-        public static (TResult Max, TSource Argmax) Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        public static (TSource Argmax, TResult Max) Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source is null)
             {
@@ -70,7 +83,6 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            var comparer = Comparer<TResult>.Default;
             using (var enumerator = source.GetEnumerator())
             {
                 // No elements
@@ -91,6 +103,7 @@ namespace Recore.Linq
                 // Initialize with first element
                 var argmax = enumerator.Current;
                 var max = selector(enumerator.Current);
+                var comparer = Comparer<TResult>.Default;
                 while (enumerator.MoveNext())
                 {
                     var value = selector(enumerator.Current);
@@ -101,7 +114,7 @@ namespace Recore.Linq
                     }
                 }
 
-                return (max, argmax);
+                return (argmax, max);
             }
         }
     }

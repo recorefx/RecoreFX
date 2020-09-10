@@ -78,7 +78,7 @@ namespace Recore.Linq.Tests
             }
 
             var result = source.Enumerate();
-            return result.First().index == 0;
+            return result.First().Index == 0;
         }
 
         [Property]
@@ -97,7 +97,7 @@ namespace Recore.Linq.Tests
             }
 
             var result = source.Enumerate();
-            return result.Last().index == source.Count - 1;
+            return result.Last().Index == source.Count - 1;
         }
 
         [Property]
@@ -113,7 +113,7 @@ namespace Recore.Linq.Tests
 
             for (var i = 0; i < result.Count; i++)
             {
-                if (result[i].index != i)
+                if (result[i].Index != i)
                 {
                     return false;
                 }
@@ -140,7 +140,7 @@ namespace Recore.Linq.Tests
 
             for (var i = 0; i < source.Count; i++)
             {
-                if (source[i] != result[i].item)
+                if (source[i] != result[i].Item)
                 {
                     return false;
                 }
