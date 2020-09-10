@@ -98,5 +98,148 @@ namespace Recore.Linq.Tests
             var (argmin, min) = xs.Argmin(x => x);
             Assert.Equal(argmin, min);
         }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Int32(List<int> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableInt32(List<int?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Int64(List<long> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableInt64(List<long?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Double(List<double> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableDouble(List<double?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Single(List<float> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableSingle(List<float?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_Decimal(List<decimal> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_NullableDecimal(List<decimal?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
+
+        [Property]
+        public void MinAlwaysEqualsEnumerableMin_String(List<string> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Min(),
+                collection.Argmin().Min);
+        }
     }
 }

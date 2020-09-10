@@ -98,5 +98,148 @@ namespace Recore.Linq.Tests
             var (argmax, max) = xs.Argmax(x => x);
             Assert.Equal(max, argmax);
         }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Int32(List<int> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_NullableInt32(List<int?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Int64(List<long> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_NullableInt64(List<long?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Double(List<double> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_NullableDouble(List<double?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Single(List<float> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_NullableSingle(List<float?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_Decimal(List<decimal> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_NullableDecimal(List<decimal?> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
+
+        [Property]
+        public void MaxAlwaysEqualsEnumerableMax_String(List<string> collection)
+        {
+            if (collection is null || collection.Count == 0)
+            {
+                return;
+            }
+
+            Assert.Equal(
+                collection.Max(),
+                collection.Argmax().Max);
+        }
     }
 }
