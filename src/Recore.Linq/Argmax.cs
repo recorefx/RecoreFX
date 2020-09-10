@@ -54,13 +54,22 @@ namespace Recore.Linq
             (int Index, int? Item) value = (0, null);
             using (var e = source.Enumerate().GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        if (isEmpty)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return value;
+                        }
                     }
 
+                    isEmpty = false;
                     value = e.Current;
                 }
                 while (!value.Item.HasValue);
@@ -150,13 +159,22 @@ namespace Recore.Linq
             (int Index, long? Item) value = (0, null);
             using (var e = source.Enumerate().GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        if (isEmpty)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return value;
+                        }
                     }
 
+                    isEmpty = false;
                     value = e.Current;
                 }
                 while (!value.Item.HasValue);
@@ -255,13 +273,22 @@ namespace Recore.Linq
             (int Index, double? Item) value = (0, null);
             using (var e = source.Enumerate().GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        if (isEmpty)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return value;
+                        }
                     }
 
+                    isEmpty = false;
                     value = e.Current;
                 }
                 while (!value.Item.HasValue);
@@ -354,13 +381,22 @@ namespace Recore.Linq
             (int Index, float? Item) value = (0, null);
             using (var e = source.Enumerate().GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        if (isEmpty)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return value;
+                        }
                     }
 
+                    isEmpty = false;
                     value = e.Current;
                 }
                 while (!value.Item.HasValue);
@@ -443,13 +479,22 @@ namespace Recore.Linq
             (int Index, decimal? Item) value = (0, null);
             using (var e = source.Enumerate().GetEnumerator())
             {
+                bool isEmpty = true;
                 do
                 {
                     if (!e.MoveNext())
                     {
-                        return value;
+                        if (isEmpty)
+                        {
+                            throw new InvalidOperationException(Resources.NoElements);
+                        }
+                        else
+                        {
+                            return value;
+                        }
                     }
 
+                    isEmpty = false;
                     value = e.Current;
                 }
                 while (!value.Item.HasValue);
@@ -490,13 +535,22 @@ namespace Recore.Linq
             {
                 using (var e = source.Enumerate().GetEnumerator())
                 {
+                    bool isEmpty = true;
                     do
                     {
                         if (!e.MoveNext())
                         {
-                            return value;
+                            if (isEmpty)
+                            {
+                                throw new InvalidOperationException(Resources.NoElements);
+                            }
+                            else
+                            {
+                                return value;
+                            }
                         }
 
+                        isEmpty = false;
                         value = e.Current;
                     }
                     while (value.Item == null);

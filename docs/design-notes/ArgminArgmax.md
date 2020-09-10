@@ -17,7 +17,7 @@ the `Max()` or `Min()` of an empty sequence is `null`,
 whereas for a list of value types, trying to call `Max()` or `Min()` on an empty sequence results in an `InvalidOperationException`.
 
 The first edge case is with the overloads that don't take a `selector`.
-For `Max()` and `Min()`, whether these throw or return `null` depends on what `TSource` is.
+For `Max()` and `Min()`, whether these throw or return `null` depends on what the `T` in `IEnumerable<T>` is.
 Since `Argmax()` or `Argmin()` returns the index here, it doesn't make sense to return `(0, null)` for an empty sequence, so these overloads just always throw `InvalidOperationException`.
 
 The other edge case is with the overloads that take a `selector` that returns a nullable value.
