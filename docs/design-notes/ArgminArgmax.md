@@ -11,13 +11,17 @@ Of course, the ideal solution would have been for the built-in methods to just w
 
 ## Is `Argmax().Max` and `Argmin().Min` always equivalent to `Max()` and `Min()`?
 
-The short answer is yes, but there is a corner case.
+The short answer is yes, except for empty sequences.
 For the overloads that operate on a list of nullables,
-the `Max()` or `Min()` of an empty sequence is null,
+the `Max()` or `Min()` of an empty sequence is `null`,
 whereas for a list of value types, trying to call `Max()` or `Min()` on an empty sequence results in an `InvalidOperationException`.
 
-The confusing bit comes with the overloads that take a `selector` that returns a nullable value.
-The `Max()` or `Min()` of an empty sequence here is still null.
+The first edge case is with the overloads that don't take a `selector`.
+For `Max()` and `Min()`, whether these throw or return `null` depends on what `TSource` is.
+Since `Argmax()` or `Argmin()` returns the index here, it doesn't make sense to return `(0, null)` for an empty sequence, so these overloads just always throw `InvalidOperationException`.
+
+The other edge case is with the overloads that take a `selector` that returns a nullable value.
+The `Max()` or `Min()` of an empty sequence here is still `null`.
 But now, the input type is not necessarily nullable.
 One option is just to make the input type nullable to accommodate this one special case, but that complicates things quite a bit because you need to provide overloads for value and reference types separately.
 Another option is to return `default` in this case.
@@ -25,3 +29,5 @@ This keeps the implementation the most similar to `Max()` and `Min()`, but doesn
 
 The best option in my opinion is to do what the generic `Max(IEnumerable<TSource>)` implementation does:
 if `TSource` is a value type, throw `InvalidOperationException`; if it is a reference type, return `null`.
+
+So basically, `Argmax()` and `Argmin()` will return `null` for an empty sequence only if `selector` is passed and both `TSource` and `TResult` are nullable.

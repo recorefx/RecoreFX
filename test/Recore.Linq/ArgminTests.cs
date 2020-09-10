@@ -23,15 +23,12 @@ namespace Recore.Linq.Tests
         [Fact]
         public void EmptyEnumerable()
         {
-            // Non-nullable TSource throws
+            // With no selector, always throws
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmin().Argmin);
 
-            // Nullable TSource returns 0
-            Assert.Equal(0, Enumerable.Empty<string>().Argmin().Argmin);
-
-            // Nullable TSource and TResult returns null
-            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.ToUpper()).Argmin);
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<string>().Argmin().Argmin);
 
             // When one or both of TSource and TResult is non-nullable, throws
             Assert.Throws<InvalidOperationException>(
@@ -42,6 +39,9 @@ namespace Recore.Linq.Tests
 
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmin(x => x * x));
+
+            // When both of TSource and TResult are non-nullable, returns null
+            Assert.Null(Enumerable.Empty<string>().Argmin(x => x.ToUpper()).Argmin);
         }
 
         [Fact]
@@ -141,9 +141,18 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
 
         [Property]
@@ -175,9 +184,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
 
         [Property]
@@ -209,9 +226,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
 
         [Property]
@@ -243,9 +268,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
 
         [Property]
@@ -277,9 +310,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
 
         [Property]
@@ -290,9 +331,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Min(),
-                collection.Argmin().Min);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Min());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmin());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Min(),
+                    collection.Argmin().Min);
+            }
         }
     }
 }

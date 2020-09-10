@@ -27,11 +27,8 @@ namespace Recore.Linq.Tests
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmax().Argmax);
 
-            // Nullable TSource returns 0
-            Assert.Equal(0, Enumerable.Empty<string>().Argmax().Argmax);
-
-            // Nullable TSource and TResult returns null
-            Assert.Null(Enumerable.Empty<string>().Argmax(x => x.ToUpper()).Argmax);
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<string>().Argmax().Argmax);
 
             // When one or both of TSource and TResult is non-nullable, throws
             Assert.Throws<InvalidOperationException>(
@@ -42,6 +39,9 @@ namespace Recore.Linq.Tests
 
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmax(x => x * x));
+
+            // When both of TSource and TResult are non-nullable, returns null
+            Assert.Null(Enumerable.Empty<string>().Argmax(x => x.ToUpper()).Argmax);
         }
 
         [Fact]
@@ -141,9 +141,18 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -175,9 +184,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -209,9 +226,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -243,9 +268,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -277,9 +310,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
 
         [Property]
@@ -290,9 +331,17 @@ namespace Recore.Linq.Tests
                 return;
             }
 
-            Assert.Equal(
-                collection.Max(),
-                collection.Argmax().Max);
+            if (collection.Count == 0)
+            {
+                Assert.Null(collection.Max());
+                Assert.Throws<InvalidOperationException>(() => collection.Argmax());
+            }
+            else
+            {
+                Assert.Equal(
+                    collection.Max(),
+                    collection.Argmax().Max);
+            }
         }
     }
 }
