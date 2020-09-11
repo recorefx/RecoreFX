@@ -35,10 +35,18 @@ Do this for every release:
 - [ ] Bump the `AssemblyVersion`, `FileVersion`, and `Version` properties in `Recore.csproj`.
 - [ ] Add a changelog under the `docs/changelogs` directory.
 - [ ] Submit a PR with the above two changes.
-- [ ] Once the PR as merged, create a release on GitHub.
+- [ ] Once the PR has merged, create a release on GitHub.
     - [ ] Follow the instructions below for the tagging strategy.
     - [ ] Paste the changelog in the release description.
-- [ ] Once the release is published, upload the package to NuGet.
+- [ ] Once the release is published, upload the package to NuGet through the [Azure Pipelines build](https://dev.azure.com/briancristante/RecoreFX/_build?definitionId=13).
+    - [ ] Set the branch to the tag ref of the release, like `refs/tags/v1.0.0`.
+    - [ ] Set the `VERSION` variable to the version, like `1.0.0`.
+- [ ] Update the docs:
+    - [ ] Run the [Azure Pipelines build](https://dev.azure.com/briancristante/RecoreFX/_build?definitionId=14) from the tag ref of the release.
+    - [ ] Download the artifact, which contains the docs.
+    - [ ] On your local machine, clone [recorefx/recorefx.github.io](https://github.com/recorefx/recorefx.github.io).
+    - [ ] Delete all files in that repo and copy in the new files from the build.
+    - [ ] Commit the changes and push. The docs should be live within a few minutes.
 
 ### New major version
 
