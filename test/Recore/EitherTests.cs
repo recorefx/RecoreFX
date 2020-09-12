@@ -92,18 +92,6 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void GetLeftGetRight()
-        {
-            var left = new Either<int, string>(-5);
-            Assert.Equal(-5, left.GetLeft());
-            Assert.False(left.GetRight().HasValue);
-
-            var right = new Either<int, string>("hello");
-            Assert.False(right.GetLeft().HasValue);
-            Assert.Equal("hello", right.GetRight());
-        }
-
-        [Fact]
         public void OnLeftOnRight()
         {
             Either<int, string> either;
@@ -295,6 +283,34 @@ namespace Recore.Tests
                     day => Equals((int)color, (int)day),
                     str => false),
                 str => false));
+        }
+
+        [Fact]
+        public void GetLeftGetRight()
+        {
+            var left = new Either<int, string>(-5);
+            Assert.Equal(-5, left.GetLeft());
+            Assert.False(left.GetRight().HasValue);
+
+            var right = new Either<int, string>("hello");
+            Assert.False(right.GetLeft().HasValue);
+            Assert.Equal("hello", right.GetRight());
+        }
+
+        [Fact]
+        public void GetLeftGetRightNullable()
+        {
+            var left = new Either<int?, string>(-5);
+            Assert.Equal(-5, left.GetLeft());
+            Assert.False(left.GetRight().HasValue);
+
+            left = new Either<int?, string>(left: null);
+            Assert.Null(left.GetLeft());
+            Assert.False(left.GetRight().HasValue);
+
+            var right = new Either<int?, string>("hello");
+            Assert.Null(right.GetLeft());
+            Assert.Equal("hello", right.GetRight());
         }
 
         [Fact]

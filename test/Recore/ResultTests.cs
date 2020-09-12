@@ -107,18 +107,6 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void GetValueGetError()
-        {
-            var success = Result.Success<int, string>(-5);
-            Assert.Equal(-5, success.GetValue());
-            Assert.False(success.GetError().HasValue);
-
-            var failure = Result.Failure<int, string>("hello");
-            Assert.False(failure.GetValue().HasValue);
-            Assert.Equal("hello", failure.GetError());
-        }
-
-        [Fact]
         public void OnValueOnError()
         {
             Result<int, string> result;
@@ -281,6 +269,34 @@ namespace Recore.Tests
 
             var failure = Result.Failure<int, string>("hello");
             Assert.Equal("hello", failure.ToString());
+        }
+
+        [Fact]
+        public void GetValueGetError()
+        {
+            var success = Result.Success<int, string>(-5);
+            Assert.Equal(-5, success.GetValue());
+            Assert.False(success.GetError().HasValue);
+
+            var failure = Result.Failure<int, string>("hello");
+            Assert.False(failure.GetValue().HasValue);
+            Assert.Equal("hello", failure.GetError());
+        }
+
+        [Fact]
+        public void GetLeftGetRightNullable()
+        {
+            var left = new Result<int?, string>(-5);
+            Assert.Equal(-5, left.GetValue());
+            Assert.False(left.GetError().HasValue);
+
+            left = new Result<int?, string>(value: null);
+            Assert.Null(left.GetValue());
+            Assert.False(left.GetError().HasValue);
+
+            var right = new Result<int?, string>("hello");
+            Assert.Null(right.GetValue());
+            Assert.Equal("hello", right.GetError());
         }
 
         [Fact]
