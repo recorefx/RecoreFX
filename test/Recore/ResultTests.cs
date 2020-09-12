@@ -19,6 +19,16 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void ConstructorNullable()
+        {
+            var success = new Result<int?, bool?>(value: null);
+            Assert.True(success.IsSuccessful);
+
+            var failure = new Result<int?, bool?>(error: null);
+            Assert.False(failure.IsSuccessful);
+        }
+
+        [Fact]
         public void SwitchFunc()
         {
             Result<string, int> Result;
