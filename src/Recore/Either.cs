@@ -84,7 +84,7 @@ namespace Recore
         /// </summary>
         public Either(TRight right)
         {
-            left = default;
+            left = default!;
             this.right = right;
             IsLeft = false;
         }
