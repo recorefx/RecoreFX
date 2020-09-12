@@ -27,7 +27,7 @@ namespace Recore.Text.Json.Serialization.Converters
     /// JSON converter for the generic type <seealso cref="Optional{T}"/>
     /// for a given <typeparamref name="T"/>.
     /// </summary>
-    internal sealed class OptionalConverter<T> : JsonConverter<Optional<T>>
+    internal sealed class OptionalConverter<T> : JsonConverter<Optional<T>> where T : notnull
     {
         public override Optional<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

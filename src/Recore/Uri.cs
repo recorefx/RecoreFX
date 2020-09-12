@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 using Recore.Text.Json.Serialization.Converters;
@@ -31,12 +32,12 @@ namespace Recore
         /// <summary>
         /// Creates a new <see cref="AbsoluteUri"/>. Does not throw an exception if the <see cref="AbsoluteUri"/> cannot be created.
         /// </summary>
-        public static bool TryCreate(string uriString, out AbsoluteUri result)
+        public static bool TryCreate(string uriString, [NotNullWhen(true)] out AbsoluteUri? result)
         {
             result = null;
             if (TryCreate(uriString, UriKind.Absolute, out Uri value))
             {
-                result = value.AsAbsoluteUri();
+                result = value.AsAbsoluteUri()!;
                 return true;
             }
             else
@@ -60,12 +61,12 @@ namespace Recore
         /// <summary>
         /// Creates a new <see cref="RelativeUri"/>. Does not throw an exception if the <see cref="RelativeUri"/> cannot be created.
         /// </summary>
-        public static bool TryCreate(string uriString, out RelativeUri result)
+        public static bool TryCreate(string uriString, [NotNullWhen(true)] out RelativeUri? result)
         {
             result = null;
             if (TryCreate(uriString, UriKind.Relative, out Uri value))
             {
-                result = value.AsRelativeUri();
+                result = value.AsRelativeUri()!;
                 return true;
             }
             else
@@ -90,7 +91,7 @@ namespace Recore
         /// <see cref="AsAbsoluteUri(Uri)"/> works as <c>uri as AbsoluteUri</c> would if <see cref="Uri"/> were an abstract base class.
         /// It complements <see cref="Uri.IsAbsoluteUri"/> in this regard.
         /// </remarks>
-        public static AbsoluteUri AsAbsoluteUri(this Uri uri)
+        public static AbsoluteUri? AsAbsoluteUri(this Uri uri)
         {
             if (uri.IsAbsoluteUri)
             {
@@ -111,7 +112,7 @@ namespace Recore
         /// patterns like <c>(AbsoluteUri)uri</c> or <c>uri as AbsoluteUri</c> cannot be used reliably.
         /// <see cref="AsRelativeUri(Uri)"/> works as <c>uri as RelativeUri</c> would if <see cref="Uri"/> were an abstract base class.
         /// </remarks>
-        public static RelativeUri AsRelativeUri(this Uri uri)
+        public static RelativeUri? AsRelativeUri(this Uri uri)
         {
             if (uri.IsAbsoluteUri)
             {

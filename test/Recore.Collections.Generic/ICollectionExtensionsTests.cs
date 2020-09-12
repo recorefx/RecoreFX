@@ -12,19 +12,19 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                ICollection<string> collection = null;
-                collection.Append("hello");
+                ICollection<string>? collection = null;
+                collection!.Append("hello");
             });
         }
 
         [Fact]
         public void Append_EmptyCollection()
         {
-            var collection = new List<string>()
+            var collection = new List<string?>()
                 .Append(null)
                 .Append("hello");
 
-            var expected = new List<string>
+            var expected = new List<string?>
             {
                 null,
                 "hello"

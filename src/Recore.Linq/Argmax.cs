@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-// TODO https://github.com/recorefx/RecoreFX/issues/24
-//using System.Diagnostics.CodeAnalysis;
 
 using Recore.Properties;
 
@@ -518,8 +516,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the maximum value and the index of the maximum value from a sequence of values.
         /// </summary>
-        // TODO https://github.com/recorefx/RecoreFX/issues/24
-        //[return: MaybeNull]
+        // TODO C# 9.0: this should be TSource? Max
         public static (int Argmax, TSource Max) Argmax<TSource>(this IEnumerable<TSource> source)
         {
             if (source is null)
@@ -528,8 +525,6 @@ namespace Recore.Linq
             }
 
             Comparer<TSource> comparer = Comparer<TSource>.Default;
-            // TODO https://github.com/recorefx/RecoreFX/issues/24
-            //TSource value = default!;
             (int Index, TSource Item) value = (0, default);
             if (value.Item == null)
             {
@@ -1182,8 +1177,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the maximum value and the maximizing value for a function on a sequence of values.
         /// </summary>
-        // TODO https://github.com/recorefx/RecoreFX/issues/24
-        //[return: MaybeNull]
+        // TODO C# 9.0: this should be (TSource? Argmax, TResult? Max)
         public static (TSource Argmax, TResult Max) Argmax<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source is null)
@@ -1197,8 +1191,6 @@ namespace Recore.Linq
             }
 
             Comparer<TResult> comparer = Comparer<TResult>.Default;
-            // TODO https://github.com/recorefx/RecoreFX/issues/24
-            //TResult value = default!;
             TSource argmaxCandidate = default;
             TResult value = default;
             if (value == null)

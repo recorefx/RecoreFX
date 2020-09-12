@@ -34,7 +34,7 @@ namespace Recore
         /// <summary>
         /// The underlying instance of the wrapped type.
         /// </summary>
-        public T Value { get; set; }
+        public T Value { get; set; } = default!;
 
         /// <summary>
         /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
@@ -46,7 +46,7 @@ namespace Recore
         /// <summary>
         /// Returns the string representation for the underlying object.
         /// </summary>
-        public override string ToString() => Value.ToString();
+        public override string ToString() => Value!.ToString();
 
         /// <summary>
         /// Determines whether this instance is equal to another object.
@@ -62,13 +62,13 @@ namespace Recore
         /// will compare equal to each other if their values are the same type and are equal.
         /// </remarks>
         public bool Equals(Of<T> other)
-            => other != null
+            => !(other is null)
             && Equals(Value, other.Value);
 
         /// <summary>
         /// Returns the hash code for the underlying object.
         /// </summary>
-        public override int GetHashCode() => Value.GetHashCode();
+        public override int GetHashCode() => Value!.GetHashCode();
 
         /// <summary>
         /// Determines whether two instances of the type are equal.

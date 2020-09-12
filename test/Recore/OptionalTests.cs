@@ -601,16 +601,6 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void FlattenNullable()
-        {
-            var hasValue = new Optional<int?>(1);
-            Assert.Equal(1, hasValue.Flatten());
-
-            var isNull = new Optional<int?>();
-            Assert.False(isNull.Flatten().HasValue);
-        }
-
-        [Fact]
         public void NonEmpty()
         {
             var collection = new[]

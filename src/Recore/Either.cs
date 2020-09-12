@@ -75,7 +75,7 @@ namespace Recore
         public Either(TLeft left)
         {
             this.left = left;
-            right = default;
+            right = default!;
             IsLeft = true;
         }
 
@@ -199,8 +199,8 @@ namespace Recore
         /// </summary>
         public override string ToString()
             => Switch(
-                l => l.ToString(),
-                r => r.ToString());
+                l => l!.ToString(),
+                r => r!.ToString());
 
         /// <summary>
         /// Compares this <see cref="Either{TLeft, TRight}"/>
@@ -226,7 +226,7 @@ namespace Recore
         /// even if <c>Color.Red == Day.Monday</c>.
         /// </remarks>
         public bool Equals(Either<TLeft, TRight> other)
-            => other != null
+            => !(other is null)
             && Switch(
                 l => other.Switch(
                     otherLeft => Equals(l, otherLeft),
@@ -240,8 +240,8 @@ namespace Recore
         /// </summary>
         public override int GetHashCode()
             => Switch(
-                l => l.GetHashCode(),
-                r => r.GetHashCode());
+                l => l!.GetHashCode(),
+                r => r!.GetHashCode());
 
         /// <summary>
         /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>

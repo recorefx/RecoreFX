@@ -76,7 +76,17 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgminObject()
+        public void ArgminInt32()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmin: 1, Min: 1),
+                collection.Argmin(x => x));
+        }
+
+        [Fact]
+        public void ArgminGeneric()
         {
             var collection = new[]
             {
@@ -91,13 +101,32 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgminInt32()
+        public void ArgmaxGenericWithNull()
         {
-            var collection = new[] { 1, 3, 4, 1 };
+            var collection = new[]
+            {
+                "abc",
+                null,
+                "hello world"
+            };
 
             Assert.Equal(
-                (Argmin: 1, Min: 1),
-                collection.Argmin(x => x));
+                (Argmin: collection[0], Min: 3),
+                collection.Argmin(x => x?.Length));
+        }
+
+        [Fact]
+        public void ArgminGenericAllNull()
+        {
+            var collection = new string?[]
+            {
+                null,
+                null
+            };
+
+            Assert.Equal(
+                (Argmin: null, Min: null),
+                collection.Argmin(x => x?.Length));
         }
 
         [Property]

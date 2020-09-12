@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Recore
     /// or <see cref="Optional{T}.ValueOr(T)"/>.
     /// </remarks>
     [JsonConverter(typeof(OptionalConverter))]
-    public readonly struct Optional<T> : IEquatable<Optional<T>>
+    public readonly struct Optional<T> : IEquatable<Optional<T>> where T : notnull
     {
         private readonly T value;
 
@@ -133,7 +134,7 @@ namespace Recore
         /// <summary>
         /// Maps a function over the <see cref="Optional{T}"/>'s value, or propagates <see cref="Optional{T}.Empty"/>.
         /// </summary>
-        public Optional<U> OnValue<U>(Func<T, U> f)
+        public Optional<U> OnValue<U>(Func<T, U> f) where U : notnull
             => Switch(
                 x => Optional.Of(f(x)),
                 () => Optional<U>.Empty);
@@ -156,7 +157,7 @@ namespace Recore
         /// (Note that <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> is not a valid <see cref="Optional{T}"/> because of the
         /// type constraint <c>where T : class</c>.)
         /// </remarks>
-        public Optional<U> Then<U>(Func<T, Optional<U>> f)
+        public Optional<U> Then<U>(Func<T, Optional<U>> f) where U : notnull
             => Switch(
                 f,
                 () => Optional<U>.Empty);
@@ -225,14 +226,15 @@ namespace Recore
         /// <summary>
         /// Converts an instance of a type to an optional value.
         /// </summary>
-        public static implicit operator Optional<T>(T value) => new Optional<T>(value);
+        public static implicit operator Optional<T>([MaybeNull] T value) => new Optional<T>(value);
 
         /// <summary>
         /// Casts this instance to its underlying value
         /// or the default value for the underlying type.
         /// </summary>
+        [return: MaybeNull]
         public static explicit operator T(Optional<T> optional)
-            => optional.ValueOr(default);
+            => optional.ValueOr(default!);
     }
 
     /// <summary>
@@ -249,7 +251,7 @@ namespace Recore
         /// and immediately invoking a method.
         /// It can also be passed as a delegate whereas the constructor can't be.
         /// </remarks>
-        public static Optional<T> Of<T>(T value) => new Optional<T>(value);
+        public static Optional<T> Of<T>(T value) where T : notnull  => new Optional<T>(value);
 
         /// <summary>
         /// Converts a <see cref="Nullable{T}"/> to <see cref="Optional{T}"/>.
@@ -276,7 +278,7 @@ namespace Recore
         /// <remarks>
         /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}"/> result.
         /// </remarks>
-        public static Optional<T> If<T>(bool condition, T value)
+        public static Optional<T> If<T>(bool condition, T value) where T : notnull
         {
             if (condition)
             {
@@ -294,7 +296,7 @@ namespace Recore
         /// <remarks>
         /// This method is useful for converting the <c>TryParse</c> pattern to an <see cref="Optional{T}"/> result.
         /// </remarks>
-        public static Optional<T> If<T>(bool condition, Func<T> func)
+        public static Optional<T> If<T>(bool condition, Func<T> func) where T : notnull
         {
             if (func is null)
             {
@@ -314,7 +316,7 @@ namespace Recore
         /// <summary>
         /// Converts a unary action to work with <see cref="Optional{T}"/>.
         /// </summary>
-        public static Action<Optional<T>> Lift<T>(Action<T> action)
+        public static Action<Optional<T>> Lift<T>(Action<T> action) where T : notnull
         {
             if (action is null)
             {
@@ -328,6 +330,8 @@ namespace Recore
         /// Converts a unary function to work with <see cref="Optional{T}"/>.
         /// </summary>
         public static Func<Optional<T>, Optional<TResult>> Lift<T, TResult>(Func<T, TResult> func)
+            where T : notnull
+            where TResult : notnull
         {
             if (func is null)
             {
@@ -341,20 +345,13 @@ namespace Recore
         /// Converts an <c>Optional&lt;Optional&lt;T&gt;&gt;</c>
         /// to an <see cref="Optional{T}"/>.
         /// </summary>
-        public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional)
+        public static Optional<T> Flatten<T>(this Optional<Optional<T>> optionalOptional) where T : notnull
             => optionalOptional.Then(x => x);
-
-        /// <summary>
-        /// Converts an <c>Optional&lt;Nullable&lt;T&gt;&gt;</c>
-        /// to an <see cref="Optional{T}"/>.
-        /// </summary>
-        public static Optional<T> Flatten<T>(this Optional<T?> optionalNullable) where T : struct
-            => optionalNullable.Then(Of);
 
         /// <summary>
         /// Collects the non-empty values from the sequence.
         /// </summary>
-        public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source)
+        public static IEnumerable<T> NonEmpty<T>(this IEnumerable<Optional<T>> source) where T : notnull
             => source.SelectMany(
                 optional => optional.ToEnumerable());
 
@@ -362,7 +359,7 @@ namespace Recore
         /// Converts an <c>Optional&lt;Task&lt;T&gt;&gt;</c>
         /// to a <c>Task&lt;Optional&lt;T&gt;&gt;</c>.
         /// </summary>
-        public static Task<Optional<T>> AwaitAsync<T>(this Optional<Task<T>> optionalTask)
+        public static Task<Optional<T>> AwaitAsync<T>(this Optional<Task<T>> optionalTask) where T : notnull
             => optionalTask.Switch(
                 async x => Of(await x),
                 () => Task.FromResult(Optional<T>.Empty));

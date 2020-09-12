@@ -174,7 +174,7 @@ namespace Recore
         /// Equality is defined as both objects' underlying values or errors being equal.
         /// </remarks>
         public bool Equals(Result<TValue, TError> other)
-            => other != null
+            => !(other is null)
             && this.either == other.either;
 
         /// <summary>
