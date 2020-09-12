@@ -20,6 +20,18 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void ConstructorNullable()
+        {
+            var left = new Either<int?, bool?>(left: null);
+            Assert.True(left.IsLeft);
+            Assert.False(left.IsRight);
+
+            var right = new Either<int?, bool?>(right: null);
+            Assert.False(right.IsLeft);
+            Assert.True(right.IsRight);
+        }
+
+        [Fact]
         public void SwitchFunc()
         {
             Either<string, int> either;
