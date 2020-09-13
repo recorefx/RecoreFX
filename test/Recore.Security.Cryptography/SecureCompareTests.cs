@@ -13,10 +13,10 @@ namespace Recore.Security.Cryptography.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => SecureCompare.TimeInvariantEquals(null, new byte[] { }));
+                () => SecureCompare.TimeInvariantEquals(null!, new byte[] { }));
 
             Assert.Throws<ArgumentNullException>(
-                () => SecureCompare.TimeInvariantEquals(new byte[] { }, null));
+                () => SecureCompare.TimeInvariantEquals(new byte[] { }, null!));
         }
 
         [Fact]

@@ -14,10 +14,10 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.Argmax<object, int>(null, x => x.GetHashCode()));
+                () => Renumerable.Argmax<object, int>(null!, x => x.GetHashCode()));
 
             Assert.Throws<ArgumentNullException>(
-                () => new[] { 0 }.Argmax<int, int>(null));
+                () => new[] { 0 }.Argmax<int, int>(null!));
         }
 
         [Fact]
@@ -76,7 +76,17 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgmaxObject()
+        public void ArgmaxInt32()
+        {
+            var collection = new[] { 1, 3, 4, 1 };
+
+            Assert.Equal(
+                (Argmax: 4, Max: 4),
+                collection.Argmax(x => x));
+        }
+
+        [Fact]
+        public void ArgmaxGeneric()
         {
             var collection = new[]
             {
@@ -91,13 +101,43 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgmaxInt32()
+        public void ArgmaxGenericWithNull()
         {
-            var collection = new[] { 1, 3, 4, 1 };
+            var collection = new[]
+            {
+                "abc",
+                null,
+                "hello world"
+            };
 
             Assert.Equal(
-                (Argmax: 4, Max: 4),
-                collection.Argmax(x => x));
+                (Argmax: collection[2], Max: 11),
+                collection.Argmax(x => x?.Length));
+        }
+
+        [Fact]
+        public void ArgmaxGenericAllNull()
+        {
+            var collection = new string?[]
+            {
+                null,
+                null
+            };
+
+            Assert.Equal(
+                (Argmax: null, Max: null),
+                collection.Argmax(x => x?.Length));
+        }
+
+        [Fact]
+        public void ArgmaxGenericNRE()
+        {
+            var collection = new string[]
+            {
+            };
+
+            var argmax = collection.Argmax(x => x?.Length).Argmax;
+            Assert.Throws<NullReferenceException>(() => argmax.Length);
         }
 
         [Property]

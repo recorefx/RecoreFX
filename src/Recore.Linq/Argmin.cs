@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-// TODO https://github.com/recorefx/RecoreFX/issues/24
-//using System.Diagnostics.CodeAnalysis;
 
 using Recore.Properties;
 
@@ -475,8 +473,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the index of the minimum value from a sequence of values.
         /// </summary>
-        // TODO https://github.com/recorefx/RecoreFX/issues/24
-        //[return: MaybeNull]
+        // TODO C# 9.0: this should be TSource? Min
         public static (int Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
         {
             if (source is null)
@@ -485,8 +482,6 @@ namespace Recore.Linq
             }
 
             Comparer<TSource> comparer = Comparer<TSource>.Default;
-            // TODO https://github.com/recorefx/RecoreFX/issues/24
-            //TSource value = default!;
             (int Index, TSource Item) value = (0, default);
             if (value.Item == null)
             {
@@ -1092,8 +1087,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function on a sequence of values.
         /// </summary>
-        // TODO https://github.com/recorefx/RecoreFX/issues/24
-        //[return: MaybeNull]
+        // TODO C# 9.0: this should be (TSource? Argmin, TResult? Min)
         public static (TSource Argmin, TResult Min) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source is null)
@@ -1107,8 +1101,6 @@ namespace Recore.Linq
             }
 
             Comparer<TResult> comparer = Comparer<TResult>.Default;
-            // TODO https://github.com/recorefx/RecoreFX/issues/24
-            //TResult value = default!;
             TSource argminCandidate = default;
             TResult value = default;
             if (value == null)

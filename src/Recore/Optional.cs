@@ -175,7 +175,7 @@ namespace Recore
         /// </summary>
         public override string ToString()
             => Switch(
-                x => x.ToString(),
+                x => x!.ToString(),
                 () => Resources.OptionalEmptyToString);
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Recore
         /// </summary>
         public override int GetHashCode()
             => Switch(
-                x => x.GetHashCode(),
+                x => x!.GetHashCode(),
                 () => 0);
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Recore
         /// or the default value for the underlying type.
         /// </summary>
         public static explicit operator T(Optional<T> optional)
-            => optional.ValueOr(default);
+            => optional.ValueOr(default!);
     }
 
     /// <summary>

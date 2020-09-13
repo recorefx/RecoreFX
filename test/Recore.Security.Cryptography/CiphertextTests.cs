@@ -15,13 +15,13 @@ namespace Recore.Security.Cryptography.Tests
             using (var sha256 = SHA256.Create())
             {
                 Assert.Throws<ArgumentNullException>(
-                    () => Ciphertext<SHA256>.Encrypt(null, Array.Empty<byte>(), sha256));
+                    () => Ciphertext<SHA256>.Encrypt(null!, Array.Empty<byte>(), sha256));
 
                 Assert.Throws<ArgumentNullException>(
-                    () => Ciphertext<SHA256>.Encrypt("hello", null, sha256));
+                    () => Ciphertext<SHA256>.Encrypt("hello", null!, sha256));
 
                 Assert.Throws<ArgumentNullException>(
-                    () => Ciphertext<SHA256>.Encrypt("hello", Array.Empty<byte>(), null));
+                    () => Ciphertext<SHA256>.Encrypt("hello", Array.Empty<byte>(), null!));
             }
         }
 

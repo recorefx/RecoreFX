@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Recore.Collections.Generic
 {
@@ -57,6 +58,8 @@ namespace Recore.Collections.Generic
         public bool HasNext { get; private set; }
 
         private readonly IEnumerator<T> enumerator;
+
+        // After the constructor runs, these are null if and only if the collection is empty
         private T current;
         private T lookahead;
 
@@ -71,6 +74,12 @@ namespace Recore.Collections.Generic
             {
                 current = enumerator.Current; // appease the compiler; will get discarded on the first call to `Next()`
                 lookahead = enumerator.Current;
+            }
+            else
+            {
+                // Appease the compiler
+                // These will not be dereferenced
+                current = lookahead = default!;
             }
         }
 

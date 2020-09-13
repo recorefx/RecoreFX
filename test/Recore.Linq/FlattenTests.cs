@@ -11,7 +11,7 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ThrowsOnNull()
         {
-            IEnumerable<IEnumerable<object>> nullEnumerable = null;
+            IEnumerable<IEnumerable<object>> nullEnumerable = null!;
             Assert.Throws<ArgumentNullException>(
                 () => nullEnumerable.Flatten());
         }

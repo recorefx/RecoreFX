@@ -74,7 +74,7 @@ namespace Recore
         /// </remarks>
         public static Token[] Tokenize(this string str)
         {
-            var parts = str.Split(separator: (char[])null, StringSplitOptions.RemoveEmptyEntries);
+            var parts = str.Split(separator: (char[]?)null, StringSplitOptions.RemoveEmptyEntries);
             var tokens = new Token[parts.Length];
 
             for (int i = 0; i < parts.Length; i++)

@@ -49,11 +49,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
                     value => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
-                    null,
+                    null!,
                     error => throw new Exception("Should not be called")));
         }
 
@@ -80,11 +80,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
                     value => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
-                    null,
+                    null!,
                     error => throw new Exception("Should not be called")));
         }
 
@@ -104,18 +104,6 @@ namespace Recore.Tests
                 () => result.Switch(
                     value => value,
                     error => throw error));
-        }
-
-        [Fact]
-        public void GetValueGetError()
-        {
-            var success = Result.Success<int, string>(-5);
-            Assert.Equal(-5, success.GetValue());
-            Assert.False(success.GetError().HasValue);
-
-            var failure = Result.Failure<int, string>("hello");
-            Assert.False(failure.GetValue().HasValue);
-            Assert.Equal("hello", failure.GetError());
         }
 
         [Fact]
@@ -217,7 +205,7 @@ namespace Recore.Tests
         public void EqualsWithNull()
         {
             Assert.False(
-                new Result<int, string>("abc").Equals((Result<int, string>)null));
+                new Result<int, string>("abc").Equals(null!));
         }
 
         [Theory]
@@ -284,6 +272,34 @@ namespace Recore.Tests
         }
 
         [Fact]
+        public void GetValueGetError()
+        {
+            var success = Result.Success<int, string>(-5);
+            Assert.Equal(-5, success.GetValue());
+            Assert.False(success.GetError().HasValue);
+
+            var failure = Result.Failure<int, string>("hello");
+            Assert.False(failure.GetValue().HasValue);
+            Assert.Equal("hello", failure.GetError());
+        }
+
+        [Fact]
+        public void GetLeftGetRightNullable()
+        {
+            var left = new Result<int?, string>(-5);
+            Assert.Equal(-5, left.GetValue());
+            Assert.False(left.GetError().HasValue);
+
+            left = new Result<int?, string>(value: null);
+            Assert.Null(left.GetValue());
+            Assert.False(left.GetError().HasValue);
+
+            var right = new Result<int?, string>("hello");
+            Assert.Null(right.GetValue());
+            Assert.Equal("hello", right.GetError());
+        }
+
+        [Fact]
         public void TryCatch()
         {
             var success = Result
@@ -326,10 +342,8 @@ namespace Recore.Tests
         [Fact]
         public async Task TryCatchAsync()
         {
-            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
-
             var success = await Result
-                .TryAsync(async () => await GetNumberAsync(1))
+                .TryAsync(async () => await Task.FromResult(1))
                 .CatchAsync<Exception>();
 
             Assert.Equal(1, success);
@@ -338,7 +352,7 @@ namespace Recore.Tests
             int zero = 0;
 
             var failure = await Result
-                .TryAsync<double>(async () => await GetNumberAsync(1) / zero) // throws DivideByZeroException
+                .TryAsync<double>(async () => await Task.FromResult(1) / zero) // throws DivideByZeroException
                 .CatchAsync<DivideByZeroException>();
 
             Assert.False(failure.IsSuccessful);
@@ -352,10 +366,8 @@ namespace Recore.Tests
         [Fact]
         public async Task TryCatchAsyncMap()
         {
-            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
-
             var success = await Result
-                .TryAsync(async () => await GetNumberAsync(1))
+                .TryAsync(async () => await Task.FromResult(1))
                 .CatchAsync((Exception _) => Task.FromResult("failed"));
 
             Assert.Equal(1, success);

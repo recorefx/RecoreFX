@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Recore.Collections.Generic
 {
@@ -11,6 +12,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
         /// </summary>
+        [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
@@ -19,7 +21,7 @@ namespace Recore.Collections.Generic
             }
             else
             {
-                return default;
+                return default!;
             }
         }
 
@@ -31,6 +33,7 @@ namespace Recore.Collections.Generic
         /// in order to resolve the compile-time ambiguity between that method and <see cref="IDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
         /// for instances of <see cref="ReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
+        [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dict, TKey key)
         {
             return dict.StaticCast<IReadOnlyDictionary<TKey, TValue>>().GetValueOrDefault(key);

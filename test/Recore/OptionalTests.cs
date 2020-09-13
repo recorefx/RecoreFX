@@ -18,7 +18,10 @@ namespace Recore.Tests
             var valueOptional = new Optional<int>(123);
             Assert.True(valueOptional.HasValue);
 
-            var nullOptional = new Optional<object>(null);
+            var nullOptional = new Optional<object>(null!);
+            Assert.False(nullOptional.HasValue);
+
+            nullOptional = new Optional<object>();
             Assert.False(nullOptional.HasValue);
         }
 
@@ -62,13 +65,13 @@ namespace Recore.Tests
 
             Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
-                    null,
+                    null!,
                     () => throw new Exception("Should not be called")));
 
             Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     x => throw new Exception("Should not be called"),
-                    null));
+                    null!));
         }
 
         [Fact]
@@ -93,13 +96,13 @@ namespace Recore.Tests
 
             Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
-                    null,
+                    null!,
                     () => throw new Exception("Should not be called")));
 
             Assert.Throws<ArgumentNullException>(
                 () => optional.Switch(
                     x => throw new Exception("Should not be called"),
-                    null));
+                    null!));
         }
 
         [Fact]
@@ -110,7 +113,7 @@ namespace Recore.Tests
             optional = "hello world";
             Assert.Equal("hello world", optional.ValueOr("xxx"));
 
-            optional = null;
+            optional = null!;
             Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
@@ -132,7 +135,7 @@ namespace Recore.Tests
             optional = "hello world";
             Assert.Equal("hello world", optional.AssertValue());
 
-            optional = null;
+            optional = null!;
             Assert.Throws<InvalidOperationException>(() => optional.AssertValue());
         }
 
@@ -541,17 +544,17 @@ namespace Recore.Tests
             Assert.False(called);
             Assert.False(optional.HasValue);
 
-            Assert.Throws<ArgumentNullException>(() => Optional.If<int>(true, null));
+            Assert.Throws<ArgumentNullException>(() => Optional.If<int>(true, null!));
         }
 
         [Fact]
         public void Lift_ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Optional.Lift<string>(null));
+                () => Optional.Lift<string>(null!));
 
             Assert.Throws<ArgumentNullException>(
-                () => Optional.Lift<string, int>(null));
+                () => Optional.Lift<string, int>(null!));
         }
 
         [Fact]
@@ -598,16 +601,6 @@ namespace Recore.Tests
 
             var valueNone = new Optional<Optional<string>>(Optional<string>.Empty);
             Assert.False(valueNone.Flatten().HasValue);
-        }
-
-        [Fact]
-        public void FlattenNullable()
-        {
-            var hasValue = new Optional<int?>(1);
-            Assert.Equal(1, hasValue.Flatten());
-
-            var isNull = new Optional<int?>();
-            Assert.False(isNull.Flatten().HasValue);
         }
 
         [Fact]

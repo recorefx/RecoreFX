@@ -87,7 +87,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             var deserializedPerson = JsonSerializer.Deserialize<Either<Person, string>>("{\"Name\":\"Mario\",\"Age\":42}");
             Assert.Equal(
                 expected: "Mario",
-                actual: deserializedPerson.GetLeft().OnValue(x => x.Name));
+                actual: deserializedPerson!.GetLeft().OnValue(x => x.Name));
 
             Assert.Equal(
                 expected: 42,

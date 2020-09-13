@@ -75,7 +75,7 @@ namespace Recore
         public Either(TLeft left)
         {
             this.left = left;
-            right = default;
+            right = default!;
             IsLeft = true;
         }
 
@@ -84,7 +84,7 @@ namespace Recore
         /// </summary>
         public Either(TRight right)
         {
-            left = default;
+            left = default!;
             this.right = right;
             IsLeft = false;
         }
@@ -138,22 +138,6 @@ namespace Recore
         }
 
         /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TLeft&gt;</c>.
-        /// </summary>
-        public Optional<TLeft> GetLeft()
-            => Switch(
-                Optional.Of,
-                r => Optional<TLeft>.Empty);
-
-        /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
-        /// </summary>
-        public Optional<TRight> GetRight()
-            => Switch(
-                l => Optional<TRight>.Empty,
-                Optional.Of);
-
-        /// <summary>
         /// Maps a function over the <see cref="Either{TLeft, TRight}"/> only if the value is an instance of <typeparamref name="TLeft"/>.
         /// </summary>
         public Either<TResult, TRight> OnLeft<TResult>(Func<TLeft, TResult> onLeft)
@@ -199,8 +183,8 @@ namespace Recore
         /// </summary>
         public override string ToString()
             => Switch(
-                l => l.ToString(),
-                r => r.ToString());
+                l => l!.ToString(),
+                r => r!.ToString());
 
         /// <summary>
         /// Compares this <see cref="Either{TLeft, TRight}"/>
@@ -226,7 +210,7 @@ namespace Recore
         /// even if <c>Color.Red == Day.Monday</c>.
         /// </remarks>
         public bool Equals(Either<TLeft, TRight> other)
-            => other != null
+            => !(other is null)
             && Switch(
                 l => other.Switch(
                     otherLeft => Equals(l, otherLeft),
@@ -240,8 +224,8 @@ namespace Recore
         /// </summary>
         public override int GetHashCode()
             => Switch(
-                l => l.GetHashCode(),
-                r => r.GetHashCode());
+                l => l!.GetHashCode(),
+                r => r!.GetHashCode());
 
         /// <summary>
         /// Determines whether two instances of <see cref="Either{TLeft, TRight}"/>
@@ -271,6 +255,38 @@ namespace Recore
     /// </summary>
     public static class Either
     {
+        /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{T}">Optional&lt;TLeft&gt;</see>.
+        /// </summary>
+        public static Optional<TLeft> GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) where TLeft : notnull
+            => either.Switch(
+                Optional.Of,
+                r => Optional<TLeft>.Empty);
+
+        /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}">Either&lt;Nullable&lt;TLeft&gt;, TRight&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TLeft&gt;</see>.
+        /// </summary>
+        public static TLeft? GetLeft<TLeft, TRight>(this Either<TLeft?, TRight> either) where TLeft : struct
+            => either.Switch(
+                l => l,
+                r => null);
+
+        /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
+        /// </summary>
+        public static Optional<TRight> GetRight<TLeft, TRight>(this Either<TLeft, TRight> either) where TRight : notnull
+            => either.Switch(
+                l => Optional<TRight>.Empty,
+                Optional.Of);
+
+        /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}">Either&lt;TLeft, Nullable&lt;TRight&gt;&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TRight&gt;</see>.
+        /// </summary>
+        public static TRight? GetRight<TLeft, TRight>(this Either<TLeft, TRight?> either) where TRight : struct
+            => either.Switch(
+                l => null,
+                r => r);
+
         /// <summary>
         /// Retrieves the value of an <see cref="Either{TLeft, TRight}"/> when <c>TLeft</c> and <c>TRight</c> are the same.
         /// </summary>
@@ -323,15 +339,19 @@ namespace Recore
         /// </summary>
         public static IEnumerable<TLeft> Lefts<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
             => source
-            .Select(x => x.GetLeft())
-            .NonEmpty();
+                .Where(x => x.IsLeft)
+                .Select(x => x.Switch(
+                    l => l,
+                    r => throw new InvalidOperationException()));
 
         /// <summary>
         /// Collects all the right-side values from the sequence.
         /// </summary>
         public static IEnumerable<TRight> Rights<TLeft, TRight>(this IEnumerable<Either<TLeft, TRight>> source)
             => source
-            .Select(x => x.GetRight())
-            .NonEmpty();
+                .Where(x => x.IsRight)
+                .Select(x => x.Switch(
+                    l => throw new InvalidOperationException(),
+                    r => r));
     }
 }

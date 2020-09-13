@@ -27,7 +27,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
         class House
         {
-            public JsonStreetAddress Street { get; set; }
+            public JsonStreetAddress? Street { get; set; }
         }
 
         [OfJson(typeof(User), typeof(Person))]

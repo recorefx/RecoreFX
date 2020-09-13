@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Recore.Collections.Generic
 {
@@ -15,6 +16,7 @@ namespace Recore.Collections.Generic
         /// This is duplicated from <see cref="IReadOnlyDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
         /// because <see cref="IDictionary{TKey, TValue}"/> does not extend <see cref="IReadOnlyDictionary{TKey, TValue}"/>.
         /// </remarks>
+        [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
         {
             if (dict.TryGetValue(key, out TValue value))
@@ -23,7 +25,7 @@ namespace Recore.Collections.Generic
             }
             else
             {
-                return default;
+                return default!;
             }
         }
 
@@ -35,6 +37,7 @@ namespace Recore.Collections.Generic
         /// in order to resolve the compile-time ambiguity between that method and <see cref="IReadOnlyDictionaryExtensions.GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
         /// for instances of <see cref="Dictionary{TKey, TValue}"/>.
         /// </remarks>
+        [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
         {
             return dict.StaticCast<IDictionary<TKey, TValue>>().GetValueOrDefault(key);

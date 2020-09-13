@@ -13,7 +13,7 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ThrowsOnNull()
         {
-            IEnumerable<object> nullEnumerable = null;
+            IEnumerable<object> nullEnumerable = null!;
             Assert.Throws<ArgumentNullException>(
                 () => TestHelpers.ForceExecution(() => nullEnumerable.Product(new[] { 0 })));
 
