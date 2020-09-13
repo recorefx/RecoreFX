@@ -24,7 +24,7 @@ namespace Recore.Tests
         public void EqualsWithNull()
         {
             var address1 = new Address("1 Microsoft Way");
-            Address address2 = null;
+            Address? address2 = null;
 
             Assert.NotEqual(address1, address2);
         }

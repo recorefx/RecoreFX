@@ -8,14 +8,14 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
     class Person
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int Age { get; set; }
     }
 
     class Address
     {
-        public string Street { get; set; }
-        public string Zip { get; set; }
+        public string? Street { get; set; }
+        public string? Zip { get; set; }
     }
 
     [JsonConverter(typeof(TypeWithConverterConverter))]
@@ -23,7 +23,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
     {
         public int Age { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public string GetFullName() => $"{Name} {Name}son";
     }

@@ -14,10 +14,10 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.Argmin<object, int>(null, x => x.GetHashCode()));
+                () => Renumerable.Argmin<object, int>(null!, x => x.GetHashCode()));
 
             Assert.Throws<ArgumentNullException>(
-                () => new[] { 0 }.Argmin<int, int>(null));
+                () => new[] { 0 }.Argmin<int, int>(null!));
         }
 
         [Fact]

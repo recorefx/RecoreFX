@@ -7,8 +7,7 @@ namespace Recore.Functional.Tests
         [Fact]
         public void TrivialComposer()
         {
-            // TODO .NET Core 3
-            /*static*/ bool IsEven(int x) => x % 2 == 0;
+            static bool IsEven(int x) => x % 2 == 0;
             var func = new Composer<int, bool>(IsEven)
                 .Func;
 
@@ -24,7 +23,7 @@ namespace Recore.Functional.Tests
                 .Then(x => x.Length)
                 .Func;
 
-            Assert.Equal(4, func(null));
+            Assert.Equal(4, func(null!));
             Assert.Equal(4, func(string.Empty));
             Assert.Equal(5, func("hello"));
         }

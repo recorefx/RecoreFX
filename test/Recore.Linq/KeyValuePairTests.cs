@@ -12,19 +12,19 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.ToDictionary<string, int>(null));
+                () => Renumerable.ToDictionary<string, int>(null!));
 
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.OnKeys<string, int, int>(null, x => 1));
+                () => Renumerable.OnKeys<string, int, int>(null!, x => 1));
 
             Assert.Throws<ArgumentNullException>(
-                () => Enumerable.Empty<KeyValuePair<string, int>>().OnKeys<string, int, int>(null));
+                () => Enumerable.Empty<KeyValuePair<string, int>>().OnKeys<string, int, int>(null!));
 
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.OnValues<string, int, int>(null, x => 1));
+                () => Renumerable.OnValues<string, int, int>(null!, x => 1));
 
             Assert.Throws<ArgumentNullException>(
-                () => Enumerable.Empty<KeyValuePair<string, int>>().OnValues<string, int, int>(null));
+                () => Enumerable.Empty<KeyValuePair<string, int>>().OnValues<string, int, int>(null!));
         }
 
         [Fact]

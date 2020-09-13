@@ -12,10 +12,10 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.ForEach<object>(null, x => { }));
+                () => Renumerable.ForEach<object>(null!, x => { }));
 
             Assert.Throws<ArgumentNullException>(
-                () => Enumerable.Empty<object>().ForEach(null));
+                () => Enumerable.Empty<object>().ForEach(null!));
         }
 
         [Fact]

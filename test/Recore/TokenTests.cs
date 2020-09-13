@@ -11,7 +11,7 @@ namespace Recore.Tests
         [Fact]
         public void NullNotAllowed()
         {
-            Assert.Throws<ArgumentNullException>(() => new Token(null));
+            Assert.Throws<ArgumentNullException>(() => new Token(null!));
         }
 
         [Fact]

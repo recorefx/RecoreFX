@@ -13,7 +13,7 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ThrowsOnNull()
         {
-            IEnumerable<object> nullEnumerable = null;
+            IEnumerable<object> nullEnumerable = null!;
             Assert.Throws<ArgumentNullException>(
                 () => TestHelpers.ForceExecution(nullEnumerable.Enumerate));
         }
@@ -28,9 +28,9 @@ namespace Recore.Linq.Tests
         [Fact]
         public void NullElement()
         {
-            var enumerable = new string[] { null };
+            var enumerable = new string?[] { null };
 
-            var expected = new (int, string)[]
+            var expected = new (int, string?)[]
             {
                 (0, null)
             };

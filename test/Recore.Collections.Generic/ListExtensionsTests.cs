@@ -13,7 +13,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                List<string> list = null;
+                List<string> list = null!;
                 list.AppendRange(new[] { "hello" });
             });
         }
@@ -22,7 +22,7 @@ namespace Recore.Collections.Generic.Tests
         public void AppendRange_NullArgument()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new List<string>().AppendRange(null));
+                () => new List<string>().AppendRange(null!));
         }
 
         [Fact]

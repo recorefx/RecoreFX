@@ -52,11 +52,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
                     l => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
-                    null,
+                    null!,
                     r => throw new Exception("Should not be called")));
         }
 
@@ -83,11 +83,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
                     l => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => either.Switch(
-                    null,
+                    null!,
                     r => throw new Exception("Should not be called")));
         }
 
@@ -160,7 +160,7 @@ namespace Recore.Tests
         public void EqualsWithNull()
         {
             Assert.False(
-                new Either<int, string>("abc").Equals(null));
+                new Either<int, string>("abc").Equals(null!));
         }
 
         [Theory]
@@ -317,16 +317,16 @@ namespace Recore.Tests
         public void Lift_ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int>(null, x => { }));
+                () => Either.Lift<string, int>(null!, x => { }));
 
             Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int>(x => { }, null));
+                () => Either.Lift<string, int>(x => { }, null!));
 
             Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int, int>(null, x => 1));
+                () => Either.Lift<string, int, int>(null!, x => 1));
 
             Assert.Throws<ArgumentNullException>(
-                () => Either.Lift<string, int, int>(x => 1, null));
+                () => Either.Lift<string, int, int>(x => 1, null!));
         }
 
         [Fact]

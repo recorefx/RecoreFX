@@ -16,7 +16,7 @@ namespace Recore.Functional.Tests
         [Fact]
         public void ThenAllFuncs()
         {
-            var result = Pipeline.Of<string>(null)
+            var result = Pipeline.Of<string?>(null)
                 .Then(string.IsNullOrEmpty)
                 .Then(x => x.ToString())
                 .Result;

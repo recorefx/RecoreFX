@@ -7,7 +7,7 @@ namespace Recore.Tests
         [Fact]
         public void Invoke()
         {
-            string name = null;
+            string? name = null;
             var result = Func.Invoke(() =>
             {
                 if (name is null)

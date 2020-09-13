@@ -49,11 +49,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
                     value => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => Result.Switch(
-                    null,
+                    null!,
                     error => throw new Exception("Should not be called")));
         }
 
@@ -80,11 +80,11 @@ namespace Recore.Tests
             Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
                     value => throw new Exception("Should not be called"),
-                    null));
+                    null!));
 
             Assert.Throws<ArgumentNullException>(
                 () => result.Switch(
-                    null,
+                    null!,
                     error => throw new Exception("Should not be called")));
         }
 
@@ -205,7 +205,7 @@ namespace Recore.Tests
         public void EqualsWithNull()
         {
             Assert.False(
-                new Result<int, string>("abc").Equals((Result<int, string>)null));
+                new Result<int, string>("abc").Equals(null!));
         }
 
         [Theory]
@@ -342,10 +342,8 @@ namespace Recore.Tests
         [Fact]
         public async Task TryCatchAsync()
         {
-            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
-
             var success = await Result
-                .TryAsync(async () => await GetNumberAsync(1))
+                .TryAsync(async () => await Task.FromResult(1))
                 .CatchAsync<Exception>();
 
             Assert.Equal(1, success);
@@ -354,7 +352,7 @@ namespace Recore.Tests
             int zero = 0;
 
             var failure = await Result
-                .TryAsync<double>(async () => await GetNumberAsync(1) / zero) // throws DivideByZeroException
+                .TryAsync<double>(async () => await Task.FromResult(1) / zero) // throws DivideByZeroException
                 .CatchAsync<DivideByZeroException>();
 
             Assert.False(failure.IsSuccessful);
@@ -368,10 +366,8 @@ namespace Recore.Tests
         [Fact]
         public async Task TryCatchAsyncMap()
         {
-            Task<int> GetNumberAsync(int n) => Task.FromResult(n);
-
             var success = await Result
-                .TryAsync(async () => await GetNumberAsync(1))
+                .TryAsync(async () => await Task.FromResult(1))
                 .CatchAsync((Exception _) => Task.FromResult("failed"));
 
             Assert.Equal(1, success);

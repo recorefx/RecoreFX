@@ -12,7 +12,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                LinkedList<string> list = null;
+                LinkedList<string> list = null!;
                 list.Append("hello");
             });
         }
@@ -20,11 +20,11 @@ namespace Recore.Collections.Generic.Tests
         [Fact]
         public void Append_EmptyList()
         {
-            var list = new LinkedList<string>()
+            var list = new LinkedList<string?>()
                 .Append(null)
                 .Append("hello");
 
-            var expected = new LinkedList<string>
+            var expected = new LinkedList<string?>
             {
                 null,
                 "hello"

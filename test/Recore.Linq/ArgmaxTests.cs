@@ -14,10 +14,10 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.Argmax<object, int>(null, x => x.GetHashCode()));
+                () => Renumerable.Argmax<object, int>(null!, x => x.GetHashCode()));
 
             Assert.Throws<ArgumentNullException>(
-                () => new[] { 0 }.Argmax<int, int>(null));
+                () => new[] { 0 }.Argmax<int, int>(null!));
         }
 
         [Fact]

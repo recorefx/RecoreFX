@@ -13,7 +13,7 @@ namespace Recore.Linq.Tests
         public void ThrowsOnNull()
         {
             Assert.Throws<ArgumentNullException>(
-                () => Renumerable.ToLinkedList<object>(null));
+                () => Renumerable.ToLinkedList<object>(null!));
         }
 
         [Fact]

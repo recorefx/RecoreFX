@@ -12,7 +12,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                IDictionary<string, int> dictionary = null;
+                IDictionary<string, int> dictionary = null!;
                 dictionary.GetValueOrDefault("hello");
             });
         }
@@ -44,7 +44,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                IDictionary<string, int> dictionary = null;
+                IDictionary<string, int> dictionary = null!;
                 dictionary.Append("hello", 1);
             });
         }
@@ -96,7 +96,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                IDictionary<string, int> dictionary = null;
+                IDictionary<string, int> dictionary = null!;
                 dictionary.GetOrAdd("hello", 1);
             });
         }
@@ -128,7 +128,7 @@ namespace Recore.Collections.Generic.Tests
         {
             Assert.Throws<NullReferenceException>(() =>
             {
-                IDictionary<string, int> dictionary = null;
+                IDictionary<string, int> dictionary = null!;
                 dictionary.AddRange(new Dictionary<string, int> { ["hello"] = 1 });
             });
         }
@@ -136,8 +136,8 @@ namespace Recore.Collections.Generic.Tests
         [Fact]
         public void AddRange_EmptyDictionary()
         {
-            var dictionary = new Dictionary<string, string>();
-            var otherDictionary = new Dictionary<string, string>
+            var dictionary = new Dictionary<string, string?>();
+            var otherDictionary = new Dictionary<string, string?>
             {
                 ["abc"] = null,
                 ["hello"] = "world"
