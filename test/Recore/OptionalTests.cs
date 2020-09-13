@@ -113,7 +113,7 @@ namespace Recore.Tests
             optional = "hello world";
             Assert.Equal("hello world", optional.ValueOr("xxx"));
 
-            optional = null;
+            optional = null!;
             Assert.Equal("xxx", optional.ValueOr("xxx"));
         }
 
@@ -135,7 +135,7 @@ namespace Recore.Tests
             optional = "hello world";
             Assert.Equal("hello world", optional.AssertValue());
 
-            optional = null;
+            optional = null!;
             Assert.Throws<InvalidOperationException>(() => optional.AssertValue());
         }
 

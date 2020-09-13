@@ -52,11 +52,11 @@ namespace Recore.Collections.Generic.Tests
         [Fact]
         public void Append_EmptyDictionary()
         {
-            var dictionary = new Dictionary<string, string>()
+            var dictionary = new Dictionary<string, string?>()
                 .Append("abc", null)
                 .Append("hello", "world");
 
-            var expected = new Dictionary<string, string>
+            var expected = new Dictionary<string, string?>
             {
                 ["abc"] = null,
                 ["hello"] = "world"
