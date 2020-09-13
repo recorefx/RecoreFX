@@ -129,6 +129,17 @@ namespace Recore.Linq.Tests
                 collection.Argmax(x => x?.Length));
         }
 
+        [Fact]
+        public void ArgmaxGenericNRE()
+        {
+            var collection = new string[]
+            {
+            };
+
+            var argmax = collection.Argmax(x => x?.Length).Argmax;
+            Assert.Throws<NullReferenceException>(() => argmax.Length);
+        }
+
         [Property]
         public void ArgmaxEqualsMaxForIdentityFunction(List<int> xs)
         {

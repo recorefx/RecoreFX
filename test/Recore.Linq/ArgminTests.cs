@@ -129,6 +129,17 @@ namespace Recore.Linq.Tests
                 collection.Argmin(x => x?.Length));
         }
 
+        [Fact]
+        public void ArgminGenericNRE()
+        {
+            var collection = new string[]
+            {
+            };
+
+            var argmin = collection.Argmin(x => x?.Length).Argmin;
+            Assert.Throws<NullReferenceException>(() => argmin.Length);
+        }
+
         [Property]
         public void ArgminEqualsMinForIdentityFunction(List<int> xs)
         {
