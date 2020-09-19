@@ -22,6 +22,13 @@ namespace Recore.Text.Json.Serialization.Converters
                 var ofConverter = Activator.CreateInstance(
                     type: typeof(OfConverter<>).MakeGenericType(new[] { innerType }));
 
+                if (ofConverter is null)
+                {
+                    // According to the docs, `CreateInstance` should return `null`
+                    // only if the type is some `Nullable<T>`
+                    throw new InvalidOperationException();
+                }
+
                 return (JsonConverter)ofConverter;
             }
             else

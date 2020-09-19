@@ -21,6 +21,13 @@ namespace Recore.Text.Json.Serialization.Converters
             var eitherConverter = Activator.CreateInstance(
                 type: typeof(EitherConverter<,>).MakeGenericType(new[] { leftType, rightType }));
 
+            if (eitherConverter is null)
+            {
+                // According to the docs, `CreateInstance` should return `null`
+                // only if the type is some `Nullable<T>`
+                throw new InvalidOperationException();
+            }
+
             return (JsonConverter)eitherConverter;
         }
     }
@@ -36,7 +43,7 @@ namespace Recore.Text.Json.Serialization.Converters
             // Read the whole string in as JSON to avoid the case where the first converter partially succeeds
             // and then the reader is stuck in the middle of the JSON.
             var jsonDocument = JsonDocument.ParseValue(ref reader);
-            var json = jsonDocument.RootElement.ToString();
+            var json = jsonDocument.RootElement.ToString()!;
 
             // `ToString()` for a string type will return the string *without* quotes,
             // which won't deserialize correctly.
@@ -49,11 +56,11 @@ namespace Recore.Text.Json.Serialization.Converters
             // but it seems to be the only way in this case.
             try
             {
-                return JsonSerializer.Deserialize<TLeft>(json, options);
+                return JsonSerializer.Deserialize<TLeft>(json, options)!;
             }
             catch (JsonException)
             {
-                return JsonSerializer.Deserialize<TRight>(json, options);
+                return JsonSerializer.Deserialize<TRight>(json, options)!;
             }
         }
 
@@ -96,7 +103,7 @@ namespace Recore.Text.Json.Serialization.Converters
         public override Either<TLeft, TRight> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var jsonDocument = JsonDocument.ParseValue(ref reader);
-            var json = jsonDocument.RootElement.ToString();
+            var json = jsonDocument.RootElement.ToString()!;
 
             // `ToString()` for a string type will return the string *without* quotes,
             // which won't deserialize correctly.
@@ -107,11 +114,11 @@ namespace Recore.Text.Json.Serialization.Converters
 
             if (deserializeAsLeft(jsonDocument.RootElement))
             {
-                return JsonSerializer.Deserialize<TLeft>(json, options);
+                return JsonSerializer.Deserialize<TLeft>(json, options)!;
             }
             else
             {
-                return JsonSerializer.Deserialize<TRight>(json, options);
+                return JsonSerializer.Deserialize<TRight>(json, options)!;
             }
         }
 
