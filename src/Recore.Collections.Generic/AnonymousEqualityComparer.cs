@@ -12,7 +12,7 @@ namespace Recore.Collections.Generic
     /// </remarks>
     public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T>
     {
-        private readonly Func<T, T, bool> equals;
+        private readonly Func<T?, T?, bool> equals;
         private readonly Func<T, int> getHashCode;
 
         /// <summary>

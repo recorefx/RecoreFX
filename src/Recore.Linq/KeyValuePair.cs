@@ -19,6 +19,7 @@ namespace Recore.Linq
         public static IEnumerable<KeyValuePair<TResult, TValue>> OnKeys<TKey, TValue, TResult>(
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TKey, TResult> func)
+        where TResult : notnull
         {
             if (source is null)
             {
@@ -40,6 +41,7 @@ namespace Recore.Linq
         public static IEnumerable<KeyValuePair<TKey, TResult>> OnValues<TKey, TValue, TResult>(
             this IEnumerable<KeyValuePair<TKey, TValue>> source,
             Func<TValue, TResult> func)
+        where TKey : notnull
         {
             if (source is null)
             {
