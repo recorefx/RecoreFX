@@ -28,6 +28,9 @@ namespace Recore.Linq.Tests
                 () => Enumerable.Empty<int>().Argmax().Argmax);
 
             Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<Guid>().Argmax().Argmax);
+
+            Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<string>().Argmax().Argmax);
 
             // When one or both of TSource and TResult is non-nullable, throws
@@ -142,6 +145,36 @@ namespace Recore.Linq.Tests
 
             var argmax = collection.Argmax(x => x?.Length).Argmax;
             Assert.Throws<NullReferenceException>(() => argmax.Length);
+        }
+
+        [Fact]
+        public void ArgmaxGenericValueType()
+        {
+            var guids = new[]
+            {
+                Guid.NewGuid()
+            };
+
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            Guid max = guids.Argmax().Max;
+            Assert.Equal(guids[0], max);
+            var argmax = guids.Argmax(x => x.ToString().Length);
+        }
+
+        [Fact]
+        public void ArgmaxGenericValueType_Selector()
+        {
+            var guids = new[]
+            {
+                Guid.NewGuid()
+            };
+
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            (Guid argmax, Guid max) =  guids.Argmax(x => x);
+            Assert.Equal(guids[0], argmax);
+            Assert.Equal(guids[0], max);
         }
 
         [Property]

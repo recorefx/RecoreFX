@@ -28,6 +28,9 @@ namespace Recore.Linq.Tests
                 () => Enumerable.Empty<int>().Argmin().Argmin);
 
             Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<Guid>().Argmin().Argmin);
+
+            Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<string>().Argmin().Argmin);
 
             // When one or both of TSource and TResult is non-nullable, throws
@@ -101,7 +104,7 @@ namespace Recore.Linq.Tests
         }
 
         [Fact]
-        public void ArgmaxGenericWithNull()
+        public void ArgminGenericWithNull()
         {
             var collection = new[]
             {
@@ -142,6 +145,36 @@ namespace Recore.Linq.Tests
 
             var argmin = collection.Argmin(x => x?.Length).Argmin;
             Assert.Throws<NullReferenceException>(() => argmin.Length);
+        }
+
+        [Fact]
+        public void ArgminGenericValueType()
+        {
+            var guids = new[]
+            {
+                Guid.NewGuid()
+            };
+
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            Guid min = guids.Argmin().Min;
+            Assert.Equal(guids[0], min);
+            var argmin = guids.Argmin(x => x.ToString().Length);
+        }
+
+        [Fact]
+        public void ArgminGenericValueType_Selector()
+        {
+            var guids = new[]
+            {
+                Guid.NewGuid()
+            };
+
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            (Guid argmin, Guid min) =  guids.Argmin(x => x);
+            Assert.Equal(guids[0], argmin);
+            Assert.Equal(guids[0], min);
         }
 
         [Property]
