@@ -34,7 +34,7 @@ namespace Recore
         /// <summary>
         /// The underlying instance of the wrapped type.
         /// </summary>
-        public T Value { get; set; } = default!;
+        public T? Value { get; set; } = default;
 
         /// <summary>
         /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
@@ -47,7 +47,17 @@ namespace Recore
         /// Returns the string representation for the underlying object.
         /// </summary>
         #nullable disable // Set to oblivious because T.ToString() is oblivious
-        public override string ToString() => Value!.ToString();
+        public override string ToString()
+        {
+            if (Value == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return Value.ToString();
+            }
+        }
         #nullable enable
 
         /// <summary>
@@ -91,6 +101,6 @@ namespace Recore
         /// <see cref="Of{T}"/> is conceptually (though not in fact) a subtype of <typeparamref name="T"/>.
         /// This conversion allows instances of <see cref="Of{T}"/> to work with methods out of the caller's control.
         /// </remarks>
-        public static implicit operator T(Of<T> of) => of.Value;
+        public static implicit operator T?(Of<T> of) => of.Value;
     }
 }
