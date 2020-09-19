@@ -125,6 +125,10 @@ namespace Recore.Linq.Tests
             };
 
             Assert.Equal(
+                (Argmin: 1, Min: null),
+                collection.Argmin());
+
+            Assert.Equal(
                 (Argmin: null, Min: null),
                 collection.Argmin(x => x?.Length));
         }

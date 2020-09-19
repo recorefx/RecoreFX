@@ -23,7 +23,7 @@ namespace Recore.Linq.Tests
         [Fact]
         public void EmptyEnumerable()
         {
-            // Non-nullable TSource throws
+            // With no selector, always throws
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmax().Argmax);
 
@@ -123,6 +123,10 @@ namespace Recore.Linq.Tests
                 null,
                 null
             };
+
+            Assert.Equal(
+                (Argmax: 1, Max: null),
+                collection.Argmax());
 
             Assert.Equal(
                 (Argmax: null, Max: null),
