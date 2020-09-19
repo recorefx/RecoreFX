@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Recore.Collections.Generic;
 using Xunit;
 
-namespace Recore.Tests.Recore.Collections.Generic
+namespace Recore.Collections.Generic.Tests
 {
     public class MappedComparerTests
     {
@@ -31,7 +30,6 @@ namespace Recore.Tests.Recore.Collections.Generic
                 new Person { Id = 2, Name = "C", Age = 52 }
             };
 
-
             var byAge = new MappedComparer<Person, int>(x => x.Age);
             persons.Sort(byAge);
 
@@ -43,6 +41,17 @@ namespace Recore.Tests.Recore.Collections.Generic
                 x => HashCode.Combine(x.Name, x.Age));
 
             Assert.Equal(sortedPersons, persons, equalityComparer);
+        }
+
+        [Theory]
+        [InlineData("hello", "world", 0)]
+        [InlineData("hello", null, 1)]
+        [InlineData(null, "world", -1)]
+        [InlineData(null, null, 0)]
+        public void WithNull(string? x, string? y, int expected)
+        {
+            var compareOnLength = new MappedComparer<string, int>(x => x.Length);
+            Assert.Equal(expected, compareOnLength.Compare(x, y));
         }
     }
 }
