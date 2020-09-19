@@ -24,7 +24,11 @@ namespace Recore.Collections.Generic
         /// Invokes the mapping function on two objects and checks if the outputs are equal.
         /// </summary>
         public bool Equals(T? x, T? y)
-            => mappingComparer.Equals(mapping(x), mapping(y));
+        {
+            U? mappedX = x == null ? default(U?) : mapping(x);
+            U? mappedY = y == null ? default(U?) : mapping(y);
+            return mappingComparer.Equals(mappedX, mappedY);
+        }
 
         /// <summary>
         /// Hashes the mapped output of an object.
