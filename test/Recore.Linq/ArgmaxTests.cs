@@ -23,9 +23,12 @@ namespace Recore.Linq.Tests
         [Fact]
         public void EmptyEnumerable()
         {
-            // Non-nullable TSource throws
+            // With no selector, always throws
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<int>().Argmax().Argmax);
+
+            Assert.Throws<InvalidOperationException>(
+                () => Enumerable.Empty<Guid>().Argmax().Argmax);
 
             Assert.Throws<InvalidOperationException>(
                 () => Enumerable.Empty<string>().Argmax().Argmax);
@@ -125,19 +128,56 @@ namespace Recore.Linq.Tests
             };
 
             Assert.Equal(
+                (Argmax: 1, Max: null),
+                collection.Argmax());
+
+            Assert.Equal(
                 (Argmax: null, Max: null),
                 collection.Argmax(x => x?.Length));
         }
 
+        // This test was added in the past to expose a compile-time bug
+        // where you wouldn't get a warning that you were derefencing a possibly null value.
+        // `Argmax()` is now annotated correctly, so the warning is silenced with `!`.
+        // There's nothing wrong with keeping the test though.
         [Fact]
         public void ArgmaxGenericNRE()
         {
-            var collection = new string[]
+            var collection = Enumerable.Empty<string>();
+
+            // The unneeded `?.` operator makes the result `int?`
+            var argmax = collection.Argmax(x => x?.Length).Argmax;
+            Assert.Throws<NullReferenceException>(() => argmax!.Length);
+        }
+
+        [Fact]
+        public void ArgmaxGenericValueType()
+        {
+            var guids = new[]
             {
+                Guid.NewGuid()
             };
 
-            var argmax = collection.Argmax(x => x?.Length).Argmax;
-            Assert.Throws<NullReferenceException>(() => argmax.Length);
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            Guid max = guids.Argmax().Max;
+            Assert.Equal(guids[0], max);
+            var argmax = guids.Argmax(x => x.ToString().Length);
+        }
+
+        [Fact]
+        public void ArgmaxGenericValueType_Selector()
+        {
+            var guids = new[]
+            {
+                Guid.NewGuid()
+            };
+
+            // Don't change this to `var`;
+            // we want to test that this doesn't turn into `Guid?`
+            (Guid argmax, Guid max) =  guids.Argmax(x => x);
+            Assert.Equal(guids[0], argmax);
+            Assert.Equal(guids[0], max);
         }
 
         [Property]
