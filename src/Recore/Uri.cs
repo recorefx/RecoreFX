@@ -35,7 +35,7 @@ namespace Recore
         public static bool TryCreate(string uriString, [NotNullWhen(true)] out AbsoluteUri? result)
         {
             result = null;
-            if (TryCreate(uriString, UriKind.Absolute, out Uri value))
+            if (TryCreate(uriString, UriKind.Absolute, out Uri? value))
             {
                 result = value.AsAbsoluteUri()!;
                 return true;
@@ -64,7 +64,7 @@ namespace Recore
         public static bool TryCreate(string uriString, [NotNullWhen(true)] out RelativeUri? result)
         {
             result = null;
-            if (TryCreate(uriString, UriKind.Relative, out Uri value))
+            if (TryCreate(uriString, UriKind.Relative, out Uri? value))
             {
                 result = value.AsRelativeUri()!;
                 return true;

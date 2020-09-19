@@ -23,6 +23,6 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Compares the mapped output of two objects.
         /// </summary>
-        public int Compare(T x, T y) => mappingComparer.Compare(mapping(x), mapping(y));
+        public int Compare(T? x, T? y) => mappingComparer.Compare(mapping(x), mapping(y));
     }
 }

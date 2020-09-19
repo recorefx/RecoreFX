@@ -10,6 +10,7 @@ namespace Recore.Linq
         /// Creates a <see cref="Dictionary{TKey, TValue}"/> from a sequence of key-value pairs.
         /// </summary>
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source)
+        where TKey : notnull
             => source.ToDictionary(x => x.Key, x => x.Value);
 
         /// <summary>

@@ -195,7 +195,7 @@ namespace Recore
         /// For example, an <c>Either&lt;int, string&gt;</c> and an <c>Either&lt;string, int&gt;</c>
         /// will always be nonequal.
         /// </remarks>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Either<TLeft, TRight> either
             && this.Equals(either);
 
@@ -209,7 +209,7 @@ namespace Recore
         /// For example, <c>Either&lt;Color, Day&gt;(Color.Red) != Either&lt;Color, Day&gt;(Day.Monday)</c>
         /// even if <c>Color.Red == Day.Monday</c>.
         /// </remarks>
-        public bool Equals(Either<TLeft, TRight> other)
+        public bool Equals(Either<TLeft, TRight>? other)
             => !(other is null)
             && Switch(
                 l => other.Switch(

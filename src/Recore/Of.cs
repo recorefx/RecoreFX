@@ -51,7 +51,7 @@ namespace Recore
         /// <summary>
         /// Determines whether this instance is equal to another object.
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Of<T> of && Equals(of);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Recore
         /// Note that instances of two separate subtypes of <see cref="Of{T}"/>
         /// will compare equal to each other if their values are the same type and are equal.
         /// </remarks>
-        public bool Equals(Of<T> other)
+        public bool Equals(Of<T>? other)
             => !(other is null)
             && Equals(Value, other.Value);
 

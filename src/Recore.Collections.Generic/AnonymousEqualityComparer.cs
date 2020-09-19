@@ -18,7 +18,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Creates an instance of <see cref="AnonymousEqualityComparer{T}"/>.
         /// </summary>
-        public AnonymousEqualityComparer(Func<T, T, bool> equals, Func<T, int> getHashCode)
+        public AnonymousEqualityComparer(Func<T?, T?, bool> equals, Func<T, int> getHashCode)
         {
             this.equals = equals ?? throw new ArgumentNullException(nameof(equals));
             this.getHashCode = getHashCode ?? throw new ArgumentNullException(nameof(getHashCode));
@@ -27,7 +27,7 @@ namespace Recore.Collections.Generic
         /// <summary>
         /// Invokes the given comparison function on two objects.
         /// </summary>
-        public bool Equals(T x, T y) => equals(x, y);
+        public bool Equals(T? x, T? y) => equals(x, y);
 
 
         /// <summary>

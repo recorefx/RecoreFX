@@ -192,7 +192,7 @@ namespace Recore
         /// which must also be an <see cref="Optional{T}"/>,
         /// have the same value.
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Optional<T> optional
             && this.Equals(optional);
 

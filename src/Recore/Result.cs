@@ -148,7 +148,7 @@ namespace Recore
         /// For example, an <c>Result&lt;int, string&gt;</c> and an <c>Result&lt;string, int&gt;</c>
         /// will always be nonequal.
         /// </remarks>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Result<TValue, TError> result
             && this.Equals(result);
 
@@ -159,7 +159,7 @@ namespace Recore
         /// <remarks>
         /// Equality is defined as both objects' underlying values or errors being equal.
         /// </remarks>
-        public bool Equals(Result<TValue, TError> other)
+        public bool Equals(Result<TValue, TError>? other)
             => !(other is null)
             && this.either == other.either;
 

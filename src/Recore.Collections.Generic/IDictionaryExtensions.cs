@@ -18,6 +18,7 @@ namespace Recore.Collections.Generic
         /// </remarks>
         [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
+        where TKey : notnull
         {
             if (dict.TryGetValue(key, out TValue value))
             {
@@ -39,6 +40,7 @@ namespace Recore.Collections.Generic
         /// </remarks>
         [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
+        where TKey : notnull
         {
             return dict.StaticCast<IDictionary<TKey, TValue>>().GetValueOrDefault(key);
         }
@@ -47,6 +49,7 @@ namespace Recore.Collections.Generic
         /// Adds an entry to the <see cref="IDictionary{TKey, TValue}"/> and passes the dictionary through.
         /// </summary>
         public static IDictionary<TKey, TValue> Append<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+        where TKey : notnull
         {
             dict.Add(key, value);
             return dict;
@@ -64,6 +67,7 @@ namespace Recore.Collections.Generic
         /// This will be either the existing value for the key if the key is already in the dictionary, or the new value if the key was not in the dictionary.
         /// </returns>
         public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+        where TKey : notnull
         {
             if (dict.TryGetValue(key, out TValue result))
             {
@@ -81,6 +85,7 @@ namespace Recore.Collections.Generic
         /// Existing elements are overwritten if there are duplicates.
         /// </summary>
         public static void AddRange<TKey, TValue>(this IDictionary<TKey, TValue> dict, IEnumerable<KeyValuePair<TKey, TValue>> collection)
+        where TKey : notnull
         {
             if (collection is null)
             {

@@ -14,6 +14,7 @@ namespace Recore.Collections.Generic
         /// </summary>
         [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        where TKey : notnull
         {
             if (dict.TryGetValue(key, out TValue value))
             {
@@ -35,6 +36,7 @@ namespace Recore.Collections.Generic
         /// </remarks>
         [return: MaybeNull]
         public static TValue GetValueOrDefault<TKey, TValue>(this ReadOnlyDictionary<TKey, TValue> dict, TKey key)
+        where TKey : notnull
         {
             return dict.StaticCast<IReadOnlyDictionary<TKey, TValue>>().GetValueOrDefault(key);
         }
