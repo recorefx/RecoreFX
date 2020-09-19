@@ -143,8 +143,9 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ArgminGenericNRE()
         {
-            var collection = Enumerable.Empty<string?>();
+            var collection = Enumerable.Empty<string>();
 
+            // The unneeded `?.` operator makes the result `int?`
             var argmin = collection.Argmin(x => x?.Length).Argmin;
             Assert.Throws<NullReferenceException>(() => argmin!.Length);
         }

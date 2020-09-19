@@ -143,8 +143,9 @@ namespace Recore.Linq.Tests
         [Fact]
         public void ArgmaxGenericNRE()
         {
-            var collection = Enumerable.Empty<string?>();
+            var collection = Enumerable.Empty<string>();
 
+            // The unneeded `?.` operator makes the result `int?`
             var argmax = collection.Argmax(x => x?.Length).Argmax;
             Assert.Throws<NullReferenceException>(() => argmax!.Length);
         }
