@@ -173,10 +173,12 @@ namespace Recore
         /// <summary>
         /// Returns the value's string representation, or a localized "none" message.
         /// </summary>
+        #nullable disable // Set to oblivious because T.ToString() is oblivious
         public override string ToString()
             => Switch(
-                x => x!.ToString(),
+                x => x.ToString(),
                 () => Resources.OptionalEmptyToString);
+        #nullable enable
 
         /// <summary>
         /// Returns the hash code for the underlying type

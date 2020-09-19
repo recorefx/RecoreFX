@@ -181,10 +181,12 @@ namespace Recore
         /// <summary>
         /// Returns the string representation of the underlying value.
         /// </summary>
+        #nullable disable // Set to oblivious because TLeft / TRight.ToString() is oblivious
         public override string ToString()
             => Switch(
                 l => l!.ToString(),
                 r => r!.ToString());
+        #nullable enable
 
         /// <summary>
         /// Compares this <see cref="Either{TLeft, TRight}"/>

@@ -46,7 +46,9 @@ namespace Recore
         /// <summary>
         /// Returns the string representation for the underlying object.
         /// </summary>
+        #nullable disable // Set to oblivious because T.ToString() is oblivious
         public override string ToString() => Value!.ToString();
+        #nullable enable
 
         /// <summary>
         /// Determines whether this instance is equal to another object.
