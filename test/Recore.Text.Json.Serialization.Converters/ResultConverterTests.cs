@@ -64,7 +64,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 expected: new Result<string, int>("hello"),
                 actual: JsonSerializer.Deserialize<Result<string, int>>("\"hello\""));
 
-            var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Exception>>("{\"Name\":\"Mario\",\"Age\":42}");
+            var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Exception>>("{\"Name\":\"Mario\",\"Age\":42}")!;
             Assert.Equal(
                 expected: "Mario",
                 actual: deserializedPerson.GetValue().OnValue(x => x.Name));
@@ -89,7 +89,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         public void FromJsonBothRecordTypesAlwaysDeserializesLeft()
         {
             {
-                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}");
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}")!;
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetValue().OnValue(x => x.Name));
@@ -99,7 +99,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
                 // This will deserialize as Person instead of Address because TValue = Person.
-                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}");
+                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}")!;
                 Assert.True(deserializedAddress.IsSuccessful);
 
                 Assert.False(
@@ -115,7 +115,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         public void FromJsonObjectTypesWithConverter()
         {
             { // This will always deserialize the left type because it is a POCO
-                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}");
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}")!;
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetValue().OnValue(x => x.Name));
@@ -124,7 +124,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 42,
                     actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
-                var deserializedTypeWithConverter = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"fullName\":\"Alice X\",\"age\":28}");
+                var deserializedTypeWithConverter = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"fullName\":\"Alice X\",\"age\":28}")!;
                 Assert.True(deserializedTypeWithConverter.IsSuccessful);
 
                 Assert.False(
@@ -135,7 +135,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedTypeWithConverter.GetValue().OnValue(x => x.Age));
             }
             { // This will try to convert with the left type, and then convert to the right type if it fails
-                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}");
+                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}")!;
                 Assert.Equal(
                     expected: "Alice",
                     actual: deserializedAddress.GetValue().OnValue(x => x.Name));
@@ -144,7 +144,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 28,
                     actual: deserializedAddress.GetValue().OnValue(x => x.Age));
 
-                var deserializedPerson = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}");
+                var deserializedPerson = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"Name\":\"Mario\",\"Age\":42}")!;
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetError().OnValue(x => x.Name));
@@ -167,7 +167,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                 deserializeAsValue: json => json.TryGetProperty("fullName", out JsonElement _)));
 
             {
-                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Name\":\"Mario\",\"Age\":42}", options)!;
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetValue().OnValue(x => x.Name));
@@ -176,7 +176,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 42,
                     actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
-                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options);
+                var deserializedAddress = JsonSerializer.Deserialize<Result<Person, Address>>("{\"Street\":\"123 Main St\",\"Zip\":\"12345\"}", options)!;
                 Assert.Equal(
                     expected: "123 Main St",
                     actual: deserializedAddress.GetError().OnValue(x => x.Street));
@@ -186,7 +186,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     actual: deserializedAddress.GetError().OnValue(x => x.Zip));
             }
             {
-                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}", options);
+                var deserializedPerson = JsonSerializer.Deserialize<Result<Person, TypeWithConverter>>("{\"Name\":\"Mario\",\"Age\":42}", options)!;
                 Assert.Equal(
                     expected: "Mario",
                     actual: deserializedPerson.GetValue().OnValue(x => x.Name));
@@ -195,7 +195,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
                     expected: 42,
                     actual: deserializedPerson.GetValue().OnValue(x => x.Age));
 
-                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}", options);
+                var deserializedAddress = JsonSerializer.Deserialize<Result<TypeWithConverter, Person>>("{\"fullName\":\"Alice X\",\"age\":28}", options)!;
                 Assert.Equal(
                     expected: "Alice",
                     actual: deserializedAddress.GetValue().OnValue(x => x.Name));

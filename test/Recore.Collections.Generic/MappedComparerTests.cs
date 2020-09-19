@@ -35,9 +35,9 @@ namespace Recore.Collections.Generic.Tests
 
             var equalityComparer = new AnonymousEqualityComparer<Person>(
                 (x, y) =>
-                    x.Id == y.Id
-                    && x.Name == y.Name
-                    && x.Age == y.Age,
+                    x?.Id == y?.Id
+                    && x?.Name == y?.Name
+                    && x?.Age == y?.Age,
                 x => HashCode.Combine(x.Name, x.Age));
 
             Assert.Equal(sortedPersons, persons, equalityComparer);

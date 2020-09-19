@@ -113,7 +113,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             Assert.Equal(
                 expected: new JsonStreetAddress("1 Microsoft Way"),
                 actual: JsonSerializer
-                    .Deserialize<Of<string>>("\"1 Microsoft Way\"")
+                    .Deserialize<Of<string>>("\"1 Microsoft Way\"")!
                     .To<JsonStreetAddress>());
 
             Assert.Equal(
@@ -122,16 +122,16 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
             Assert.Equal(
                 expected: new JsonStreetAddress("123 Main St"),
-                actual: JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}").Street);
+                actual: JsonSerializer.Deserialize<House>("{\"Street\":\"123 Main St\"}")!.Street);
 
-            var deserializedUser = JsonSerializer.Deserialize<User>("{\"Name\":\"Mario\",\"Age\":42}");
+            var deserializedUser = JsonSerializer.Deserialize<User>("{\"Name\":\"Mario\",\"Age\":42}")!;
             Assert.Equal(
                 expected: "Mario",
-                actual: deserializedUser.Value.Name);
+                actual: deserializedUser.Value?.Name);
 
             Assert.Equal(
                 expected: 42,
-                actual: deserializedUser.Value.Age);
+                actual: deserializedUser.Value?.Age);
         }
 
         [Fact]

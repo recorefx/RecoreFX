@@ -41,8 +41,8 @@ namespace Recore.Tests.Recore.Collections.Generic
             // Compare on Name and Age
             var equalityComparer = new AnonymousEqualityComparer<Person>(
                 (x, y) =>
-                    x.Name == y.Name
-                    && x.Age == y.Age,
+                    x?.Name == y?.Name
+                    && x?.Age == y?.Age,
                 x => HashCode.Combine(x.Name, x.Age));
 
             Assert.Equal(persons, morePersons, equalityComparer);
