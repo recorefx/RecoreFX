@@ -473,8 +473,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the index of the minimum value from a sequence of values.
         /// </summary>
-        // TODO C# 9.0: this should be TSource? Min
-        public static (int Argmin, TSource Min) Argmin<TSource>(this IEnumerable<TSource> source)
+        public static (int Argmin, TSource? Min) Argmin<TSource>(this IEnumerable<TSource> source)
         {
             if (source is null)
             {
@@ -482,7 +481,7 @@ namespace Recore.Linq
             }
 
             Comparer<TSource> comparer = Comparer<TSource>.Default;
-            (int Index, TSource Item) value = (0, default);
+            (int Index, TSource? Item) value = (0, default);
             if (value.Item == null)
             {
                 using (var e = source.Enumerate().GetEnumerator())
@@ -528,7 +527,7 @@ namespace Recore.Linq
                     value = e.Current;
                     while (e.MoveNext())
                     {
-                        if (comparer.Compare(e.Current.Item, value.Item) < 0)
+                        if (comparer.Compare(e.Current.Item, value.Item!) < 0)
                         {
                             value = e.Current;
                         }
@@ -582,7 +581,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="int"/> on a sequence of values.
         /// </summary>
-        public static (TSource Argmin, int? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+        public static (TSource? Argmin, int? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
         {
             if (source is null)
             {
@@ -594,7 +593,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate = default;
+            TSource? argminCandidate = default;
             int? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -685,7 +684,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="long"/> on a sequence of values.
         /// </summary>
-        public static (TSource Argmin, long? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+        public static (TSource? Argmin, long? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
         {
             if (source is null)
             {
@@ -697,7 +696,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate = default;
+            TSource? argminCandidate = default;
             long? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -803,7 +802,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="float"/> on a sequence of values.
         /// </summary>
-        public static (TSource Argmin, float? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+        public static (TSource? Argmin, float? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
         {
             if (source is null)
             {
@@ -815,7 +814,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate = default;
+            TSource? argminCandidate = default;
             float? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -921,7 +920,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="double"/> on a sequence of values.
         /// </summary>
-        public static (TSource Argmin, double? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+        public static (TSource? Argmin, double? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
         {
             if (source is null)
             {
@@ -933,7 +932,7 @@ namespace Recore.Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            TSource argminCandidate = default;
+            TSource? argminCandidate = default;
             double? value = null;
             using (var e = source.GetEnumerator())
             {
@@ -1030,7 +1029,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function returning nullable <see cref="decimal"/> on a sequence of values.
         /// </summary>
-        public static (TSource Argmin, decimal? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
+        public static (TSource? Argmin, decimal? Min) Argmin<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
             if (source is null)
             {
@@ -1087,8 +1086,7 @@ namespace Recore.Linq
         /// <summary>
         /// Returns the minimum value and the minimizing value for a function on a sequence of values.
         /// </summary>
-        // TODO C# 9.0: this should be (TSource? Argmin, TResult? Min)
-        public static (TSource Argmin, TResult Min) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        public static (TSource? Argmin, TResult? Min) Argmin<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
             if (source is null)
             {
@@ -1101,8 +1099,8 @@ namespace Recore.Linq
             }
 
             Comparer<TResult> comparer = Comparer<TResult>.Default;
-            TSource argminCandidate = default;
-            TResult value = default;
+            TSource? argminCandidate = default;
+            TResult? value = default;
             if (value == null)
             {
                 using (var e = source.GetEnumerator())

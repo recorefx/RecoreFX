@@ -136,15 +136,17 @@ namespace Recore.Linq.Tests
                 collection.Argmax(x => x?.Length));
         }
 
+        // This test was added in the past to expose a compile-time bug
+        // where you wouldn't get a warning that you were derefencing a possibly null value.
+        // `Argmax()` is now annotated correctly, so the warning is silenced with `!`.
+        // There's nothing wrong with keeping the test though.
         [Fact]
         public void ArgmaxGenericNRE()
         {
-            var collection = new string[]
-            {
-            };
+            var collection = Enumerable.Empty<string?>();
 
             var argmax = collection.Argmax(x => x?.Length).Argmax;
-            Assert.Throws<NullReferenceException>(() => argmax.Length);
+            Assert.Throws<NullReferenceException>(() => argmax!.Length);
         }
 
         [Fact]

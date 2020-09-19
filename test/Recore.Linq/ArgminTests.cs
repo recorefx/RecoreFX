@@ -136,15 +136,17 @@ namespace Recore.Linq.Tests
                 collection.Argmin(x => x?.Length));
         }
 
+        // This test was added in the past to expose a compile-time bug
+        // where you wouldn't get a warning that you were derefencing a possibly null value.
+        // `Argmin()` is now annotated correctly, so the warning is silenced with `!`.
+        // There's nothing wrong with keeping the test though.
         [Fact]
         public void ArgminGenericNRE()
         {
-            var collection = new string[]
-            {
-            };
+            var collection = Enumerable.Empty<string?>();
 
             var argmin = collection.Argmin(x => x?.Length).Argmin;
-            Assert.Throws<NullReferenceException>(() => argmin.Length);
+            Assert.Throws<NullReferenceException>(() => argmin!.Length);
         }
 
         [Fact]
