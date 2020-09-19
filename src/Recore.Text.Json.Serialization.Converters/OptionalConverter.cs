@@ -19,6 +19,13 @@ namespace Recore.Text.Json.Serialization.Converters
             var optionalConverter = Activator.CreateInstance(
                 type: typeof(OptionalConverter<>).MakeGenericType(new[] { innerType }));
 
+            if (optionalConverter is null)
+            {
+                // According to the docs, `CreateInstance` should return `null`
+                // only if the type is some `Nullable<T>`
+                throw new InvalidOperationException();
+            }
+
             return (JsonConverter)optionalConverter;
         }
     }
@@ -37,7 +44,7 @@ namespace Recore.Text.Json.Serialization.Converters
             }
             else
             {
-                var innerValue = JsonSerializer.Deserialize<T>(ref reader, options);
+                var innerValue = JsonSerializer.Deserialize<T>(ref reader, options)!;
                 return Optional.Of(innerValue);
             }
         }

@@ -10,7 +10,12 @@ namespace Recore.Text.Json.Serialization.Converters
     {
         public override AbsoluteUri Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string uriString = reader.GetString();
+            string? uriString = reader.GetString();
+            if (uriString is null)
+            {
+                throw new JsonException();
+            }
+
             if (AbsoluteUri.TryCreate(uriString, out AbsoluteUri? value))
             {
                 return value;
@@ -29,7 +34,12 @@ namespace Recore.Text.Json.Serialization.Converters
     {
         public override RelativeUri Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            string uriString = reader.GetString();
+            string? uriString = reader.GetString();
+            if (uriString is null)
+            {
+                throw new JsonException();
+            }
+
             if (RelativeUri.TryCreate(uriString, out RelativeUri? value))
             {
                 return value;

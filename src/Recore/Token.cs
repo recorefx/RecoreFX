@@ -45,14 +45,14 @@ namespace Recore
         /// have the same value.
         /// A parameter specifies the culture, case, and sort rules used in the comparison.
         /// </summary>
-        public bool Equals(Of<string> other, StringComparison comparisonType) => Value.Equals(other.Value, comparisonType);
+        public bool Equals(Of<string>? other, StringComparison comparisonType) => Value!.Equals(other?.Value, comparisonType);
 
         /// <summary>
         /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
-        public int CompareTo(Of<string> other) => Value.CompareTo(other.Value);
+        public int CompareTo(Of<string>? other) => Value!.CompareTo(other?.Value);
 
         // For some reason, String implements IComparable but does not have comparison operators.
         // Therefore, I won't add them to Token, either.

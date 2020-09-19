@@ -40,7 +40,7 @@ namespace Recore
         /// <summary>
         /// Determines whether another object is the unit value.
         /// </summary>
-        public override bool Equals(object obj) => obj is Unit;
+        public override bool Equals(object? obj) => obj is Unit;
 
         /// <summary>
         /// Two unit instances are always equal.

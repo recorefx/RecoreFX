@@ -34,7 +34,7 @@ namespace Recore
         /// <summary>
         /// The underlying instance of the wrapped type.
         /// </summary>
-        public T Value { get; set; } = default!;
+        public T? Value { get; set; } = default;
 
         /// <summary>
         /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
@@ -46,12 +46,24 @@ namespace Recore
         /// <summary>
         /// Returns the string representation for the underlying object.
         /// </summary>
-        public override string ToString() => Value!.ToString();
+        #nullable disable // Set to oblivious because T.ToString() is oblivious
+        public override string ToString()
+        {
+            if (Value == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return Value.ToString();
+            }
+        }
+        #nullable enable
 
         /// <summary>
         /// Determines whether this instance is equal to another object.
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Of<T> of && Equals(of);
 
         /// <summary>
@@ -61,7 +73,7 @@ namespace Recore
         /// Note that instances of two separate subtypes of <see cref="Of{T}"/>
         /// will compare equal to each other if their values are the same type and are equal.
         /// </remarks>
-        public bool Equals(Of<T> other)
+        public bool Equals(Of<T>? other)
             => !(other is null)
             && Equals(Value, other.Value);
 
@@ -89,6 +101,6 @@ namespace Recore
         /// <see cref="Of{T}"/> is conceptually (though not in fact) a subtype of <typeparamref name="T"/>.
         /// This conversion allows instances of <see cref="Of{T}"/> to work with methods out of the caller's control.
         /// </remarks>
-        public static implicit operator T(Of<T> of) => of.Value;
+        public static implicit operator T?(Of<T> of) => of.Value;
     }
 }

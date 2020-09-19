@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Recore.Collections.Generic;
 using Xunit;
 
-namespace Recore.Tests.Recore.Collections.Generic
+namespace Recore.Collections.Generic.Tests
 {
     public class MappedEqualityComparerTests
     {
@@ -40,6 +39,17 @@ namespace Recore.Tests.Recore.Collections.Generic
             var sameAge = new MappedEqualityComparer<Person, int>(x => x.Age);
             Assert.Equal(persons, morePersons, sameAge);
             Assert.NotEqual(persons, notEqual, sameAge);
+        }
+
+        [Theory]
+        [InlineData("hello", "world", true)]
+        [InlineData("hello", null, false)]
+        [InlineData(null, "world", false)]
+        [InlineData(null, null, true)]
+        public void WithNull(string? x, string? y, bool expected)
+        {
+            var compareOnLength = new MappedEqualityComparer<string, int>(x => x.Length);
+            Assert.Equal(expected, compareOnLength.Equals(x, y));
         }
     }
 }
