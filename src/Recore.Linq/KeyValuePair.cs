@@ -29,8 +29,7 @@ namespace Recore.Linq
             }
 
             return source
-                // TODO .NET Standard 2.1 use KeyValuePair.Create
-                .Select(kvp => new KeyValuePair<TResult, TValue>(func(kvp.Key), kvp.Value))
+                .Select(kvp => KeyValuePair.Create(func(kvp.Key), kvp.Value))
                 .ToDictionary();
         }
 
@@ -51,8 +50,7 @@ namespace Recore.Linq
             }
 
             return source
-                // TODO .NET Standard 2.1 use KeyValuePair.Create
-                .Select(kvp => new KeyValuePair<TKey, TResult>(kvp.Key, func(kvp.Value)))
+                .Select(kvp => KeyValuePair.Create(kvp.Key, func(kvp.Value)))
                 .ToDictionary();
         }
     }
