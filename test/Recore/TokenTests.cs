@@ -65,6 +65,7 @@ namespace Recore.Tests
             var hello = new Token("hello");
             Assert.False(helloworld1.Equals(hello));
             Assert.False(hello.Equals(helloworld1));
+            Assert.False(helloworld1.Equals(null));
         }
 
         [Fact]
@@ -114,6 +115,8 @@ namespace Recore.Tests
             Assert.Equal(-1, new Token("abc").CompareTo(new Token("def")));
             Assert.Equal(0, new Token("abc").CompareTo(new Token("abc")));
             Assert.Equal(1, new Token("def").CompareTo(new Token("abc")));
+
+            Assert.Equal(1, new Token("abc").CompareTo(null));
         }
 
         [Fact]
