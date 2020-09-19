@@ -43,6 +43,11 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
             reader.Read();
             var fullName = reader.GetString();
 
+            if (fullName is null)
+            {
+                throw new JsonException();
+            }
+
             reader.Read();
             propertyName = reader.GetString();
             if (propertyName != "age")
@@ -93,6 +98,11 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
 
             reader.Read();
             var value = reader.GetString();
+
+            if (value is null)
+            {
+                throw new JsonException();
+            }
 
             reader.Read();
             if (reader.GetString() != "length")
