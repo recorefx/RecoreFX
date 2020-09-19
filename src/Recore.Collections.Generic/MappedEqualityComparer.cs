@@ -34,6 +34,16 @@ namespace Recore.Collections.Generic
         /// Hashes the mapped output of an object.
         /// </summary>
         public int GetHashCode(T obj)
-            => mappingComparer.GetHashCode(mapping(obj));
+        {
+            var mapped = mapping(obj);
+            if (mapped == null)
+            {
+                return 0;
+            }
+            else
+            {
+                return mappingComparer.GetHashCode(mapped);
+            }
+        }
     }
 }
