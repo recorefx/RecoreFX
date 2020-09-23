@@ -54,7 +54,7 @@ namespace Recore
     /// </code>
     /// </remarks>
     [JsonConverter(typeof(EitherConverter))]
-    public sealed class Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>>
+    public sealed class Either<TLeft, TRight> : IEquatable<Either<TLeft, TRight>?>
     {
         private readonly TLeft left;
         private readonly TRight right;
