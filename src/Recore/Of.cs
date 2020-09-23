@@ -29,7 +29,7 @@ namespace Recore
     /// </code>
     /// </remarks>
     [JsonConverter(typeof(OfConverter))]
-    public abstract class Of<T> : IEquatable<Of<T>>
+    public abstract class Of<T> : IEquatable<Of<T>?>
     {
         /// <summary>
         /// The underlying instance of the wrapped type.

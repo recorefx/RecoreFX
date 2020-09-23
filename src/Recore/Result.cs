@@ -55,7 +55,7 @@ namespace Recore
     /// </code>
     /// </remarks>
     [JsonConverter(typeof(ResultConverter))]
-    public sealed class Result<TValue, TError> : IEquatable<Result<TValue, TError>>
+    public sealed class Result<TValue, TError> : IEquatable<Result<TValue, TError>?>
     {
         private readonly Either<TValue, TError> either;
 
