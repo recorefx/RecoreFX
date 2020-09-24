@@ -218,8 +218,8 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 #### Recore.Collections.Generic
 
 - [`AnonymousEqualityComparer<T>`](https://recorefx.github.io/api/Recore.Collections.Generic.AnonymousEqualityComparer-1.html)
-- [`MappedComparer<T, U>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedComparer-2.html)
-- [`MappedEqualityComparer<T, U>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedEqualityComparer-2.html)
+- [`MappedComparer<T, TMapped>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedComparer-2.html)
+- [`MappedEqualityComparer<T, TMapped>`](https://recorefx.github.io/api/Recore.Collections.Generic.MappedEqualityComparer-2.html)
 - Extension methods:
     - [`ICollection<T>.Append()`](https://recorefx.github.io/api/Recore.Collections.Generic.ICollectionExtensions.html#Recore_Collections_Generic_ICollectionExtensions_Append__1_ICollection___0____0_)
     - [`IDictionary<TKey, TValue>.AddRange()`](https://recorefx.github.io/api/Recore.Collections.Generic.IDictionaryExtensions.html#Recore_Collections_Generic_IDictionaryExtensions_AddRange__2_IDictionary___0___1__IEnumerable_KeyValuePair___0___1___)
