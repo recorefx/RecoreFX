@@ -164,6 +164,14 @@ namespace Recore
             && this.either == other.either;
 
         /// <summary>
+        /// Compares two instances of <see cref="Result{TValue, TError}"/>
+        /// for equality using the given <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        public bool Equals(Result<TValue, TError>? other, IEqualityComparer<TValue?> valueComparer, IEqualityComparer<TError?> errorComparer)
+            => !(other is null)
+            && this.either.Equals(other.either, valueComparer, errorComparer);
+
+        /// <summary>
         /// Returns the hash code of the underlying value.
         /// </summary>
         public override int GetHashCode()
