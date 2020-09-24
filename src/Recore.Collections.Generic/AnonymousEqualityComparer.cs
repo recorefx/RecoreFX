@@ -10,7 +10,7 @@ namespace Recore.Collections.Generic
     /// Note that there is no corresponding <c>AnonymousComparer&lt;T&gt;</c> type for <see cref="IComparer{T}"/>.
     /// That use case is already filled by <see cref="Comparer{T}.Create(Comparison{T})"/>.
     /// </remarks>
-    public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T>
+    public sealed class AnonymousEqualityComparer<T> : IEqualityComparer<T?>
     {
         private readonly Func<T?, T?, bool> equals;
         private readonly Func<T, int> getHashCode;
