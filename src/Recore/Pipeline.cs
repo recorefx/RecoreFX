@@ -32,8 +32,8 @@ namespace Recore
         /// Invokes a function on the <see cref="Pipeline{T}"/>'s current value
         /// and passes the result through the <see cref="Pipeline{T}"/>.
         /// </summary>
-        public Pipeline<U> Then<U>(Func<T, U> func)
-            => new Pipeline<U>(func(Result));
+        public Pipeline<TResult> Then<TResult>(Func<T, TResult> func)
+            => new Pipeline<TResult>(func(Result));
 
         /// <summary>
         /// Invokes an action on the <see cref="Pipeline{T}"/>'s current value

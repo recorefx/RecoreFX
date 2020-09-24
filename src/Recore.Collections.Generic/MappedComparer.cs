@@ -6,16 +6,16 @@ namespace Recore.Collections.Generic
     /// <summary>
     /// Compares instances of a type based on the output of a mapping function.
     /// </summary>
-    public sealed class MappedComparer<T, U> : IComparer<T>
+    public sealed class MappedComparer<T, TMapped> : IComparer<T>
     {
-        private readonly static Comparer<U> mappingComparer = Comparer<U>.Default;
+        private readonly static Comparer<TMapped> mappingComparer = Comparer<TMapped>.Default;
 
-        private readonly Func<T, U> mapping;
+        private readonly Func<T, TMapped> mapping;
 
         /// <summary>
-        /// Creates an instance of <see cref="MappedComparer{T, U}"/>.
+        /// Creates an instance of <see cref="MappedComparer{T, TMapped}"/>.
         /// </summary>
-        public MappedComparer(Func<T, U> mapping)
+        public MappedComparer(Func<T, TMapped> mapping)
         {
             this.mapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
         }
@@ -25,8 +25,8 @@ namespace Recore.Collections.Generic
         /// </summary>
         public int Compare(T? x, T? y)
         {
-            U? mappedX = x == null ? default(U?) : mapping(x);
-            U? mappedY = y == null ? default(U?) : mapping(y);
+            TMapped? mappedX = x == null ? default(TMapped?) : mapping(x);
+            TMapped? mappedY = y == null ? default(TMapped?) : mapping(y);
             return mappingComparer.Compare(mappedX, mappedY);
         }
     }

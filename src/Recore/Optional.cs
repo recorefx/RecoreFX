@@ -23,7 +23,7 @@ namespace Recore
     /// 
     /// The last point is the most significant. Accessing the value directly through <see cref="Nullable{T}.Value"/> opens up the possibility for a <see cref="NullReferenceException"/>.
     /// With <see cref="Optional{T}"/>, once you have an optional value, all operations on it happen in an "optional context."
-    /// You can't get rid of <see cref="Optional{T}"/> until you do something to handle the null case such as by calling <see cref="Optional{T}.Switch{U}(Func{T, U}, Func{U})"/>
+    /// You can't get rid of <see cref="Optional{T}"/> until you do something to handle the null case such as by calling <see cref="Optional{T}.Switch{TResult}(Func{T, TResult}, Func{TResult})"/>
     /// or <see cref="Optional{T}.ValueOr(T)"/>.
     /// </remarks>
     [JsonConverter(typeof(OptionalConverter))]
@@ -65,7 +65,7 @@ namespace Recore
         /// <param name="onValue">Called when the <see cref="Optional{T}"/> has a value.</param>
         /// <param name="onEmpty">Called when the <see cref="Optional{T}"/> does not have a value.</param>
         /// <returns>Result of the function that was called.</returns>
-        public U Switch<U>(Func<T, U> onValue, Func<U> onEmpty)
+        public TResult Switch<TResult>(Func<T, TResult> onValue, Func<TResult> onEmpty)
         {
             if (onValue is null)
             {
@@ -133,10 +133,10 @@ namespace Recore
         /// <summary>
         /// Maps a function over the <see cref="Optional{T}"/>'s value, or propagates <see cref="Optional{T}.Empty"/>.
         /// </summary>
-        public Optional<U> OnValue<U>(Func<T, U> f)
+        public Optional<TResult> OnValue<TResult>(Func<T, TResult> f)
             => Switch(
                 x => Optional.Of(f(x)),
-                () => Optional<U>.Empty);
+                () => Optional<TResult>.Empty);
 
         /// <summary>
         /// Takes an action only if the <see cref="Optional{T}"/> has a value.
@@ -151,15 +151,15 @@ namespace Recore
         /// </summary>
         /// <remarks>
         /// This is a monad bind operation.
-        /// Conceptually, it is the same as passing <paramref name="f"/> to <see cref="OnValue{U}(Func{T, U})"/>
+        /// Conceptually, it is the same as passing <paramref name="f"/> to <see cref="OnValue{TResult}(Func{T, TResult})"/>
         /// and then "flattening" the <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> into an <c>Optional&lt;<typeparamref name="T"/>&gt;</c>.
         /// (Note that <c>Optionlt;Optional&lt;<typeparamref name="T"/>&gt;&gt;</c> is not a valid <see cref="Optional{T}"/> because of the
         /// type constraint <c>where T : class</c>.)
         /// </remarks>
-        public Optional<U> Then<U>(Func<T, Optional<U>> f)
+        public Optional<TResult> Then<TResult>(Func<T, Optional<TResult>> f)
             => Switch(
                 f,
-                () => Optional<U>.Empty);
+                () => Optional<TResult>.Empty);
 
         /// <summary>
         /// Converts an optional value to an enumerable.
