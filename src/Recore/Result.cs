@@ -93,6 +93,20 @@ namespace Recore
             => either.Switch(onValue, onError);
 
         /// <summary>
+        /// Converts <see cref="Result{TValue, TError}"/>
+        /// to <c cref="Optional{TValue}">Optional&lt;TValue&gt;</c>
+        /// </summary>
+        public Optional<TValue> GetValue()
+            => either.GetLeft();
+
+        /// <summary>
+        /// Converts <see cref="Result{TValue, TError}"/>
+        /// to <c cref="Optional{TError}">Optional&lt;TError&gt;</c>
+        /// </summary>
+        public Optional<TError> GetError()
+            => either.GetRight();
+
+        /// <summary>
         /// Maps a function over the <see cref="Result{TValue, TError}"/> only if the result is successful.
         /// </summary>
         public Result<TResult, TError> OnValue<TResult>(Func<TValue, TResult> onValue)
@@ -216,38 +230,6 @@ namespace Recore
         /// </summary>
         public static Result<TValue, TError> Failure<TValue, TError>(TError error)
             => new Result<TValue, TError>(error);
-
-        /// <summary>
-        /// Converts <see cref="Result{TValue, TError}"/> to <see cref="Optional{TValue}">Optional&lt;TValue&gt;</see>.
-        /// </summary>
-        public static Optional<TValue> GetValue<TValue, TError>(this Result<TValue, TError> either) where TValue : notnull
-            => either.Switch(
-                Optional.Of,
-                r => Optional<TValue>.Empty);
-
-        /// <summary>
-        /// Converts <see cref="Result{TValue, TError}">Result&lt;Nullable&lt;TValue&gt;, TError&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TValue&gt;</see>.
-        /// </summary>
-        public static TValue? GetValue<TValue, TError>(this Result<TValue?, TError> either) where TValue : struct
-            => either.Switch(
-                l => l,
-                r => null);
-
-        /// <summary>
-        /// Converts <see cref="Result{TValue, TError}"/> to <see cref="Optional{TError}">Optional&lt;TError&gt;</see>.
-        /// </summary>
-        public static Optional<TError> GetError<TValue, TError>(this Result<TValue, TError> either) where TError : notnull
-            => either.Switch(
-                l => Optional<TError>.Empty,
-                Optional.Of);
-
-        /// <summary>
-        /// Converts <see cref="Result{TValue, TError}">Result&lt;TValue, Nullable&lt;TError&gt;&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TError&gt;</see>.
-        /// </summary>
-        public static TError? GetError<TValue, TError>(this Result<TValue, TError?> either) where TError : struct
-            => either.Switch(
-                l => null,
-                r => r);
 
         /// <summary>
         /// Wraps a function to be executed and converted to <see cref="Result{TValue, TError}"/>.

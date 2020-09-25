@@ -333,11 +333,11 @@ namespace Recore.Tests
             Assert.False(left.GetError().HasValue);
 
             left = new Result<int?, string>(value: null);
-            Assert.Null(left.GetValue());
+            Assert.False(left.GetValue().HasValue);
             Assert.False(left.GetError().HasValue);
 
             var right = new Result<int?, string>("hello");
-            Assert.Null(right.GetValue());
+            Assert.False(right.GetValue().HasValue);
             Assert.Equal("hello", right.GetError());
         }
 
