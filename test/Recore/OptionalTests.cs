@@ -5,6 +5,8 @@ using FsCheck;
 using FsCheck.Xunit;
 using Xunit;
 
+using Recore.Collections.Generic;
+
 namespace Recore.Tests
 {
     public class OptionalTests
@@ -402,6 +404,29 @@ namespace Recore.Tests
             {
                 Assert.Equal(optionalA, optionalC);
             }
+        }
+
+        [Theory]
+        [InlineData("", "", true)]
+        [InlineData("a", "b", true)]
+        [InlineData("hello", "world", true)]
+        [InlineData("", "a", false)]
+        [InlineData("", "world", false)]
+        [InlineData("hello", "", false)]
+        [InlineData(null, "", false)]
+        [InlineData(null, null, true)]
+        public void Equals_EqualityComparer(string? a, string? b, bool expected)
+        {
+            var compareOnLength = new MappedEqualityComparer<string, int>(x => x.Length);
+
+            var optionalA = Optional.Of(a);
+            var optionalB = Optional.Of(b);
+
+            Assert.True(optionalA.Equals(optionalA, compareOnLength));
+            Assert.True(optionalB.Equals(optionalB, compareOnLength));
+
+            Assert.Equal(expected, optionalA.Equals(optionalB, compareOnLength));
+            Assert.Equal(expected, optionalB.Equals(optionalA, compareOnLength));
         }
 
         [Property]

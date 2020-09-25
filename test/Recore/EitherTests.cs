@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-
 using Xunit;
+
+using Recore.Collections.Generic;
 
 namespace Recore.Tests
 {
@@ -176,6 +178,46 @@ namespace Recore.Tests
 
             Assert.True(
                 new Either<string, int>(value).Equals(new Either<int, string>(value).Swap()));
+        }
+
+        [Theory]
+        [InlineData("", "", true)]
+        [InlineData("a", "b", true)]
+        [InlineData("hello", "world", true)]
+        [InlineData("", "a", false)]
+        [InlineData("", "world", false)]
+        [InlineData("hello", "", false)]
+        public void Equals_EqualityComparer(string a, string b, bool expected)
+        {
+            var compareOnLength = new MappedEqualityComparer<string, int>(x => x.Length);
+            var intComparer = EqualityComparer<int>.Default;
+
+            { // Left
+                Either<string, int> eitherA = a;
+                Either<string, int> eitherB = b;
+
+                Assert.True(eitherA.Equals(eitherA, compareOnLength, intComparer));
+                Assert.True(eitherB.Equals(eitherB, compareOnLength, intComparer));
+
+                Assert.Equal(expected, eitherA.Equals(eitherB, compareOnLength, intComparer));
+                Assert.Equal(expected, eitherB.Equals(eitherA, compareOnLength, intComparer));
+
+                Assert.False(eitherA.Equals(new Either<string, int>(1), compareOnLength, intComparer));
+                Assert.False(eitherB.Equals(new Either<string, int>(1), compareOnLength, intComparer));
+            }
+            { // Right
+                Either<int, string> eitherA = a;
+                Either<int, string> eitherB = b;
+
+                Assert.True(eitherA.Equals(eitherA, intComparer, compareOnLength));
+                Assert.True(eitherB.Equals(eitherB, intComparer, compareOnLength));
+
+                Assert.Equal(expected, eitherA.Equals(eitherB, intComparer, compareOnLength));
+                Assert.Equal(expected, eitherB.Equals(eitherA, intComparer, compareOnLength));
+
+                Assert.False(eitherA.Equals(new Either<int, string>(1), intComparer, compareOnLength));
+                Assert.False(eitherB.Equals(new Either<int, string>(1), intComparer, compareOnLength));
+            }
         }
 
         [Theory]

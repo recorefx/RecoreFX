@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Xunit;
+
+using Recore.Collections.Generic;
 
 namespace Recore.Tests
 {
@@ -206,6 +208,46 @@ namespace Recore.Tests
         {
             Assert.False(
                 new Result<int, string>("abc").Equals(null!));
+        }
+
+        [Theory]
+        [InlineData("", "", true)]
+        [InlineData("a", "b", true)]
+        [InlineData("hello", "world", true)]
+        [InlineData("", "a", false)]
+        [InlineData("", "world", false)]
+        [InlineData("hello", "", false)]
+        public void Equals_EqualityComparer(string a, string b, bool expected)
+        {
+            var compareOnLength = new MappedEqualityComparer<string, int>(x => x.Length);
+            var intComparer = EqualityComparer<int>.Default;
+
+            { // Value
+                Result<string, int> resultA = a;
+                Result<string, int> resultB = b;
+
+                Assert.True(resultA.Equals(resultA, compareOnLength, intComparer));
+                Assert.True(resultB.Equals(resultB, compareOnLength, intComparer));
+
+                Assert.Equal(expected, resultA.Equals(resultB, compareOnLength, intComparer));
+                Assert.Equal(expected, resultB.Equals(resultA, compareOnLength, intComparer));
+
+                Assert.False(resultA.Equals(new Result<string, int>(1), compareOnLength, intComparer));
+                Assert.False(resultB.Equals(new Result<string, int>(1), compareOnLength, intComparer));
+            }
+            { // Error
+                Result<int, string> resultA = a;
+                Result<int, string> resultB = b;
+
+                Assert.True(resultA.Equals(resultA, intComparer, compareOnLength));
+                Assert.True(resultB.Equals(resultB, intComparer, compareOnLength));
+
+                Assert.Equal(expected, resultA.Equals(resultB, intComparer, compareOnLength));
+                Assert.Equal(expected, resultB.Equals(resultA, intComparer, compareOnLength));
+
+                Assert.False(resultA.Equals(new Result<int, string>(1), intComparer, compareOnLength));
+                Assert.False(resultB.Equals(new Result<int, string>(1), intComparer, compareOnLength));
+            }
         }
 
         [Theory]

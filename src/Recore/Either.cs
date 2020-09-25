@@ -222,6 +222,20 @@ namespace Recore
                     otherRight => Equals(r, otherRight)));
 
         /// <summary>
+        /// Compares two instances of <see cref="Either{TLeft, TRight}"/>
+        /// for equality using the given <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        public bool Equals(Either<TLeft, TRight>? other, IEqualityComparer<TLeft?> leftComparer, IEqualityComparer<TRight?> rightComparer)
+            => !(other is null)
+            && Switch(
+                l => other.Switch(
+                    otherLeft => leftComparer.Equals(l, otherLeft),
+                    otherRight => false),
+                r => other.Switch(
+                    otherLeft => false,
+                    otherRight => rightComparer.Equals(r, otherRight)));
+
+        /// <summary>
         /// Returns the hash code of the underlying value.
         /// </summary>
         public override int GetHashCode()

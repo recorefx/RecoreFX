@@ -200,7 +200,7 @@ namespace Recore
 
         /// <summary>
         /// Determines whether this instance and another <see cref="Optional{T}"/>
-        /// have different values.
+        /// have the same values.
         /// </summary>
         public bool Equals(Optional<T> other)
         {
@@ -211,6 +211,22 @@ namespace Recore
             else
             {
                 return Equals(this.value, other.value);
+            }
+        }
+
+         /// <summary>
+        /// Determines whether this instance and another <see cref="Optional{T}"/>
+        /// have the same values using the given <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        public bool Equals(Optional<T> other, IEqualityComparer<T?> comparer)
+        {
+            if (!this.HasValue || !other.HasValue)
+            {
+                return !this.HasValue && !other.HasValue;
+            }
+            else
+            {
+                return comparer.Equals(this.value, other.value);
             }
         }
 

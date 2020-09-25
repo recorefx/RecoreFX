@@ -6,7 +6,7 @@ namespace Recore.Collections.Generic
     /// <summary>
     /// Compares instances of a type based on the output of a mapping function.
     /// </summary>
-    public sealed class MappedComparer<T, TMapped> : IComparer<T>
+    public sealed class MappedComparer<T, TMapped> : IComparer<T?>
     {
         private readonly static Comparer<TMapped> mappingComparer = Comparer<TMapped>.Default;
 
