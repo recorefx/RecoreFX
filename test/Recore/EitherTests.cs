@@ -347,11 +347,11 @@ namespace Recore.Tests
             Assert.False(left.GetRight().HasValue);
 
             left = new Either<int?, string>(left: null);
-            Assert.Null(left.GetLeft());
+            Assert.False(left.GetLeft().HasValue);
             Assert.False(left.GetRight().HasValue);
 
             var right = new Either<int?, string>("hello");
-            Assert.Null(right.GetLeft());
+            Assert.False(right.GetLeft().HasValue);
             Assert.Equal("hello", right.GetRight());
         }
 

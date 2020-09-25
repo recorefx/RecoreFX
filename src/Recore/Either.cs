@@ -138,6 +138,22 @@ namespace Recore
         }
 
         /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TLeft&gt;</c>.
+        /// </summary>
+        public Optional<TLeft> GetLeft()
+            => Switch(
+                Optional.Of,
+                r => Optional<TLeft>.Empty);
+
+        /// <summary>
+        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
+        /// </summary>
+        public Optional<TRight> GetRight()
+            => Switch(
+                l => Optional<TRight>.Empty,
+                Optional.Of);
+
+        /// <summary>
         /// Maps a function over the <see cref="Either{TLeft, TRight}"/> only if the value is an instance of <typeparamref name="TLeft"/>.
         /// </summary>
         public Either<TResult, TRight> OnLeft<TResult>(Func<TLeft, TResult> onLeft)
@@ -171,7 +187,7 @@ namespace Recore
 
         /// <summary>
         /// Converts this <see cref="Either{TLeft, TRight}"/>
-        /// to an <c>Either&lt;TRight, TLeft&gt;</c>
+        /// to an <c>Either&lt;TRight, TLeft&gt;</c>.
         /// </summary>
         public Either<TRight, TLeft> Swap()
             => Switch(
@@ -271,38 +287,6 @@ namespace Recore
     /// </summary>
     public static class Either
     {
-        /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <see cref="Optional{T}">Optional&lt;TLeft&gt;</see>.
-        /// </summary>
-        public static Optional<TLeft> GetLeft<TLeft, TRight>(this Either<TLeft, TRight> either) where TLeft : notnull
-            => either.Switch(
-                Optional.Of,
-                r => Optional<TLeft>.Empty);
-
-        /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}">Either&lt;Nullable&lt;TLeft&gt;, TRight&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TLeft&gt;</see>.
-        /// </summary>
-        public static TLeft? GetLeft<TLeft, TRight>(this Either<TLeft?, TRight> either) where TLeft : struct
-            => either.Switch(
-                l => l,
-                r => null);
-
-        /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}"/> to <c cref="Optional{T}">Optional&lt;TRight&gt;</c>.
-        /// </summary>
-        public static Optional<TRight> GetRight<TLeft, TRight>(this Either<TLeft, TRight> either) where TRight : notnull
-            => either.Switch(
-                l => Optional<TRight>.Empty,
-                Optional.Of);
-
-        /// <summary>
-        /// Converts <see cref="Either{TLeft, TRight}">Either&lt;TLeft, Nullable&lt;TRight&gt;&gt;</see> to <see cref="Nullable{T}">Nullable&lt;TRight&gt;</see>.
-        /// </summary>
-        public static TRight? GetRight<TLeft, TRight>(this Either<TLeft, TRight?> either) where TRight : struct
-            => either.Switch(
-                l => null,
-                r => r);
-
         /// <summary>
         /// Retrieves the value of an <see cref="Either{TLeft, TRight}"/> when <c>TLeft</c> and <c>TRight</c> are the same.
         /// </summary>
