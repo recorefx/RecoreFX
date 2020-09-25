@@ -9,6 +9,13 @@ namespace Recore
     /// Abstract base class for defining types that alias an existing type.
     /// </summary>
     /// <remarks>
+    /// Note: this type is obsolete since v2.0.0, which targets .NET 5.
+    /// Use C# 9's record types instead, like
+    /// <code>
+    /// record Address(string Value);
+    /// record Name(string Value);
+    /// </code>
+    /// 
     /// Use <see cref="Of{T}"/> to create a strongly-typed "alias" of another type.
     ///
     /// You can use a <c>using</c> directive to create an alias for a type,
@@ -28,6 +35,7 @@ namespace Recore
     /// var person = new Person(22, "Alice", "1 Microsoft Way"); // oops!
     /// </code>
     /// </remarks>
+    [Obsolete("Prefer C# 9's record types")]
     [JsonConverter(typeof(OfConverter))]
     public abstract class Of<T> : IEquatable<Of<T>?>
     {
