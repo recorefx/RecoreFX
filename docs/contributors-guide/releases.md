@@ -19,6 +19,8 @@ History ends up looking like this (omitting untagged commits):
 |
 * <- v1.0.0
 |\
+| * <- v1.0.1
+| |
 | * <- v1.1.0
 | |\
 | | * <- v1.1.1
@@ -26,13 +28,16 @@ History ends up looking like this (omitting untagged commits):
 | | * <- v1.1.2 (releases/v1.1)
 | * <- v1.2.0 (releases/v1)
 |
-* <- v2.0.0 (main)
+* <- v2.0.0-rc1 (main)
+|\
+* * <- v2.0.0 (releases/v2)
 ```
 
 ## How to release
 
 Do this for every release:
-- [ ] Bump the `AssemblyVersion`, `FileVersion`, and `Version` properties in `Recore.csproj`.
+- [ ] Update the `Version` property in `Recore.csproj`.
+    - [ ] If this is a prerelease version, add a prerelease suffix to the `PackageVersion` property.
 - [ ] Add a changelog under the `docs/changelogs` directory.
 - [ ] Submit a PR with the above two changes.
 - [ ] Once the PR has merged, create a release on GitHub.
