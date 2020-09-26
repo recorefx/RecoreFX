@@ -1,6 +1,6 @@
 # Func
 
-## Why now `InvokeAsync()`?
+## Why not `InvokeAsync()`?
 
 If you have an `AsyncFunc`, you can pass it to `Invoke()` and await the result.
 As far as I can tell, having an `InvokeAsync()` that internally `await`s the call
