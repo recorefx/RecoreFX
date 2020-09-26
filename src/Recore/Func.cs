@@ -31,5 +31,22 @@ namespace Recore
                 return x;
             };
         }
+
+        /// <summary>
+        /// Passes through the argument passed to a Task-returning routine.
+        /// </summary>
+        public static AsyncFunc<T, T> AsyncFluent<T>(this AsyncAction<T> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            return async x =>
+            {
+                await action(x);
+                return x;
+            };
+        }
     }
 }
