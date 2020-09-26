@@ -7,6 +7,8 @@ namespace Recore.Collections.Generic.Tests
 {
     public class IReadOnlyDictionaryExtensionsTests
     {
+        // This should now be testing the standard library's method,
+        // but we want to make sure there's no compile-time ambiguity.
         [Fact]
         public void GetValueOrDefault_HasValue()
         {
