@@ -29,20 +29,6 @@ namespace Recore.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the value that is associated with the specific key or the default value for the type <typeparamref name="TValue"/>.
-        /// </summary>
-        /// <remarks>
-        /// This is duplicated from <see cref="GetValueOrDefault{TKey, TValue}(IDictionary{TKey, TValue}, TKey)"/>
-        /// in order to resolve the compile-time ambiguity between that method and <see cref="CollectionExtensions.GetValueOrDefault{TKey, TValue}(IReadOnlyDictionary{TKey, TValue}, TKey)"/>
-        /// for instances of <see cref="Dictionary{TKey, TValue}"/>.
-        /// </remarks>
-        public static TValue? GetValueOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
-        where TKey : notnull
-        {
-            return dict.StaticCast<IDictionary<TKey, TValue>>().GetValueOrDefault(key);
-        }
-
-        /// <summary>
         /// Adds an entry to the <see cref="IDictionary{TKey, TValue}"/> and passes the dictionary through.
         /// </summary>
         public static IDictionary<TKey, TValue> Append<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
