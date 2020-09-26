@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,6 +17,11 @@ namespace Recore.Linq
         /// </remarks>
         public static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(this Task<IEnumerable<T>> source)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             foreach (var item in await source)
             {
                 yield return item;
@@ -31,6 +37,11 @@ namespace Recore.Linq
         /// </remarks>
         public static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(this IEnumerable<Task<T>> source)
         {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             foreach (var item in source)
             {
                 yield return await item;
