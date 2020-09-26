@@ -32,7 +32,7 @@ History ends up looking like this (omitting untagged commits):
 ## How to release
 
 Do this for every release:
-- [ ] Bump the `AssemblyVersion`, `FileVersion`, and `Version` properties in `Recore.csproj`.
+- [ ] Update the `Version` property in `Recore.csproj`.
 - [ ] Add a changelog under the `docs/changelogs` directory.
 - [ ] Submit a PR with the above two changes.
 - [ ] Once the PR has merged, create a release on GitHub.
