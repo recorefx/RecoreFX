@@ -44,7 +44,7 @@ namespace Recore
         /// <summary>
         /// The underlying instance of the wrapped type.
         /// </summary>
-        public T? Value { get; set; } = default;
+        public T? Value { get; init; }
 
         /// <summary>
         /// Converts this <see cref="Of{T}"/> to another subtype of <see cref="Of{T}"/>
