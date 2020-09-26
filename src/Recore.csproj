@@ -4,9 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <RootNamespace>Recore</RootNamespace>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
+    <FileVersion>$(Version).0</FileVersion>
+    <PackageVersion>$(Version)-rc1</PackageVersion>
     <GenerateDocumentation>true</GenerateDocumentation>
     <DocumentationFile>bin/docs/Recore.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
