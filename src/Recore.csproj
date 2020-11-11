@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
     <RootNamespace>Recore</RootNamespace>
     <Version>2.0.0</Version>
     <AssemblyVersion>$(Version).0</AssemblyVersion>
@@ -10,7 +8,6 @@
     <PackageVersion>$(Version)-rc1</PackageVersion>
     <GenerateDocumentation>true</GenerateDocumentation>
     <DocumentationFile>bin/docs/Recore.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Authors>Brian Cristante</Authors>
     <Company />
     <PackageId>RecoreFX</PackageId>
@@ -20,7 +17,6 @@
     <Product>RecoreFX</Product>
     <Copyright>Copyright (c) 2019 Brian Cristante</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
