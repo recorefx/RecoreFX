@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -12,7 +12,7 @@ jobs:
     - name: Set up .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.100-rc.1.20452.10'
+        dotnet-version: '5.0.100'
 
     - name: dotnet test
       run: dotnet test --configuration Release --logger trx --collect "XPlat code coverage"
