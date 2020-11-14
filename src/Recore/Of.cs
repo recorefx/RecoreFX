@@ -35,8 +35,7 @@ namespace Recore
     /// </code>
     /// 
     /// <see cref="Of{T}"/> is not marked with <see cref="ObsoleteAttribute"/> because records have some limitations that classes do not have.
-    /// See <see cref="Token"/> and <see cref=" Recore.Security.Cryptography.Ciphertext{THash}"/> for examples of <see cref="Of{T}"/> subtypes
-    /// that can't be converted to records.
+    /// Also, <see cref="Of{T}"/> provides easy JSON serialization and implicit conversion to its wrapped type, which records do not provide.
     /// </remarks>
     [JsonConverter(typeof(OfConverter))]
     public abstract class Of<T> : IEquatable<Of<T>?>
