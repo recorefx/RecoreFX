@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
+
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore.Security.Cryptography
 {
@@ -14,17 +17,25 @@ namespace Recore.Security.Cryptography
     /// For example, if your application is storing users' passwords in a database,
     /// you could use this type for the .NET representation of the stored passwords.
     /// </remarks>
-    public sealed class Ciphertext<THash> : Of<string> where THash : HashAlgorithm
+    [JsonConverter(typeof(CiphertextConverter))]
+    public sealed record Ciphertext<THash> where THash : HashAlgorithm
     {
-        // For deserialization with System.Text.Json
-        private Ciphertext()
+        private readonly string value;
+
+        internal Ciphertext(string value)
         {
+            this.value = value;
         }
 
-        private Ciphertext(string value)
-        {
-            Value = value;
-        }
+        /// <summary>
+        /// Returns the underlying string value.
+        /// </summary>
+        public override string ToString() => value;
+
+        /// <summary>
+        /// Converts this instance to its underlying value.
+        /// </summary>
+        public static implicit operator string(Ciphertext<THash> t) => t.ToString();
 
         /// <summary>
         /// Hashes a plaintext string to create an instance of <see cref="Ciphertext{THash}"/>.

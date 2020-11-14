@@ -34,7 +34,7 @@ namespace Recore.Text.Json.Serialization.Converters
 
     /// <summary>
     /// JSON converter for the generic type <seealso cref="Either{TLeft, TRight}"/>
-    /// for given <typeparamref name="TLeft"/> and <typeparamref name="TRight"/>.
+    /// for a given <typeparamref name="TLeft"/> and <typeparamref name="TRight"/>.
     /// </summary>
     internal sealed class EitherConverter<TLeft, TRight> : JsonConverter<Either<TLeft, TRight>>
     {
