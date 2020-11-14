@@ -7,13 +7,11 @@ namespace Recore
     /// <summary>
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
-    /// <remarks>
-    /// This type implements <see cref="IComparable{T}"/> with <c cref="Of{T}">Of&lt;String&gt;</c>
-    /// instead of <c cref="Of{T}">Of&lt;Token&gt;</c>.
-    /// This is for parity with its inherited implementation of <c cref="IEquatable{T}">IEquatable&lt;Of&lt;String&gt;&gt;</c>.
-    /// </remarks>
-    public sealed class Token : Of<string>, IComparable<Of<string>?>
+    public sealed record Token : IComparable<Token?>
     {
+        // Guaranteed to be non-null, nonzero length, and no whitespace
+        private readonly string value;
+
         /// <summary>
         /// Constructs an instance of <see cref="Token"/> from a string value.
         /// </summary>
@@ -37,25 +35,35 @@ namespace Recore
                 }
             }
 
-            Value = value;
+            this.value = value;
         }
+
+        /// <summary>
+        /// Returns the underlying string value.
+        /// </summary>
+        public override string ToString() => value;
 
         /// <summary>
         /// Determines whether this instance and another <see cref="Token"/>
         /// have the same value.
         /// A parameter specifies the culture, case, and sort rules used in the comparison.
         /// </summary>
-        public bool Equals(Of<string>? other, StringComparison comparisonType) => Value!.Equals(other?.Value, comparisonType);
+        public bool Equals(Token? other, StringComparison comparisonType) => value.Equals(other?.value, comparisonType);
 
         /// <summary>
         /// Compares this instance with a specified <see cref="Token"/> object
         /// and indicates whether this instance precedes, follows, or appears in the same position
         /// in the sort order as the specified object.
         /// </summary>
-        public int CompareTo(Of<string>? other) => Value!.CompareTo(other?.Value);
+        public int CompareTo(Token? other) => value.CompareTo(other?.value);
 
         // For some reason, String implements IComparable but does not have comparison operators.
         // Therefore, I won't add them to Token, either.
+
+        /// <summary>
+        /// Converts this instance to its underlying value.
+        /// </summary>
+        public static implicit operator string(Token t) => t.ToString();
     }
 
     /// <summary>
