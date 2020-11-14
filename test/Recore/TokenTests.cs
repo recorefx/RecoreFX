@@ -33,8 +33,8 @@ namespace Recore.Tests
         [Fact]
         public void Value()
         {
-            Assert.Equal("hello", new Token("hello").Value);
-            Assert.NotEqual("asdf", new Token("hello").Value);
+            Assert.Equal("hello", new Token("hello"));
+            Assert.NotEqual("asdf", new Token("hello"));
         }
 
         [Fact]

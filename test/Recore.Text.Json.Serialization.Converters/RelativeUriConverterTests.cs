@@ -9,7 +9,7 @@ namespace Recore.Text.Json.Serialization.Converters.Tests
         [Fact]
         public void ToJson()
         {
-            var uriString = "ndex.html";
+            var uriString = "index.html";
             var relativeUri = new RelativeUri(uriString);
 
             Assert.Equal(
