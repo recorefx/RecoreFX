@@ -1,12 +1,15 @@
 using System;
+using System.Text.Json.Serialization;
 
 using Recore.Properties;
+using Recore.Text.Json.Serialization.Converters;
 
 namespace Recore
 {
     /// <summary>
     /// Represents a non-null, non-empty string value where whitespace is not allowed.
     /// </summary>
+    [JsonConverter(typeof(TokenConverter))]
     public sealed record Token : IComparable<Token?>
     {
         // Guaranteed to be non-null, nonzero length, and no whitespace
