@@ -133,16 +133,23 @@ var address2 = new Address { Value = "1 Microsoft Way" };
 Console.WriteLine(address == address2); // prints "true"
 ```
 
-### `Pipeline<T>`
+### `Apply()`
 
-`Pipeline<T>` gives you a way to call any method with postfix syntax:
+`Apply()` is a generic extension method for any type. It gives you a way to call any method with postfix syntax:
 
 ```cs
-var result = Pipeline.Of(value)
-    .Then(Foo)
-    .Then(Bar)
-    .Then(Baz)
-    .Result;
+var syncClient = new ServiceCollection()
+    .Apply(ConfigureServices)
+    .Apply(x => x.BuildServiceProvider())
+    .Apply(x => x.GetService<SyncClient>());
+```
+
+It can also be used to simplify null-propagation logic
+when the `?.` operator can't be used:
+
+```cs
+// var route = contentEndpoint is null ? null : $"{contentEndpoint}?path={forwardSlashPath}";
+var route = contentEndpoint?.Apply(x => $"{x}?path={forwardSlashPath}");
 ```
 
 ### `Defer`
