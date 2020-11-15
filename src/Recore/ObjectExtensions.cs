@@ -21,7 +21,7 @@ namespace Recore
         /// <summary>
         /// Invokes a function on an object.
         /// </summary>
-        public static U Apply<T, U>(this T obj, Func<T, U> func)
+        public static TResult Apply<T, TResult>(this T obj, Func<T, TResult> func)
         {
             if (func is null)
             {
@@ -47,7 +47,7 @@ namespace Recore
         /// <summary>
         /// Awaits a task and invokes an asynchronous function on a task.
         /// </summary>
-        public static async Task<U> ApplyAsync<T, U>(this Task<T> task, AsyncFunc<T, U> func)
+        public static async Task<TResult> ApplyAsync<T, TResult>(this Task<T> task, AsyncFunc<T, TResult> func)
         {
             if (func is null)
             {
