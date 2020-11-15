@@ -32,7 +32,20 @@ namespace Recore
         }
 
         /// <summary>
-        /// Invokes an asynchronous function on a task.
+        /// Invokes an action on an object and passes the object through.
+        /// </summary>
+        public static T Apply<T>(this T obj, Action<T> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            return obj.Apply(action.Fluent());
+        }
+
+        /// <summary>
+        /// Awaits a task and invokes an asynchronous function on a task.
         /// </summary>
         public static async Task<U> ApplyAsync<T, U>(this Task<T> task, AsyncFunc<T, U> func)
         {
@@ -42,6 +55,21 @@ namespace Recore
             }
 
             return await func(await task);
+        }
+
+        /// <summary>
+        /// Awaits a task, invokes an asynchronous action on the result, and passes the awaited task through.
+        /// </summary>
+        public static async Task<T> ApplyAsync<T>(this Task<T> task, AsyncAction<T> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            var result = await task;
+            await action(result);
+            return result;
         }
     }
 }
