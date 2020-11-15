@@ -22,14 +22,14 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public void Apply_ThrowsOnNull()
+        public void ApplyFunc_ThrowsOnNull()
         {
             Func<string, int> func = null!;
             Assert.Throws<ArgumentNullException>(() => "hello".Apply(func));
         }
 
         [Fact]
-        public void Apply()
+        public void ApplyFunc()
         {
             var result = "hello"
                 .Apply(x => x.Length)
@@ -39,7 +39,7 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public async Task Apply_Task()
+        public async Task ApplyFunc_Task()
         {
             var result = await "hello"
                 .Apply(x => Task.FromResult(x.Length))
@@ -49,7 +49,24 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public async Task ApplyAsync_ThrowsOnNull()
+        public void ApplyAction_ThrowsOnNull()
+        {
+            Action<string> action = null!;
+            Assert.Throws<ArgumentNullException>(() => "hello".Apply(action));
+        }
+
+        [Fact]
+        public void ApplyAction()
+        {
+            bool called = false;
+            var result = "hello"
+                .Apply(_ => { called = true; });
+
+            Assert.True(called);
+        }
+
+        [Fact]
+        public async Task ApplyAsyncFunc_ThrowsOnNull()
         {
             AsyncFunc<string, int> func = null!;
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
@@ -59,13 +76,37 @@ namespace Recore.Tests
         }
 
         [Fact]
-        public async Task ApplyAsync()
+        public async Task ApplyAsyncFunc()
         {
             var result = await "hello"
                 .Apply(x => Task.FromResult(x.Length))
                 .ApplyAsync(IsEvenAsync);
 
             Assert.False(result);
+        }
+
+        [Fact]
+        public async Task ApplyAsyncAction_ThrowsOnNull()
+        {
+            AsyncAction<string> action = null!;
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            {
+                await Task.FromResult("hello").ApplyAsync(action);
+            });
+        }
+
+        [Fact]
+        public async Task ApplyAsyncAction()
+        {
+            bool called = false;
+            var result = await Task.FromResult("hello")
+                .ApplyAsync(_ =>
+                {
+                    called = true;
+                    return Task.CompletedTask;
+                });
+
+            Assert.True(called);
         }
 
         private static bool IsEven(int n) => n % 2 == 0;
