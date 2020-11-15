@@ -10,7 +10,7 @@ Useful for overcoming those pesky variance issues:
 Task<IEnumerable<object>> GetObjectsAsync()
 {
     var result = new[] { "hello" };
-    
+
     // error CS0029 because the static type of `result` is an array, not an `IEnumerable`
     // return Task.FromResult(result);
 
