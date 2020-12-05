@@ -138,10 +138,12 @@ Console.WriteLine(address == address2); // prints "true"
 `Apply()` is a generic extension method for any type. It gives you a way to call any method with postfix syntax:
 
 ```cs
-var syncClient = new ServiceCollection()
-    .Apply(ConfigureServices)
-    .Apply(x => x.BuildServiceProvider())
-    .Apply(x => x.GetService<SyncClient>());
+public async Task<IEnumerable<DirectoryListing>> GetDirectoryListingAsync(RelativeUri? listingUri)
+    => await listingUri
+        .Apply(uri => uri ?? new RelativeUri("api/v1/listing"))
+        .Apply(httpClient.GetStreamAsync)
+        .ApplyAsync(async body => await JsonSerializer.DeserializeAsync<IEnumerable<DirectoryListing>>(body, jsonOptions)
+            ?? Enumerable.Empty<DirectoryListing>());
 ```
 
 It can also be used to simplify null-propagation logic
