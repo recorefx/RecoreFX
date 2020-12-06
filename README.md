@@ -215,7 +215,6 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 - [`AbsoluteUri`](https://recorefx.github.io/api/Recore.AbsoluteUri.html) and [`RelativeUri`](https://recorefx.github.io/api/Recore.RelativeUri.html)
 - [`AsyncAction`](https://recorefx.github.io/api/Recore.AsyncAction.html), [`AsyncAction<T>`](https://recorefx.github.io/api/Recore.AsyncAction-1.html), etc.
 - [`AsyncFunc<TResult>`](https://recorefx.github.io/api/Recore.AsyncFunc-1.html), [`AsyncFunc<T, TResult>`](https://recorefx.github.io/api/Recore.AsyncFunc-2.html), etc.
-- [`Composer<TValue, TResult>`](https://recorefx.github.io/api/Recore.Composer-2.html) and [`Pipeline<T>`](https://recorefx.github.io/api/Recore.Pipeline-1.html)
 - [`Defer`](https://recorefx.github.io/api/Recore.Defer.html)
 - [`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html), [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html), and [`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html)
 - [`Func`](https://recorefx.github.io/api/Recore.Func.html)
