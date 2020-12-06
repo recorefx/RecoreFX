@@ -28,20 +28,78 @@ All of this starts to add up, though. That's why I put it all together into a si
 
 There are some other goodies here that are farther reaching:
 
-### `Optional<T>`
+### `Apply()`
 
-[`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you compiler-checked null safety if you don't have nullable references enabled (or if you're on .NET Framework):
+`Apply()` is a generic extension method for any type. It gives you a way to call any method with postfix syntax:
 
 ```cs
-Optional<string> opt = "hello";
-Optional<string> empty = Optional<string>.Empty;
+public async Task<IEnumerable<DirectoryListing>> GetDirectoryListingAsync(RelativeUri? listingUri)
+    => await listingUri
+        .Apply(uri => uri ?? new RelativeUri("api/v1/listing"))
+        .Apply(httpClient.GetStreamAsync)
+        .ApplyAsync(async body => await JsonSerializer.DeserializeAsync<IEnumerable<DirectoryListing>>(body, jsonOptions)
+            ?? Enumerable.Empty<DirectoryListing>());
+```
 
-opt.Switch(
-    x => Console.WriteLine("Message: " + x),
-    () => Console.WriteLine("No message"));
+It can also be used to simplify null-propagation logic
+when the `?.` operator can't be used:
 
-Optional<int> messageLength = opt.OnValue(x => x.Length);
-string message = opt.ValueOr(default);
+```cs
+// var route = contentEndpoint is null ? null : $"{contentEndpoint}?path={forwardSlashPath}";
+var route = contentEndpoint?.Apply(x => $"{x}?path={forwardSlashPath}");
+```
+
+### `Defer`
+
+`Defer` is analogous to Golang's `defer` statement. It lets you do some kind of cleanup before exiting a method.
+
+The classic way to do this in C# is with `try-finally`:
+
+```cs
+try
+{
+    Console.WriteLine("Doing stuff");
+}
+finally
+{
+    Console.WriteLine("Running cleanup");
+}
+```
+
+With `Defer` and C# 8's new `using` declarations, we can do it more simply:
+
+```cs
+using var cleanup = new Defer(() => Console.WriteLine("Running cleanup"));
+Console.WriteLine("Doing stuff");
+```
+
+### `Unit`
+
+[`Unit`](https://recorefx.github.io/api/Recore.Unit.html) is a type with only one value (like how `Void` is a type with no values).
+
+Imagine a type `ApiResult<T>` that wraps the deserialized JSON response from a REST API.
+Without `Unit`, you'd have to define a separate, non-generic `ApiResult` type for when the response doesn't have a body:
+
+```cs
+ApiResult postResult = await PostPersonAsync(person);
+ApiResult<Person> getResult = await GetPersonAsync(id);
+```
+
+With `Unit`, you can just reuse the same type:
+
+```cs
+ApiResult<Unit> postResult = await PostPersonAsync(person);
+ApiResult<Person> getResult = await GetPersonAsync(id);
+```
+
+In the definition of `PostPersonAsync()`, just return `Unit.Value`:
+
+```cs
+ApiResult<Unit> PostPersonAsync(Person person)
+{
+    // ...
+    return new ApiResult<Unit>(Unit.Value);
+}
 ```
 
 ### `Either<TLeft, TRight>`
@@ -133,78 +191,20 @@ var address2 = new Address { Value = "1 Microsoft Way" };
 Console.WriteLine(address == address2); // prints "true"
 ```
 
-### `Apply()`
+### `Optional<T>`
 
-`Apply()` is a generic extension method for any type. It gives you a way to call any method with postfix syntax:
-
-```cs
-public async Task<IEnumerable<DirectoryListing>> GetDirectoryListingAsync(RelativeUri? listingUri)
-    => await listingUri
-        .Apply(uri => uri ?? new RelativeUri("api/v1/listing"))
-        .Apply(httpClient.GetStreamAsync)
-        .ApplyAsync(async body => await JsonSerializer.DeserializeAsync<IEnumerable<DirectoryListing>>(body, jsonOptions)
-            ?? Enumerable.Empty<DirectoryListing>());
-```
-
-It can also be used to simplify null-propagation logic
-when the `?.` operator can't be used:
+[`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html) gives you compiler-checked null safety if you don't have nullable references enabled (or if you're on .NET Framework):
 
 ```cs
-// var route = contentEndpoint is null ? null : $"{contentEndpoint}?path={forwardSlashPath}";
-var route = contentEndpoint?.Apply(x => $"{x}?path={forwardSlashPath}");
-```
+Optional<string> opt = "hello";
+Optional<string> empty = Optional<string>.Empty;
 
-### `Defer`
+opt.Switch(
+    x => Console.WriteLine("Message: " + x),
+    () => Console.WriteLine("No message"));
 
-`Defer` is analogous to Golang's `defer` statement. It lets you do some kind of cleanup before exiting a method.
-
-The classic way to do this in C# is with `try-finally`:
-
-```cs
-try
-{
-    Console.WriteLine("Doing stuff");
-}
-finally
-{
-    Console.WriteLine("Running cleanup");
-}
-```
-
-With `Defer` and C# 8's new `using` declarations, we can do it more simply:
-
-```cs
-using var cleanup = new Defer(() => Console.WriteLine("Running cleanup"));
-Console.WriteLine("Doing stuff");
-```
-
-### `Unit`
-
-[`Unit`](https://recorefx.github.io/api/Recore.Unit.html) is a type with only one value (like how `Void` is a type with no values).
-
-Imagine a type `ApiResult<T>` that wraps the deserialized JSON response from a REST API.
-Without `Unit`, you'd have to define a separate, non-generic `ApiResult` type for when the response doesn't have a body:
-
-```cs
-ApiResult postResult = await PostPersonAsync(person);
-ApiResult<Person> getResult = await GetPersonAsync(id);
-```
-
-With `Unit`, you can just reuse the same type:
-
-```cs
-ApiResult<Unit> postResult = await PostPersonAsync(person);
-ApiResult<Person> getResult = await GetPersonAsync(id);
-```
-
-In the definition of `PostPersonAsync()`, just return `Unit.Value`:
-
-```cs
-ApiResult<Unit> PostPersonAsync(Person person)
-{
-    // ...
-    return new ApiResult<Unit>(Unit.Value);
-}
+Optional<int> messageLength = opt.OnValue(x => x.Length);
+string message = opt.ValueOr(default);
 ```
 
 These are all borrowed from functional programming, but the goal here isn't to turn C# into F#.
