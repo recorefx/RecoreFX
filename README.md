@@ -221,6 +221,7 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 - [`Defer`](https://recorefx.github.io/api/Recore.Defer.html)
 - [`Either<TLeft, TRight>`](https://recorefx.github.io/api/Recore.Either-2.html), [`Optional<T>`](https://recorefx.github.io/api/Recore.Optional-1.html), and [`Result<TValue, TError>`](https://recorefx.github.io/api/Recore.Result.html)
 - [`Func`](https://recorefx.github.io/api/Recore.Func.html)
+- [`ObjectExtensions`](https://recorefx.github.io/api/Recore.ObjectExtensions.html)
 - [`Of<T>`](https://recorefx.github.io/api/Recore.Of-1.html)
 - [`Unit`](https://recorefx.github.io/api/Recore.Unit.html)
 
@@ -245,6 +246,7 @@ RecoreFX is meant to encourage more expressive, type-safe code that's still idio
 - [`IEnumerable<T>.ForEach()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_ForEach__1_IEnumerable___0__Action___0__)
 - [`IEnumerable<T>.NonNull()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_NonNull__1_IEnumerable___0__)
 - [`IEnumerable<T>.Product()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Product__2_IEnumerable___0__IEnumerable___1__)
+- [`IEnumerable<T>.ToAsyncEnumerable()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_ToAsyncEnumerable__1_System_Collections_Generic_IEnumerable_System_Threading_Tasks_Task___0___)
 - [`IEnumerable<T>.ToLinkedList()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_ToLinkedList__1_IEnumerable___0__)
 - [`IEnumerable<T>.Zip()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_Zip__2_IEnumerable___0__IEnumerable___1__)
 - [`IEnumerable<KeyValuePair<TKey, TValue>>.OnKeys()`](https://recorefx.github.io/api/Recore.Linq.Renumerable.html#Recore_Linq_Renumerable_OnKeys__3_IEnumerable_KeyValuePair___0___1___Recore_Func___0___2__)
