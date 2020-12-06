@@ -26,7 +26,7 @@ All of this starts to add up, though. That's why I put it all together into a si
 
 ### New stuff
 
-There are some other goodies here that are farther reaching:
+There are some other goodies here that are further reaching:
 
 ### `Apply()`
 
